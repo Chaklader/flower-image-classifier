@@ -75,7 +75,7 @@ python predict.py chksav/20240918_111814_densenet161.pth --img_pth flowers/test/
 ```
 
 
-## Notes
+### Notes
 
 - `predict.py` will verify a valid checkpoint is present before starting prediction.
 - While it's possible to run `train.py` in CPU mode, GPU mode is more practical for training.
@@ -83,9 +83,9 @@ python predict.py chksav/20240918_111814_densenet161.pth --img_pth flowers/test/
 
 
 
-# Image Classification Project Results
+## Image Classification Project Results
 
-## Training
+### Training
 
 The model was trained using a DenseNet121 architecture for 1 epoch. Here are the key training details and results:
 
@@ -109,7 +109,7 @@ The model showed significant improvement from training to validation, with the v
 <img src="assets/train.png" alt="Training Output" width="2003"/>
 <br>
 
-## Testing
+### Testing
 
 After training, the model was evaluated on a separate test set. Here are the test results:
 
@@ -121,7 +121,7 @@ After training, the model was evaluated on a separate test set. Here are the tes
 
 <img src="assets/test.png" alt="Training Output" width="2003"/>
 
-## Observations
+### Observations
 <br>
 1. The model achieved a high validation accuracy (83.50%) after just one epoch, indicating quick learning and good generalization.
 2. The test accuracy (81.20%) is close to the validation accuracy, suggesting consistent performance on unseen data.
@@ -133,7 +133,7 @@ For a more robust evaluation, we need to train the model for more epochs and mon
 The example is created to showcase how the process is running in the Jupyter notebook. 
 
 
-# Flower Classification Results
+### Flower Classification Results
 
 <br>
 
@@ -143,7 +143,8 @@ The example is created to showcase how the process is running in the Jupyter not
 
 This image shows the results of a deep learning classifier predicting the type of flower in the given image.
 
-## Top 5 Predictions
+### Top 5 Predictions
+<br>
 
 | Rank | Class Name | Probability |
 |------|------------|------------|
@@ -163,11 +164,6 @@ This image shows the results of a deep learning classifier predicting the type o
 The classifier correctly identified the flower as a Black-eyed Susan with the highest probability of 20.53%. The image shows a close-up of a yellow flower with a dark center, characteristic of the Black-eyed Susan.
 
 A bar chart visualizes the probabilities for each predicted class, clearly showing the Black-eyed Susan as the top prediction.
-
-## Technical Note
-
-The classifier output includes a deprecation warning:
-
 
 
 
