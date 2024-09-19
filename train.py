@@ -47,6 +47,35 @@ from helper.load import transform_load
 from helper.validate import validate_train_args
 
 
+
+# def test(model, dataloaders, criterion):
+#     print('*** validating testset ...\n')
+#     model.cpu()
+#     model.eval()
+#
+#     test_loss = 0
+#     total = 0
+#     match = 0
+#
+#     start_time = datetime.now()
+#
+#     with torch.no_grad():
+#         for images, labels in iter(dataloaders['test']):
+#             model, images, labels = model.to(device), images.to(device), labels.to(device)
+#
+#             output = model.forward(images)
+#             test_loss += criterion(output, labels).item()
+#             total += images.shape[0]
+#             equality = labels.data == torch.max(output, 1)[1]
+#             match += equality.sum().item()
+#
+#     model.test_accuracy = match / total * 100
+#     print('Test Loss: {:.3f}'.format(test_loss / len(dataloaders['test'])),
+#           'Test Accuracy: {:.2f}%'.format(model.test_accuracy))
+#
+#     elapsed = datetime.now() - start_time
+#     print('\n*** test validation done ! \nElapsed time[hh:mm:ss.ms]: {}'.format(elapsed))
+#
 def test(model, dataloaders, criterion, device):
     print('\n*** Evaluating model on test set ***\n')
     model.to(device)
@@ -111,7 +140,20 @@ def train_one_epoch(model, dataloader, optimizer, criterion, device):
 
     return epoch_loss, epoch_acc
 
-
+# def validate(model, dataloaders, criterion):
+#     valid_loss = 0
+#     accuracy = 0
+#
+#     for images, labels in iter(dataloaders['valid']):
+#         images, labels = images.to(device), labels.to(device)
+#
+#         output = model.forward(images)
+#         valid_loss += criterion(output, labels).item()
+#         ps = torch.exp(output)
+#         equality = (labels.data == ps.max(dim=1)[1])
+#         accuracy += equality.type(torch.FloatTensor).mean()
+#
+#     return valid_loss, accuracy
 def validate(model, dataloader, criterion, device):
     model.eval()
     running_loss = 0.0
@@ -136,7 +178,57 @@ def validate(model, dataloader, criterion, device):
 
     return epoch_loss, epoch_acc
 
-
+# training
+# def train(model, dataloaders, optimizer, criterion, epochs=2, print_freq=20, lr=0.001):
+#     if torch.cuda.is_available():
+#         print('*** training classifier in GPU mode ...\n')
+#     else:
+#         print('*** training classifier in CPU mode ...\n')
+#
+#     model.to(device)
+#     start_time = datetime.now()
+#
+#     print('epochs:', epochs, ', print_freq:', print_freq, ', lr:', lr, '\n')
+#
+#     steps = 0
+#
+#     for e in range(epochs):
+#         model.train()
+#         running_loss = 0
+#         for images, labels in iter(dataloaders['train']):
+#             steps += 1
+#
+#             images, labels = images.to(device), labels.to(device)
+#
+#             optimizer.zero_grad()
+#
+#             output = model.forward(images)
+#             loss = criterion(output, labels)
+#             loss.backward()
+#             optimizer.step()
+#
+#             running_loss += loss.item()
+#
+#             if steps % print_freq == 0:
+#                 model.eval()
+#
+#                 with torch.no_grad():
+#                     valid_loss, accuracy = validate(model, dataloaders, criterion)
+#
+#                 print('Epoch: {}/{}..'.format(e + 1, epochs),
+#                       'Training Loss: {:.3f}..'.format(running_loss / print_freq),
+#                       'Validation Loss: {:.3f}..'.format(valid_loss / len(dataloaders['valid'])),
+#                       'Validation Accuracy: {:.3f}%'.format(accuracy / len(dataloaders['valid']) * 100)
+#                       )
+#                 running_loss = 0
+#
+#                 model.train()
+#
+#     elapsed = datetime.now() - start_time
+#
+#     print('\n*** classifier training done ! \nElapsed time[hh:mm:ss.ms]: {}'.format(elapsed))
+#
+#     return model
 def train(model, dataloaders, optimizer, criterion, epochs=3, print_freq=20, lr=0.001, device='cpu', patience=5):
     model.to(device)
     start_time = datetime.now()
@@ -180,6 +272,61 @@ def train(model, dataloaders, optimizer, criterion, epochs=3, print_freq=20, lr=
     model.load_state_dict(best_model_wts)
     return model
 
+
+# def build_classifier(model, args):
+#     # Freeze parameters so we don't backprop through them
+#     for param in model.parameters():
+#         param.requires_grad = False
+#
+#     in_size = {
+#         'densenet121': 1024,
+#         'densenet161': 2208,
+#         'vgg16': 25088,
+#     }
+#
+#     hid_size = {
+#         'densenet121': [500],
+#         'densenet161': [1000, 500],
+#         'vgg16': [4096, 4096, 1000],
+#     }
+#
+#     if args.z_dpout:
+#         p = args.z_dpout
+#     else:
+#         p = 0.5
+#
+#     output_size = len(dataloaders['train'].dataset.classes)
+#     relu = nn.ReLU()
+#     dropout = nn.Dropout(p)
+#     output = nn.LogSoftmax(dim=1)
+#
+#     if args.z_hid:
+#         h_list = args.z_hid.split(',')
+#         h_list = list(map(int, h_list))  # convert list from string to int
+#     else:
+#         h_list = hid_size[args.z_arch]
+#
+#     h_layers = [nn.Linear(in_size[args.z_arch], h_list[0])]
+#     h_layers.append(relu)
+#     if args.z_arch[:3] == 'vgg':
+#         h_layers.append(dropout)
+#
+#     if len(h_list) > 1:
+#         h_sz = zip(h_list[:-1], h_list[1:])
+#         for h1, h2 in h_sz:
+#             h_layers.append(nn.Linear(h1, h2))
+#             h_layers.append(relu)
+#             if args.z_arch[:3] == 'vgg':
+#                 h_layers.append(dropout)
+#
+#     last = nn.Linear(h_list[-1], output_size)
+#     h_layers.append(last)
+#     h_layers.append(output)
+#
+#     print(h_layers)
+#     model.classifier = nn.Sequential(*h_layers)
+#
+#     return model
 
 def build_classifier(model, args, dataloaders):
     in_size = {

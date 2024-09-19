@@ -68,6 +68,48 @@ def show_classifier(topk_names, topk_probs, img_path):
     plt.show()
 
 
+# def predict(image_path, cat_to_name, model, topk=5):
+#     ''' Predict the class (or classes) of an image using a trained deep learning model.
+#     '''
+#
+#     # TODO: Implement the code to predict the class from an image file
+#     model.cpu()
+#     model.eval()
+#
+#     pil_img = Image.open(image_path)
+#     image = process_image(pil_img)
+#     image = torch.FloatTensor(image)
+#
+#     model, image = model.to(device), image.to(device)
+#
+#     print('\nori image.shape:', image.shape)
+#     image.unsqueeze_(0)  # add a new dimension in pos 0
+#     print('new image.shape:', image.shape, '\n')
+#
+#     output = model.forward(image)
+#
+#     # get the top k classes of prob
+#     ps = torch.exp(output).data[0]
+#     topk_prob, topk_idx = ps.topk(topk)
+#
+#     # bring back to cpu and convert to numpy
+#     topk_probs = topk_prob.cpu().numpy()
+#     topk_idxs = topk_idx.cpu().numpy()
+#
+#     # map topk_idx to classes in model.class_to_idx
+#     idx_class = {i: k for k, i in model.class_to_idx.items()}
+#     topk_classes = [idx_class[i] for i in topk_idxs]
+#
+#     # map class to class name
+#     topk_names = [cat_to_name[i] for i in topk_classes]
+#
+#     print('*** Top ', topk, ' classes ***')
+#     print('class names:   ', topk_names)
+#     print('classes:       ', topk_classes)
+#     print('probabilities: ', topk_probs)
+#
+#     return topk_classes, topk_names, topk_probs
+
 def predict(model, arch, image_path, topk=5, device='cpu'):
     """
     Predict the class (or classes) of an image using a trained deep learning model.
