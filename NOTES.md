@@ -789,6 +789,10 @@ where:
 Remember: Backpropagation is what makes deep learning possible by efficiently computing how each weight contributes to the overall error.
 
 
+
+
+
+
 # Implementing Gradient Descent
 
 
@@ -887,3 +891,36 @@ The SSE is a measure of our network's performance. If it's high, the network is 
 - Starting at some random weight, we make a step in the direction towards the minimum, opposite to the gradient or slope.
 
 - If we take many steps, always descending down a gradient, eventually the weights will find the minimum of the error function.
+
+
+# Mean Square Error
+
+We're going to make a small change to how we calculate the error here. Instead of the SSE, we're going to use the mean of the square errors (MSE). Now that we're using a lot of data, summing up all the weight steps can lead to really large updates that make the gradient descent diverge. To compensate for this, you'd need to use a quite small learning rate. Instead, we can just divide by the number of records in our data, m to take the average. This way, no matter how much data we use, our learning rates will typically be in the range of 0.01 to 0.001. Then, we can use the MSE (shown below) to calculate the gradient and the result is the same as before, just averaged instead of summed.
+
+E = 1/2m Σ(y^μ - ŷ^μ)²
+          μ
+
+Here's the general algorithm for updating the weights with gradient descent:
+
+- Set the weight step to zero: Δw_i = 0
+
+- For each record in the training data:
+  - Make a forward pass through the network, calculating the output ŷ = f(Σ_i w_ix_i)
+  - Calculate the error term for the output unit, δ = (y - ŷ) * f'(Σ_i w_ix_i)
+  - Update the weight step Δw_i = Δw_i + δx_i
+
+- Update the weights w_i = w_i + ηΔw_i/m where η is the learning rate and m is the number of records. Here we're averaging the weight steps to help reduce any large variations in the training data.
+
+- Repeat for e epochs.
+
+You can also update the weights on each record instead of averaging the weight steps after going through all the records.
+
+Remember that we're using the sigmoid for the activation function, f(h) = 1/(1 + e^-h)
+
+And the gradient of the sigmoid is f'(h) = f(h)(1 - f(h))
+
+where h is the input to the output unit,
+
+h = Σ_i w_ix_i
+
+
