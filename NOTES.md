@@ -924,3 +924,91 @@ where h is the input to the output unit,
 h = Σ_i w_ix_i
 
 
+### Backpropagation
+
+Now we've come to the problem of how to make a multilayer neural network learn. Before, we saw how to update weights with gradient descent. The backpropagation algorithm is just an extension of that, using the chain rule to find the error with the respect to the weights connecting the input layer to the hidden layer (for a two layer network).
+
+To update the weights to hidden layers using gradient descent, you need to know how much error each of the hidden units contributed to the final output. Since the output of a layer is determined by the weights between layers, the error resulting from units is scaled by the weights going forward through the network. Since we know the error at the output, we can use the weights to work backwards to hidden layers.
+
+For example, in the output layer, you have errors δᵒₖ attributed to each output unit k. Then, the error attributed to hidden unit j is the output errors, scaled by the weights between the output and hidden layers (and the gradient):
+
+δʰⱼ = ∑ Wⱼₖδᵒₖf'(hⱼ)
+
+Then, the gradient descent step is the same as before, just with the new errors:
+
+Δwᵢⱼ = ηδʰⱼxᵢ
+
+where wᵢⱼ are the weights between the inputs and hidden layer and xᵢ are input unit values. This form holds for however many layers there are. The weight steps are equal to the step size times the output error of the layer times the values of the inputs to that layer
+
+Δwₚq = ηδoutput Vᵢₙ
+
+Here, you get the output error, δoutput, by propagating the errors backwards from higher layers. And the input values, Vᵢₙ are the inputs to the layer, the hidden layer activations to the output unit for example.
+
+<br>
+
+![title](images/backpropagation.png)
+
+<br>
+
+
+Let's walk through the steps of calculating the weight updates for a simple two layer network. Suppose there are two input values, one hidden unit, and one output unit, with sigmoid activations on the hidden and output units. The following image depicts this network. (Note: the input values are shown as nodes at the bottom of the image, while the network's output value is shown as ŷ at the top. The inputs themselves do not count as a layer, which is why this is considered a two layer network.)
+
+[Network diagram showing weights and connections]
+
+Assume we're trying to fit some binary data and the target is y = 1. We'll start with the forward pass, first calculating the input to the hidden unit
+
+h = ∑ᵢwᵢxᵢ = 0.1 × 0.4 - 0.2 × 0.3 = -0.02
+
+and the output of the hidden unit
+
+a = f(h) = sigmoid(-0.02) = 0.495.
+
+Using this as the input to the output unit, the output of the network is
+
+ŷ = f(W · a) = sigmoid(0.1 × 0.495) = 0.512.
+
+With the network output, we can start the backwards pass to calculate the weight updates for both layers. Using the fact that for the sigmoid function f'(W · a) = f(W · a)(1 - f(W · a)), the error term for the output unit is
+
+δᵒ = (y - ŷ)f'(W · a) = (1 - 0.512) × 0.512 × (1 - 0.512) = 0.122.
+
+Now we need to calculate the error term for the hidden unit with backpropagation. Here we'll scale the error term from the output unit by the weight W connecting it to the hidden unit. For the hidden unit error term, δʰⱼ = ∑ₖ Wⱼₖδᵒₖf'(hⱼ), but since we have one hidden unit and one output unit, this is much simpler.
+
+δʰ = Wδᵒf'(h) = 0.1 × 0.122 × 0.495 × (1 - 0.495) = 0.003
+
+Now that we have the errors, we can calculate the gradient descent steps. The hidden to output weight step is the learning rate, times the output unit error, times the hidden unit activation value.
+
+ΔW = ηδᵒa = 0.5 × 0.122 × 0.495 = 0.0302
+
+Then, for the input to hidden weights wᵢⱼ, it's the learning rate times the hidden unit error, times the input values.
+
+Δwᵢ = ηδʰxᵢ = (0.5 × 0.003 × 0.1, 0.5 × 0.003 × 0.3) = (0.00015, 0.00045)
+
+From this example, you can see one of the effects of using the sigmoid function for the activations. The maximum derivative of the sigmoid is 0.25, so the errors in the output layer get reduced by at least 75%, and errors in the hidden layer are scaled down by at least 93.75%! You can see that if you have a lot of layers, using a sigmoid activation function will quickly reduce the weight steps to tiny values in layers near the input. This is known as the vanishing gradient problem. Later in the course you'll learn about other activation functions that perform better in this regard and are more commonly used in modern network architectures.
+
+
+Now we've seen that the error term for the output layer is
+
+δₖ = (yₖ - ŷₖ)f'(aₖ)
+
+and the error term for the hidden layer is
+
+δⱼ = ∑[wⱼₖδₖ]f'(hⱼ)
+
+For now we'll only consider a simple network with one hidden layer and one output unit. Here's the general algorithm for updating the weights with backpropagation:
+
+• Set the weight steps for each layer to zero
+  • The input to hidden weights Δwᵢⱼ = 0
+  • The hidden to output weights ΔWⱼ = 0
+
+• For each record in the training data:
+  • Make a forward pass through the network, calculating the output ŷ
+  • Calculate the error gradient in the output unit, δᵒ = (y - ŷ)f'(z) where z = ∑ⱼ Wⱼaⱼ, the input to the output unit.
+  • Propagate the errors to the hidden layer δʰⱼ = δᵒWⱼf'(hⱼ)
+  • Update the weight steps:
+    • ΔWⱼ = ΔWⱼ + δᵒaⱼ
+    • Δwᵢⱼ = Δwᵢⱼ + δʰⱼaᵢ
+
+• Update the weights, where η is the learning rate and m is the number of records:
+  • Wⱼ = Wⱼ + ηΔWⱼ/m
+  • wᵢⱼ = wᵢⱼ + ηΔwᵢⱼ/m
+  • Repeat for e epochs.
