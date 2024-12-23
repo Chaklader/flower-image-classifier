@@ -1012,3 +1012,521 @@ For now we'll only consider a simple network with one hidden layer and one outpu
   • Wⱼ = Wⱼ + ηΔWⱼ/m
   • wᵢⱼ = wᵢⱼ + ηΔwᵢⱼ/m
   • Repeat for e epochs.
+
+
+# Training Neural Networks
+
+We've learned how to build a deep neural network and how to train it to fit our data. However, there are many things that can fail when training a neural network. For example:
+
+Our architecture can be poorly chosen
+Our data can be noisy
+Our model can take far too long to run
+
+We need to learn ways to optimize the training of our models—and that's what we'll be getting into in this lesson! By the end of this lesson, you'll be able to:
+
+Separate data into testing and training sets in order to objectively test a model and ensure that it can generalize beyond the training data.
+Distinguish between underfitting and overfitting, and identify the underlying causes of each.
+Use early stopping to end the training process at a point that minimizes both testing error and training error.
+Apply regularization to reduce overfitting.
+Use dropout to randomly turn off portions of a network during training and ensure no single part of the network dominates the resulting model disproportionately.
+Use random restart to avoid getting stuck in local minima.
+Use the hyperbolic tangent function and ReLU to improve gradient descent.
+Distinguish between batch gradient descent vs stochastic gradient descent.
+Adjust the learning rate of the gradient descent algorithm in order to improve model optimization.
+Use momentum to avoid getting stuck in local minima.
+
+
+
+When comparing models to determine which is better, we need a way of objectively testing them. To accomplish this, we can divide our data into two parts:
+
+A training set that we use to train the models
+A testing set that we use only for testing the models
+While training, we only use the training data—we set the testing data aside and don't use it as input for our learning algorithm.
+
+Then, once our models are trained, we reintroduce the testing set. A model that performs well on the training data may not perform well on the testing data. We'll see one reason for this, called overfitting, next.
+
+
+
+When we train our models, it is entirely possible to get them to a point where they perform very well on our training data—but then perform very poorly on our testing data. Two common reasons for this are underfitting and overfitting
+
+### Underfitting
+
+Underfitting means that our model is too simplistic. There is a poor fit between our model and the data because we have oversimplified the problem.
+Underfitting is sometimes referred to as error due to bias. Our training data may be biased and this bias may be incorporated into the model in a way that oversimplifies it.
+For example, suppose we train an image classifier to recognize dogs. And suppose that the only type of animal in the training set is a dog. Perhaps the model learns a biased and overly simple rule like, "if it has four legs it is a dog". When we then test our model on some data that has other animals, it may misclassify a cat as a dog—in other words, it will underfit the data because it has error due to bias.
+
+### Overfitting
+
+Overfitting means that our model is too complicated. The fit between our model and the training data is too specific—the model will perform very well on the training data but will fail to generalize to new data.
+Overfitting is sometimes referred to as error due to variance. This means that there are random or irrelevant differences among the data points in our training data and we have fit the model so closely to these irrelevant differences that it performs poorly when we try to use it with our testing data.
+For example, suppose we want our image classifier to recognize dogs, but instead we train it to recognize "dogs that are yellow, orange, or grey." If our testing set includes a dog that is brown, for example, our model will put it in a separate class, which was not what we wanted. Our model is too specific—we have fit the data to some unimportant differences in the training data and now it will fail to generalize.
+
+Applying This to Neural Networks
+Generally speaking, underfitting tends to happen with neural networks that have overly simple architecture, while overfitting tends to happen with models that are highly complex.
+
+The bad news is, it's really hard to find the right architecture for a neural network. There is a tendency to create a network that either has overly simplistic architecture or overly complicated architecture. In general terms, the approach we will take is to err on the side of an overly complicated model, and then we'll apply certain techniques to reduce the risk of overfitting.
+
+
+### Early Stopping
+
+When training our neural network, we start with random weights in the first epoch and then change these weights as we go through additional epochs. Initially, we expect these changes to improve our model as the neural network fits the training data more closely. But after some time, further changes will start to result in overfitting.
+
+We can monitor this by measuring both the training error and the testing error. As we train the network, the training error will go down—but at some point, the testing error will start to increase. This indicates overfitting and is a signal that we should stop training the network prior to that point. We can see this relationship in a model complexity graph like this one:
+
+<br>
+
+![text](images/model.png)
+
+<br>
+
+
+
+Have a look at the graph and make sure you can recognize the following:
+
+On the Y-axis, we have a measure of the error and on the X-axis we have a measure of the complexity of the model (in this case, it's the number of epochs).
+On the left we have high testing and training error, so we're underfitting.
+On the right, we have high testing error and low training error, so we're overfitting.
+Somewhere in the middle, we have our happy Goldilocks point (the point that is "just right").
+In summary, we do gradient descent until the testing error stops decreasing and starts to increase. At that moment, we stop. This algorithm is called early stopping and is widely used to train neural networks.
+
+
+Large Co-efficients -> Overfitting
+Small Co-efficients -> Underfitting
+
+
+
+<br>
+
+![text](images/regularization.png)
+
+<br>
+
+
+### Considering the Activation Functions
+
+A key point here is to consider the activation functions of these two equations:
+
+
+<br>
+
+![text](images/activation_functions.png)
+
+<br>
+
+When we apply sigmoid to small values such as 
+x1 + x2, we get the function on the left, which has a nice slope for gradient descent.
+When we multiply the linear function by 10 and take sigmoid of 10x1 + 10x2 , our predictions are much better since they're closer to zero and one. But the function becomes much steeper and it's much harder to do graident descent.
+
+Conceptually, the model on the right is too certain and it gives little room for applying gradient descent. Also, the points that are classified incorrectly in the model on the right will generate large errors and it will be hard to tune the model to correct them.
+
+
+# Regularization
+
+Now the question is, how do we prevent this type of overfitting from happening? The trouble is that large coefficients are leading to overfitting, so what we need to do is adjust our error function by, essentially, penalizing large weights.
+
+If you recall, our original error function looks like this:
+
+-1/m ∑ᵢ₌₁ᵐ (1 - yᵢ)ln(1 - ŷᵢ) + yᵢln(ŷᵢ)
+
+We want to take this and add a term that is big when the weights are big. There are two ways to do this. One way is to add the sums of absolute values of the weights times a constant lambda:
+
++λ(|w₁| + ... + |wₙ|)
+
+The other one is to add the sum of the squares of the weights times that same constant:
+
++λ(w₁² + ... + wₙ²)
+
+In both cases, these terms are large if the weights are large.
+
+
+L1 vs L2 Regularization
+The first approach (using absolute values) is called L1 regularization, while the second (using squares) is called L2 regularization. Here are some general guidelines for deciding between the two:
+
+L1 Regularization
+L1 tends to result in sparse vectors. That means small weights will tend to go to zero.
+If we want to reduce the number of weights and end up with a small set, we can use L1.
+L1 is also good for feature selection. Sometimes we have a problem with hundreds of features, and L1 regularization will help us select which ones are important, turning the rest into zeroes.
+
+L2 Regularization
+L2 tends not to favor sparse vectors since it tries to maintain all the weights homogeneously small. L2 gives better results for training models so it's the one we'll use the most.
+
+
+# Activation Functions
+
+Think of activation functions as the decision-makers in neural networks - they determine whether and how strongly each neuron should "fire" based on its inputs. Just like neurons in our brain don't fire in a simple linear way, these functions introduce non-linearity that allows neural networks to learn complex patterns.
+
+Mathematically, activation functions transform the output of each neuron:
+
+**Sigmoid**: σ(x) = 1/(1 + e⁻ˣ)
+- Output range: (0,1)
+- Gradient: f'(x) = σ(x)(1 - σ(x))
+- Key issues:
+  - Saturating gradients: f'(x) → 0 as |x| → ∞
+  - Not zero-centered
+  - Computationally expensive
+
+**ReLU**: f(x) = max(0,x)
+- Output range: [0,∞)
+- Gradient: f'(x) = {1 if x > 0, 0 otherwise}
+- Benefits:
+  - No saturation for positive values
+  - Sparse activation (~50%)
+  - Computationally efficient
+- Issue: "Dying ReLU" problem
+
+**Modern Variants**:
+1. Leaky ReLU: f(x) = {x if x > 0, αx otherwise}
+2. ELU: f(x) = {x if x > 0, α(e^x - 1) otherwise}
+3. SELU: Self-normalizing variant
+
+
+
+# Regularization
+
+Think of regularization as putting a leash on your neural network - it prevents the model from becoming too complex and "memorizing" the training data. Just like how we want students to learn general concepts rather than memorize specific examples, regularization helps neural networks learn patterns that generalize well to new data.
+
+Mathematically, regularization modifies the loss function L(θ) by adding penalty terms:
+
+**L₁ Regularization**:
+L_reg(θ) = L(θ) + λ∑|wᵢ|
+- Gradient: ∂Ω/∂w = sign(w)
+- Properties:
+  - Creates sparse solutions (many w = 0)
+  - Effective feature selection
+  - Non-differentiable at w = 0
+
+**L₂ Regularization**:
+L_reg(θ) = L(θ) + λ∑wᵢ²
+- Gradient: ∂Ω/∂w = 2w
+- Properties:
+  - Weight decay interpretation: w ← w(1 - 2λη) - η∂L/∂w
+  - Smoother solutions
+  - All weights shrink proportionally
+
+**Combined Approaches**:
+- Elastic Net: α∑|wᵢ| + (1-α)∑wᵢ²
+- Dropout: Randomly zero out units (p: keep probability)
+  Training: y = f(Wx) * mask/p
+  Inference: y = f(Wx)
+- Early Stopping: Monitor validation error
+
+The strength parameter λ controls the trade-off between fitting the data and keeping weights small.
+
+
+### Dropout 
+
+When training a neural network, sometimes one part of the network has very large weights and it ends up dominating the training, while another part of the network doesn't really play much of a role (so it doesn't get trained).
+
+To solve this, we can use a method called dropout in which we turn part of the network off and let the rest of the network train:
+
+We go through the epochs and randomly turn off some of the nodes. This forces the other nodes to pick up the slack and take a larger part in the training.
+To drop nodes, we give the algorithm a parameter that indicates the probability that each node will get dropped during each epoch. For example, if we set this parameter to 0.2, this means that during each epoch, each node has a 20% probability of being turned off.
+Note that some nodes may get turned off more than others and some may never get turned off. This is OK since we're doing it over and over; on average, each node will get approximately the same treatment.
+
+
+# Local Minima and Random Restart
+
+The optimization landscape of neural networks is incredibly complex, with many peaks, valleys, and saddle points. When training gets stuck in a poor local minimum, we might end up with a suboptimal solution despite the network appearing to be "trained". Random restart is one of the fundamental strategies to escape these local minima.
+
+Mathematically, the challenge can be formalized as:
+
+**Local Minimum Problem**:
+- For weight vector w, a local minimum occurs when:
+  - ∇L(w) = 0 (gradient is zero)
+  - ∇²L(w) is positive definite (all eigenvalues > 0)
+- Not all local minima are created equal:
+  L(w_local) > L(w_global)
+
+**Random Restart Techniques**:
+1. Basic Random Restart:
+   - Initialize: w_new = w_0 + ϵ, ϵ ~ N(0,σ²)
+   - Run multiple times with different seeds
+   - Keep best solution: w* = argmin_w L(w)
+
+2. Momentum-Based Escape:
+   - Update rule: v_t = μv_(t-1) - η∇L(w)
+   - Weight update: w_t = w_(t-1) + v_t
+   - μ: momentum coefficient
+
+3. Learning Rate Scheduling:
+   - η_t = η_0 / √t
+   - Allows larger steps early, finer tuning later
+
+**Practical Considerations**:
+- Number of restarts needed increases with dimension
+- Trade-off between exploration (high σ²) and exploitation
+- Computational cost vs. solution quality
+- Can combine with other techniques (e.g., simulated annealing)
+
+
+
+### Other Activation Functions
+
+#### The Vanishing Gradient Problem
+
+To summarize the vanishing gradient problem:
+
+- The sigmoid curve gets pretty flat on the sides, so if we calculate the derivative at a point far to the right or far to the left, this derivative is almost zero.
+- This is problematic because it is the derivative that tells us what direction to move in. This is especially problematic in most linear perceptrons.
+
+
+
+## Hyperbolic Tangent
+
+One alternative activation function is the hyperbolic tangent, which is given by the formula:
+
+tanh(x) = (e^x - e^(-x))/(e^x + e^(-x))
+
+This is similar to sigmoid, but since our range is between minus one and one, the derivatives are larger—and this small difference has a big impact on neural networks.
+
+## Rectified Linear Unit (ReLU)
+
+Another very popular activation function is the Rectified Linear Unit (ReLU). The formula is:
+
+relu(x) = {x if x ≥ 0
+          0 if x < 0
+
+In other words:
+• If the input is positive, return the same value.
+• If the input is negative, return zero.
+
+This function is used a lot instead of the sigmoid and it can improve the training significantly without sacrificing much accuracy (since the derivative is one if the number is positive).
+
+
+
+### Batch Gradient Descent
+
+First, let's review our batch gradient descent algorithm:
+
+In order to decrease error, we take a bunch of steps following the negative of the gradient, which is the error function.
+Each step is called an epoch.
+In each epoch, we take our input (all of our data) and run it through the entire neural network.
+Then we find our predictions and calculate the error (how far the predictions are from the actual labels).
+Finally, we back-propagate this error in order to update the weights in the neural network. This will give us a better boundary for predicting our data.
+If we have a large number of data points then this process will involve huge matrix computations, which would use a lot of memory.
+
+### Stochastic Gradient Descent
+
+To expedite this, we can use only some of our data at each step. If the data is well-distributed then a subset of the data can give us enough information about the gradient.
+
+This is the idea behind stochastic gradient descent. We take small subsets of the data and run them through the neural network, calculating the gradient of the error function based on these points and moving one step in that direction.
+
+We still want to use all our data, so what we do is the following:
+
+Split the data into several batches.
+Take the points in the first batch and run them through the neural network.
+Calculate the error and its gradient.
+Back-propagate to update the weights (which will define a better boundary region).
+Repeat the above steps for the rest of the batches.
+Notice that with this approach we take multiple steps, whereas with batch gradient descent we take only one step with all the data. Each step may be less accurate, but, in practice, it's much better to take a bunch of slightly inaccurate steps than to take only one good one.
+
+
+
+#### Learning Rate Decay
+
+Here are some key ideas to keep in mind when choosing a learning rate:
+
+If the learning rate is large:
+
+This means the algorithm is taking large steps, which can make it faster.
+However, the large steps may cause it to miss (overshoot) the minimum.
+If the learning learning rate is small:
+
+This means the algorithm is taking small steps, which can make it slower.
+However, it will make steady progress and have a better chance of arriving at the local minimum.
+If your model is not working, a good general rule of thumb is to try decreasing the learning rate. The best learning rates are those that decrease as the algorithm is getting closer to a solution.
+
+
+### Momentum
+
+Another way to solve the local minimum problem is with momentum. Momentum is a constant β between 0 and 1.
+
+We use β to get a sort of weighted average of the previous steps:
+
+   step(n) + βstep(n - 1) + β²step(n - 2) + β³step(n - 3) + ...
+
+The previous step gets multiplied by 1, the one before it gets multiplied by β, the one before that by β², the one before that by β³, and so on. Because β has a value between 0 and 1, raising it to increasingly large powers means that the value will get smaller and smaller. In this way, the steps that happened a long time ago will be multiplied by tiny values and thus matter less than the ones that happened recently.
+
+This can get us over "humps" and help us discover better minima. Once we get to the global minimum, the momentum will still be pushing us away, but not as much.
+
+
+
+In this lesson, we learned ways to optimize the training of our models. If you followed along with everything, you now know how to:
+
+- Separate data into testing and training sets in order to objectively test a model and ensure that it can generalize beyond the training data.
+- Distinguish between underfitting and overfitting, and identify the underlying causes of each.
+- Use early stopping to end the training process at a point that minimizes both testing error and training error.
+- Apply regularization to reduce overfitting.
+- Use dropout to randomly turn off portions of a network during training and ensure no single part of the network dominates the resulting model disproportionately.
+- Use random restart to avoid getting stuck in local minima.
+- Use the hyperbolic tangent function and ReLU to improve gradient descent.
+- Distinguish between batch gradient descent vs stochastic gradient descent.
+Adjust the learning rate of the gradient descent algorithm in order to improve model optimization.
+Use momentum to avoid getting stuck in local minima.
+
+
+
+### Transfer Learning
+
+The Four Main Cases When Using Transfer Learning
+Transfer learning involves taking a pre-trained neural network and adapting the neural network to a new, different data set.
+
+Depending on both:
+
+- the size of the new data set, and
+- the similarity of the new data set to the original data set
+
+the approach for using transfer learning will be different. There are four main cases:
+
+1. new data set is small, new data is similar to original training data
+2. new data set is small, new data is different from original training data
+3. new data set is large, new data is similar to original training data
+4. new data set is large, new data is different from original training data
+
+
+<br>
+
+![title](images/1.png)
+
+<br>
+
+A large data set might have one million images. A small data could have two-thousand images. The dividing line between a large data set and small data set is somewhat subjective. Overfitting is a concern when using transfer learning with a small data set.
+
+Images of dogs and images of wolves would be considered similar; the images would share common characteristics. A data set of flower images would be different from a data set of dog images.
+
+Each of the four transfer learning cases has its own approach. In the following sections, we will look at each case one by one.
+
+Demonstration Network
+
+To explain how each situation works, we will start with a generic pre-trained convolutional neural network and explain how to adjust the network for each case. Our example network contains three convolutional layers and three fully connected layers:
+
+
+<br>
+
+![title](images/2.png)
+
+<br>
+
+
+Here is an generalized overview of what the convolutional neural network does:
+
+- the first layer will detect edges in the image
+- the second layer will detect shapes
+- the third convolutional layer detects higher level features
+
+Each transfer learning case will use the pre-trained convolutional neural network in a different way.
+
+#### Case 1: Small Data Set, Similar Data
+
+
+<br>
+
+![title](images/3.png)
+
+<br>
+
+If the new data set is small and similar to the original training data:
+
+- slice off the end of the neural network
+- add a new fully connected layer that matches the number of classes in the new data set
+- randomize the weights of the new fully connected layer; freeze all the weights from the pre-trained network
+- train the network to update the weights of the new fully connected layer
+
+To avoid overfitting on the small data set, the weights of the original network will be held constant rather than re-training the weights.
+
+Since the data sets are similar, images from each data set will have similar higher level features. Therefore most or all of the pre-trained neural network layers already contain relevant information about the new data set and should be kept.
+
+Here's how to visualize this approach:
+
+<br>
+
+![title](images/4.png)
+
+<br>
+
+#### Case 2: Small Data Set, Different Data
+
+<br>
+
+![title](images/5.png)
+
+<br>
+
+If the new data set is small and different from the original training data:
+
+- slice off most of the pre-trained layers near the beginning of the network
+- add to the remaining pre-trained layers a new fully connected layer that matches the number of classes in the new data set
+- randomize the weights of the new fully connected layer; freeze all the weights from the pre-trained network
+- train the network to update the weights of the new fully connected layer
+
+
+Because the data set is small, overfitting is still a concern. To combat overfitting, the weights of the original neural network will be held constant, like in the first case.
+
+But the original training set and the new data set do not share higher level features. In this case, the new network will only use the layers containing lower level features.
+
+Here is how to visualize this approach:
+
+<br>
+
+![title](images/6.png)
+
+<br>
+
+
+#### Case 3: Large Data Set, Similar Data
+
+
+<br>
+
+![title](images/7.png)
+
+<br>
+
+
+If the new data set is large and similar to the original training data:
+
+- remove the last fully connected layer and replace with a layer matching the number of classes in the new data set
+- randomly initialize the weights in the new fully connected layer
+- initialize the rest of the weights using the pre-trained weights
+- re-train the entire neural network
+
+Overfitting is not as much of a concern when training on a large data set; therefore, you can re-train all of the weights.
+
+Because the original training set and the new data set share higher level features, the entire neural network is used as well.
+
+Here is how to visualize this approach:
+
+
+<br>
+
+![title](images/8.png)
+
+<br>
+
+#### Case 4: Large Data Set, Different Data
+
+
+<br>
+
+![title](images/9.png)
+
+<br>
+
+If the new data set is large and different from the original training data:
+
+- remove the last fully connected layer and replace with a layer matching the number of classes in the new data set
+- retrain the network from scratch with randomly initialized weights
+- alternatively, you could just use the same strategy as the "large and similar" data case
+
+Even though the data set is different from the training data, initializing the weights from the pre-trained network might make training faster. So this case is exactly the same as the case with a large, similar data set.
+
+If using the pre-trained network as a starting point does not produce a successful model, another option is to randomly initialize the convolutional neural network weights and train the network from scratch.
+
+Here is how to visualize this approach:
+
+
+<br>
+
+![title](images/10.png)
+
+<br>
