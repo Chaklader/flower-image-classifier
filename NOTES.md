@@ -2002,3 +2002,553 @@ Tokenization: A single word may be split into multiple tokens. For example, in G
 # Building the Transformer Neural Network | PyTorch
 
 
+#### Model Architecture
+
+- Similarity to GPT Models: Our model will have a similar architecture to the GPT models created by OpenAI.
+Differences from GPT Models:
+- Model Size: Our model will be much smaller, with significantly fewer parameters, making it more accessible and less resource-intensive to train.
+- Tokenizer Type: We will use a character-level tokenizer instead of a subword tokenizer to simplify our implementation.
+- Focus on Understandability: The model will prioritize clarity and educational value over performance.
+
+#### Implementation Details
+
+1. Model Configuration: Once the implementation is complete, we will be able to create an instance of the model and set various parameters, such as context window size.
+2. Text Generation: Using the trained model and a provided prompt, we can generate text that mimics Shakespeare's style, such as lines that could be spoken by characters like Romeo.
+
+
+
+
+#### Key Steps in Data Preparation
+
+1. Implementing a Tokenizer
+Purpose: A tokenizer converts text into token IDs, which are numerical representations of the text.
+We'll implement a tokenizer in PyTorch
+2. Preparing the Training Dataset
+Goal:
+The model's goal is to predict the next token given part of an input dataset.
+Example:
+Given the phrase: "The core innovation of Transformers is the attention."
+Input: "The" → Model predicts: "core"
+Input: "The core" → Model predicts: "innovation"
+Continue until the last input: "The core innovation of Transformers is the" → Model predicts: "attention"
+Dataset Representation:
+Inputs and targets are part of the same phrase but are shifted by one position.
+While the model sees token IDs during training, for clarity, we'll often refer to these as words.
+Training Process
+Training Batches: During each training iteration, we don't just use a single example. Instead, we use multiple random training examples to create a training batch.
+Efficiency: Using batches helps better utilize GPU resources, speeding up the training process.
+
+
+#### Using DataLoader for Mini-Batches
+In training a model, we typically don't use a single sample per training iteration, as this approach (stochastic gradient descent) doesn't efficiently utilize resources and leads to fluctuating training losses. Using the whole dataset (batch gradient descent) is impractical due to high computational costs and memory requirements.
+
+Mini-Batches
+Instead, models are often trained using mini-batches, where each training iteration uses a small subset of samples. This approach, known as mini-batch gradient descent, balances efficiency and stability in training.
+
+
+<br>
+
+![title](images/training.png)
+
+<br>
+
+
+
+### Embeddings and Positional Layers in a Transformer-Based Language Model
+
+
+#### Building the Transformer Model
+
+
+<br>
+
+![title](images/training_model.png)
+
+<br>
+
+
+Step 1: Processing Input
+Tokenization: The input text is tokenized, converting each word into a token ID.
+Word Embeddings: Each token ID is then converted into a corresponding word embedding. After this step, we have a matrix of embedding vectors, each representing a token in the input.
+Key Points About Word Embeddings
+Dependence on Token IDs: The word embeddings are solely dependent on the token IDs; the same token ID always produces the same word embedding vector.
+Training: These embeddings are not pre-defined but are learned during the training of our model.
+Creating Embeddings
+Vocabulary Size: Set to 10,000 (arbitrary choice).
+Embedding Vector Size: Set to 75.
+nn.Embedding: A PyTorch class used to create embeddings. It requires the vocabulary size and embedding vector size as inputs.
+Usage
+Token IDs: We obtain token IDs using a tokenizer, but for now, we use arbitrary IDs for illustration.
+Embedding Layer: Pass these token IDs to the nn.Embedding instance, which returns a tensor with vectors of size 75 (the embedding size).
+Adding Positional Encoding
+Before feeding the embedding vectors into the model, we add positional encoding:
+
+Purpose: Injects positional information into the word embeddings, helping the model understand the relative order of input tokens.
+Positional Encoding Matrix: A fixed matrix added to the word embeddings. This matrix does not depend on the input and provides consistent positional information.
+Positional Encoding in Models
+Training: In some models, including ours, the values in the positional encoding matrix are learned along with other model parameters.
+Fixed Formula: In other large language models (LLMs), positional encodings are defined using a fixed formula and remain unchanged during training.
+
+
+
+# Building a Transformer Model
+
+## Input Processing and Embeddings
+
+### Token Processing
+The Transformer begins by converting input text into meaningful numerical representations through two key steps:
+
+1. Initial Tokenization
+   - Raw text is converted to token IDs
+   - Each token gets a unique numerical identifier
+   - Example: [348, 1978, 634] as shown in the image
+
+2. Word Embeddings Generation
+   - Token IDs are transformed into dense vector representations
+   - Creates rich semantic representations
+   - Example vectors: [-1.00, 0.58, 1.42, -0.24, ..., -0.43]
+
+## Positional Encoding
+
+### Purpose and Implementation
+Positional encoding solves the critical problem of sequence order in Transformers:
+
+- Adds position-dependent information to each token
+- Generates unique patterns for each position
+- Combines with word embeddings through addition
+- Example vectors: [0.77, 0.15, 0.63, -1.36, ..., 0.06]
+
+### Characteristics
+- Position-specific patterns
+- Maintains consistent spacing between positions
+- Scales with sequence length
+- Learned or fixed depending on implementation
+
+## Final Input Representation
+
+The final input to the Transformer model combines:
+- Word embeddings (semantic meaning)
+- Positional encodings (sequence information)
+
+As shown in the image, these are combined through element-wise addition before being fed into the Transformer model proper.
+
+## Model Architecture Considerations
+
+- Embedding dimension consistency across all components
+- Careful initialization of both embedding types
+- Proper scaling to prevent dominance of either component
+- Integration with subsequent Transformer layers
+
+This forms the foundation for the Transformer's ability to process sequential data while maintaining awareness of both meaning and position.
+
+
+
+# Understanding the Softmax Function
+
+
+<br>
+
+![title](images/softmax.png)
+
+<br>
+
+## Definition and Purpose
+
+The softmax function, also known as the normalized exponential function, transforms a vector of K real numbers into a probability distribution of K possible outcomes. 
+
+### Mathematical Definition
+
+For a vector z = (z₁, ..., zₖ), the softmax function σ(z) is defined as:
+
+σ(z)ᵢ = exp(zᵢ) / Σⱼ exp(zⱼ)
+
+where:
+- exp(x) is the exponential function
+- i = 1, ..., K
+- j ranges over 1 to K in the sum
+
+## Key Properties
+
+### Probability Distribution
+- Output values sum to 1: Σᵢ σ(z)ᵢ = 1
+- Each output is in range (0,1): 0 < σ(z)ᵢ < 1
+
+### Mathematical Characteristics
+- Differentiable: Enables gradient-based optimization
+- Monotonic: Preserves relative ordering of inputs
+- Scale invariant: σ(z + c) = σ(z) for any constant c
+
+## Derivative Formula
+
+The derivative of softmax with respect to its inputs is:
+
+∂σ(z)ᵢ/∂zⱼ = σ(z)ᵢ(δᵢⱼ - σ(z)ⱼ)
+
+where:
+- δᵢⱼ is the Kronecker delta
+- i,j are indices of the vector elements
+
+## Numerical Stability
+
+To prevent overflow/underflow, implementation often uses:
+
+log_softmax(z)ᵢ = zᵢ - log(Σⱼ exp(zⱼ))
+
+Common stabilization technique:
+```python
+z_max = max(z)
+exp_z = exp(z - z_max)
+softmax = exp_z / sum(exp_z)
+```
+
+## Applications
+
+1. Classification Tasks
+   - Output layer of neural networks
+   - Multi-class probability distribution
+   - Cross-entropy loss computation
+
+2. Attention Mechanisms
+   - Computing attention weights
+   - Normalizing similarity scores
+
+3. Reinforcement Learning
+   - Policy networks
+   - Action probability distribution
+
+## Implementation Considerations
+
+### Performance Optimization
+- Vectorized operations
+- GPU acceleration
+- Memory efficiency
+- Numerical precision
+
+### Common Pitfalls
+- Overflow/underflow in naive implementations
+- Gradient vanishing with extreme inputs
+- Computational cost with large dimensions
+
+The softmax function remains fundamental in machine learning, particularly in:
+- Neural networks
+- Natural language processing
+- Computer vision
+- Probabilistic modeling
+
+Understanding its properties and implementation details is crucial for effective model development.
+
+
+#### Attention Mechasnism
+
+The attention mechanism in Transformers works like a smart note-taking system during a group conversation. Imagine you're in a meeting and need to focus on different speakers at different times - sometimes you pay more attention to one person because what they're saying is more relevant to your current topic, while other times you need to connect information from multiple speakers. The attention mechanism does exactly this with words or tokens in a sequence - it helps the model figure out which other words are most important for understanding the current word, allowing it to create rich, context-aware representations of language.
+
+The attention mechanism computes weighted relationships between all elements in a sequence using Query (Q), Key (K), and Value (V) matrices, derived from the input embeddings through learned linear transformations. The core computation is Attention(Q,K,V) = softmax(QK^T/√d_k)V, where d_k is the dimension of the keys. This is typically implemented as Multi-Head Attention, where the attention computation is performed in parallel across several heads, each learning different relationship patterns. The mechanism employs scaled dot-product attention, where the scaling factor (1/√d_k) prevents the softmax function from entering regions with extremely small gradients. The resulting attention weights form a probability distribution through softmax, which is then used to create a weighted sum of the values, producing context-aware representations for each position in the sequence.
+
+#### Calculating Attention
+
+Overview of the Attention Block
+Attention Block Function: Computes attention scores and updates embedding values using these scores.
+Components: The attention block involves several steps, including calculating query, key, and value matrices and updating embedding vectors.
+Step-by-Step Implementation
+Query Matrix (Q)
+Calculation: Multiply the matrix of embedding vectors by another matrix ( W_Q ) to produce the query matrix (Q).
+Notation: Represented as Q for simplicity, often visualized as an array of vectors.
+Key Matrix (K)
+Calculation: Similar to Q, the key matrix (K) is obtained by multiplying the embedding vectors by matrix ( W_K ).
+Concept: Queries can be seen as questions about other words, while keys provide answers.
+Computing Attention Scores
+Similarity Check: Calculate the dot product between vectors in the Q and K matrices to determine the similarity.
+Matrix Multiplication: Multiply the Q matrix by the transposed K matrix to get the attention scores.
+Normalization with Softmax
+Purpose: Ensures all values are between 0 and 1 and sum to one.
+Application: Apply the softmax function to each column of the resulting matrix.
+Diagram of Operations
+Steps Recap:
+Derive Q and K matrices from the input embeddings.
+Compute attention scores via matrix multiplication and softmax.
+Use these scores to update embedding vectors.
+Value Matrix (V)
+Derivation: Similar to Q and K, the value matrix (V) is derived using another matrix ( W_V ).
+Updating Embeddings: Multiply each vector in V by the corresponding attention scores to produce updated embeddings.
+Final Diagram of the Attention Block
+Complete Process:
+Compute Q, K, and V matrices.
+Compute attention scores from Q and K.
+Update embeddings using attention scores and V.
+Multi-Head Attention
+Purpose: Multiple attention heads allow the model to learn different relationships between words in a sentence.
+Process: Each head performs similar calculations with different parameters, and the results are concatenated to form new embedding vectors.
+Formula for Attention
+From "Attention Is All You Need" Paper:
+Components: Uses Q, K, and V matrices.
+Adjustment: Includes a division by the square root of the dimension of the K matrix vector to prevent large attention scores.
+Final Steps: Apply softmax and multiply by V to compute the final output.
+Understanding the attention mechanism is key to grasping how Transformer models process and generate text, enabling them to focus on relevant parts of the input sequence when making predictions.
+
+
+<br>
+
+![title](images/queries.png)
+
+<br>
+
+
+<br>
+
+![title](images/queries_2.png)
+
+<br>
+
+
+<br>
+
+![title](images/queries_3.png)
+
+<br>
+
+
+<br>
+
+![title](images/queries_4.png)
+
+<br>
+
+
+<br>
+
+![title](images/queries_5.png)
+
+<br>
+
+# Attention Mechanism in Transformers
+
+## Core Concepts
+
+### Self-Attention Formula
+The fundamental attention calculation is:
+
+Attention(Q, K, V) = softmax(QK^T/√d_k)V
+
+where:
+- Q = Query matrix
+- K = Key matrix
+- V = Value matrix
+- d_k = Dimension of keys
+- √d_k = Scaling factor
+
+## Components and Process
+
+### 1. Query, Key, Value Generation
+Each input embedding is transformed into:
+- Query: What the current position is looking for
+- Key: What the position offers to others
+- Value: The actual content to be aggregated
+
+### 2. Attention Weights
+- Compute similarity scores between Q and K
+- Apply scaling factor (1/√d_k)
+- Pass through softmax for normalization
+- Results in attention probability distribution
+
+### 3. Multi-Head Attention
+- Splits attention into multiple parallel heads
+- Each head learns different aspects of relationships
+- Formula: MultiHead(Q,K,V) = Concat(head₁, ..., headₕ)W^O
+- Each headᵢ = Attention(QWᵢQ, KWᵢK, VWᵢV)
+
+## Types of Attention
+
+### 1. Self-Attention
+- Relates different positions within same sequence
+- Q, K, V all come from same source
+- Used in both encoder and decoder
+
+### 2. Cross-Attention
+- Relates positions between encoder and decoder
+- Q from decoder, K and V from encoder
+- Enables sequence-to-sequence learning
+
+### 3. Masked Attention
+- Used in decoder self-attention
+- Prevents attending to future positions
+- Implements autoregressive property
+
+## Implementation Details
+
+### Efficiency Considerations
+- Parallel computation
+- Memory requirements: O(n²) where n is sequence length
+- Attention matrix sparsification techniques
+- Optimized implementations for long sequences
+
+### Key Advantages
+- Captures long-range dependencies
+- No sequential processing requirement
+- Bidirectional context integration
+- Interpretable attention weights
+
+## Advanced Concepts
+
+### Variations and Improvements
+- Relative Positional Encoding
+- Sparse Attention Patterns
+- Linear Attention
+- Local-Global Attention
+
+### Performance Optimizations
+- Efficient attention implementations
+- Memory-efficient techniques
+- Gradient accumulation
+- Mixed precision training
+
+## Practical Applications
+
+### Common Use Cases
+- Machine Translation
+- Document Understanding
+- Speech Recognition
+- Image Processing
+- Cross-Modal Tasks
+
+### Implementation Guidelines
+- Proper initialization
+- Layer normalization placement
+- Dropout strategies
+- Residual connections
+
+The attention mechanism revolutionized deep learning by enabling direct modeling of dependencies regardless of their distance in the sequence, making it a cornerstone of modern transformer architectures.
+
+
+
+
+#### Masking 
+
+Preventing Cheating in Transformer Training with Masked Multi-Head Attention
+When training Transformer models, we convert parts of the training dataset into multiple training examples.
+
+However, a problem arises because the model can "cheat" by looking ahead at the entire input when predicting the next word.
+
+<br>
+
+![title](images/mask.png)
+
+<br>
+
+
+<br>
+
+![title](images/mask_1.png)
+
+<br>
+
+
+To prevent this, we need to modify the attention scores to ensure the model cannot access future tokens.
+
+Solution: Masked Multi-Head Attention
+To stop the model from "cheating," we implement a masking strategy:
+
+1. Attention Matrix Adjustment:
+
+  - Problem: The model can see the next token while predicting it.
+  - Solution: Update the attention matrix to mask out certain values.
+
+2. Masking Strategy:
+
+  - Method: Assign all values below a certain diagonal to negative infinity.
+  - Softmax Effect: The softmax function converts these negative infinity values to zeros, effectively ignoring them.
+
+3. Implementation:
+
+  - Diagram Update: In our multi-head attention diagram, we add the masking step after matrix multiplication and before applying softmax.
+  - Masked Multi-Head Attention: This approach is widely used in Transformer models, including GPT models.
+
+By applying a triangular mask, we ensure that the model only considers current and previous tokens when making predictions, thus maintaining the integrity of the training process.
+
+
+
+### Dropout Layer
+
+What is a Dropout Layer?
+Function in Neural Networks: In a feedforward neural network, each output from a previous layer is connected to all neurons in the next layer.
+Purpose of Dropout: The Dropout layer introduces randomness by setting a certain percentage of the inputs to zero during training. This percentage is usually specified as a hyperparameter.
+How Dropout Works
+Random Selection: On each training iteration, different inputs are randomly selected and set to zero. This list of "disabled" inputs changes with each iteration.
+Generalization: By doing this, the model does not become overly reliant on specific features, which helps it generalize better to new, unseen data. This process reduces the risk of overfitting.
+Training vs. Inference
+During Training: The Dropout layer is active, randomly disabling inputs to help generalization.
+During Inference: When the model is used for generating text or making predictions, the Dropout layer is disabled, ensuring that all features are fully utilized.
+Implementation in PyTorch
+Pre-built in PyTorch: We do not need to implement the Dropout layer ourselves, as PyTorch provides a built-in implementation through the Dropout class.
+
+The Dropout technique is a crucial component in training robust neural networks, especially when dealing with complex data and models. It ensures that the model does not overfit and can generalize well across different datasets.
+
+
+
+#### Implementing the Attention Block
+
+#### Model Configuration
+
+Before we start, we need to define a configuration for our model, containing hyperparameters that define its structure. This configuration is stored in a dictionary with the following parameters:
+
+Vocabulary Size: The number of unique token IDs supported by the tokenizer.
+Context Size: The maximum number of tokens the model can see at once.
+Embedding Dimension: The size of the embedding vectors.
+Number of Heads: The number of attention heads, each processing input independently.
+Number of Layers: The number of Transformer blocks in the model.
+Dropout Rate: The proportion of outputs set to zero in Dropout layers.
+Use Bias: A boolean indicating whether the linear transformations should include bias terms.
+
+
+
+#### Implementing the Transformers Block
+
+
+
+<br>
+
+![title](images/transformer_block.png)
+
+<br>
+
+
+<br>
+
+![title](images/layer_normalization.png)
+
+<br>
+
+Overview of a Transformer Block
+
+1. Input Processing: Each input token is converted into an embedding vector and passed to the multi-head attention block.
+2. Feedforward Network: The output from the multi-head attention block is sent to a feedforward network layer.3. 3. Chaining: A Transformer model consists of multiple such blocks chained together.
+
+Feedforward Layer
+
+1. Function: Applied to each embedding vector individually.
+2. Process:
+  - Linear Layer: Each embedding vector is passed to a linear layer with an output size four times larger than the input size.
+  - Activation Function: The GELU activation function is applied to introduce nonlinearity.
+  - Size Reduction: The output vector is then reduced to the original embedding size.
+
+GELU Activation Function
+Comparison: GELU is similar to the ReLU activation function but has a smoother shape, which helps in achieving better training results.
+Additional Components
+
+#### Residual Connections
+Purpose: Helps with the vanishing gradient problem in deep networks.
+Implementation: The input to a block is added to the block's output before passing it forward, improving training efficiency.
+
+#### Layer Normalization and Dropout
+
+Layer Normalization: Scales the output so that the mean becomes zero and variance becomes one, leading to faster training.
+Dropout Layer: Helps prevent overfitting by setting a portion of the output to zero during training.
+Summary
+Components of a Transformer Block:
+Multi-Head Attention
+Feedforward Network
+Layer Normalization
+Dropout
+Residual Connections
+These elements work together to process and refine the input data, making Transformer models highly effective for various NLP tasks.
+
+
