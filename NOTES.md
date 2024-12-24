@@ -2552,3 +2552,301 @@ Residual Connections
 These elements work together to process and refine the input data, making Transformer models highly effective for various NLP tasks.
 
 
+
+Feedforward Block Implementation
+To define a feedforward block, we create a new class inheriting from nn.Module.
+
+Key Components
+Linear Layers: The first linear layer projects the input dimension to four times its size, followed by a GELU activation function and another linear layer that reduces the dimension back to the original size.
+Dropout Layer: Added to prevent overfitting.
+
+
+
+Transformer Block Implementation
+With both the multi-head attention and feedforward blocks ready, we can now implement the Transformer block.
+
+Transformer Block Components
+
+- Multi-Head Attention: Uses the multi-head attention block.
+- Feedforward Block: Incorporates the previously defined feedforward block.
+- Layer Normalization: Two normalization layers are included to stabilize the training process.
+- Residual Connections: Two residual connections are used to help with the vanishing gradient problem.
+
+
+### Assembling the Transformer Model
+Now that we have implemented a single block, let's look at how to assemble everything into a complete Transformer model. We'll walk through all the components of the model before implementing it in PyTorch.
+
+
+
+#### Model Components Overview
+
+1. Tokenization and Embedding:
+
+  Input Splitting: The input is split into tokens, such as words, subwords, or characters.
+  Token ID Conversion: These tokens are converted into token IDs.
+  Embedding Vectors: Token IDs are converted into embedding vectors.
+  Positional Encoding: Positional encoding values are added to the embedding vectors, resulting in input vectors for the model.
+
+2. Layer Processing:
+
+  Layer Passing: The input vectors are passed through the layers of the model sequentially.
+  Shape Consistency: The output from each layer has the same shape as the input, but the values of embedding vectors evolve with each layer.
+  Batch Processing: During training, a batch of inputs is processed together to optimize resource usage.
+
+3. Prediction and Output:
+
+  Final Layer Output: After the final layer, the output consists of a series of embedding vectors.
+  Token Prediction:
+
+    - Linear Layer: Converts each embedding vector into a new vector with prediction scores for each token in the vocabulary. A score, such as 0.39, indicates the model's confidence in generating a token with a specific ID.
+    - Softmax Conversion: Converts the prediction scores into probabilities using the softmax function. This results in a probability distribution for each token, where the sum of probabilities for each position equals one.
+    
+By following this structure, we ensure that the Transformer model processes and generates data accurately, leveraging the power of multi-head attention and feedforward networks. This design allows the model to handle complex tasks like language modeling, translation, and more.
+
+<br>
+
+![title](images/a.png)
+
+<br>
+
+
+<br>
+
+![title](images/b.png)
+
+<br>
+
+
+<br>
+
+![title](images/c.png)
+
+<br>
+
+
+
+# Building Blocks of the Model
+
+## Token Embedding
+- **Purpose**: Converts input token IDs into embedding vectors.
+- **Implementation**: Using nn.Embedding, which maps each token ID to its corresponding embedding vector.
+- **Parameters**:
+  - Number of embedding vectors (vocabulary size).
+  - Dimensionality of the embedding vectors.
+
+## Positional Encoding
+- **Purpose**: Adds positional information to the embedding vectors, helping the model understand the order of tokens.
+- **Implementation**: Another nn.Embedding layer, but with the number of vectors equal to the context size (the maximum number of tokens in a sequence).
+
+## Transformer Blocks
+- **Creation**: We create multiple Transformer blocks, each containing a multi-head attention layer and a feedforward layer.
+- **Combination**: These blocks are combined sequentially, allowing data to pass through each layer.
+
+## Final Layer Normalization and Linear Layer
+- **Layer Normalization**: Normalizes the output from the last Transformer block.
+- **Linear Layer**: Converts the final output vectors into prediction scores for each token in the vocabulary, determining which token should be generated next.
+
+
+# Training Workflow
+
+1. Data Loading
+- **Data Loader**: In each iteration, we use a data loader to load a batch of inputs and targets.
+  - **Inputs**: Tensor of token IDs representing the input text.
+  - **Targets**: Tensor of token IDs representing the expected output.
+
+2. Model Prediction
+- **Forward Pass**: The batch of inputs is passed through the model, which generates predictions.
+  - **Predictions**: The model outputs logits, which are raw prediction scores for each token in the vocabulary.
+
+3. Loss Calculation
+- **Loss Function**: We calculate the loss by comparing the model's predictions with the actual targets.
+  - **Purpose**: The loss function quantifies how far the model's predictions are from the actual values.
+
+4. Backpropagation
+- **Gradient Calculation**: With the calculated loss, we perform backpropagation to compute the gradients of the loss with respect to the model parameters.
+
+5. Parameter Update
+- **Optimizer**: Using the optimizer, we update the model's parameters to minimize the loss.
+  - **Iteration Completion**: This completes a single iteration of training.
+
+6. Repeating the Process
+- **Epochs**: The training process is repeated for many iterations and epochs, using different batches of data to improve the model's performance.
+
+By following this workflow, the model learns to generate more accurate text outputs over time. Each batch of data helps the model fine-tune its weights and biases, gradually improving its predictions.
+
+
+
+# Training Setup
+
+## Hyperparameters
+- **Batch Size**: Set to 64, meaning each training step processes 64 sequences at a time.
+- **Iterations**: Training runs for 5,000 iterations.
+- **Evaluation Frequency**: Evaluate the model every 100 iterations by generating text.
+- **Learning Rate**: Controls how much to adjust model parameters during each training step.
+
+## Data Preparation
+- **Tokenization**: The text data is tokenized and converted into token IDs. The encode method returns a one-dimensional tensor where every element is a token ID, and we put the tensor on the selected device, which will be a GPU if available.
+
+```python
+tokenized_text = tokenizer.encode(text).to(device)
+```
+
+- **Dataset and Data Loader**:
+  - **Dataset**: Created using the tokenized text.
+  - **Random Sampler**: Randomly selects training examples, specifying the number of examples based on training iterations and batch size.
+  - **Data Loader**: Iterates over selected training examples using the specified batch size and random sampler.
+
+```python
+dataset = TokenIdsDataset(tokenized_text, block_size=64)
+sampler = RandomSampler(dataset, replacement=True, num_samples=train_)
+data_loader = DataLoader(dataset, batch_size=batch_size, sampler=samp
+```
+
+## Optimizer
+- **AdamW Optimizer**: Used to update model parameters during training, known for better training results. The learning rate is set based on our chosen hyperparameter.
+
+```python
+optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
+```
+
+## Training Loop
+- **Mini-Batch Iteration**: Iterate over mini-batches using the data loader.
+- **Training Mode**: The model is switched to training mode for each iteration.
+- **Forward Pass**: The input from each mini-batch is passed through the model, returning logits.
+- **Loss Calculation**:
+  - **Logits and Targets Reshaping**: Necessary to fit the shape expected by the cross-entropy function.
+  - **Cross-Entropy Loss**: Calculates the loss for the step, comparing model predictions to the actual targets.
+- **Backpropagation**: Compute gradients based on the loss.
+- **Parameter Update**: The optimizer updates model parameters.
+- **Gradient Reset**: Before the next step, gradients are reset to avoid accumulation.
+
+## Evaluation and Progress Monitoring
+- **Text Generation**: Every 100 iterations, the model generates text from a simple prompt (e.g., a newline character) to evaluate training progress.
+- **Loss Tracking**: The decreasing loss indicates that the model is learning to generate more accurate text.
+
+## Training Progress
+- **Initial Outputs**: Early in training, the model generates random text.
+- **Gradual Improvement**: As training progresses, the model starts generating text that resembles the training data, including character names and dialogues.
+- **Further Training**: Continued training leads to more coherent text generation, eventually resembling Shakespearean style.
+
+By following this training process, the model learns to generate text similar to the input data. The more iterations we train it, the better it becomes at generating coherent and stylistically accurate text.
+
+
+### Calculating Validation Loss
+
+These are the steps for calculating the validation loss:
+
+Split the Dataset: Separate the data into training and validation datasets to evaluate the model's performance during training.
+Create a Validation Dataset and DataLoader: Prepare the data for evaluation.
+Calculate Validation Loss: Implement the logic to compute the validation loss, which provides insight into how well the model performs on the validation dataset.
+Update the Training Loop: Integrate validation loss calculation into the training loop and visualize training and validation loss over time.
+The starter code provided includes the essential components of a PyTorch model, including data tokenization, model definition, and a basic training loop. Your task is to complete the implementation, focusing on the validation aspect of the model's training process.
+
+
+
+
+
+### Splitting the Dataset
+
+To do this, we first need to split our dataset into training and validation datasets. We tokenize the input text just as we did before and then calculate how many tokens we want to use for training. Given this ratio, we take this number of tokens as training data and use the rest as validation data. Having training and validation data, we then create a validation dataset and a validation data loader.
+
+```textmate
+    tokenized_text = tokenizer.encode(text).to(device)
+    train_count = int(train_split * len(tokenized_text))
+    train_data, validation_data = tokenized_text[:train_count], tokenized_text[train_count:]
+    train_dataset = TokenIdsDataset(train_data, config["context_size"])
+    validation_dataset = TokenIdsDataset(validation_data, config["context_size"])
+```
+
+Validation Loss Calculation
+Next, we implement a function to calculate the validation loss. First, we switch our model from training mode into evaluation mode to run our model for inference, which, for example, deactivates the Dropout layers we've added to our model. Keep in mind that we switch our model back to training mode at the beginning of every training iteration.
+
+```textmate
+    @torch.no_grad()
+    def calculate_validation_loss(model, batches_num):
+        model.eval()
+        total_loss = 0
+```
+
+We then create an iterator from our validation dataset and run a loop for the specified number of batches. For every batch, we perform similar steps to those in training: we first get the inputs and targets, pass these inputs to the model to get logits, and then reshape logits and targets to calculate the validation loss using the cross-entropy function. After this, we add the loss to the total validation loss for every iteration. When the loop is finished, we compute the average loss by dividing the total loss by the number of batches we processed, and then we return the average loss.
+
+```textmate
+    validation_iter = iter(validation_dataloader)
+
+    for _ in range(batches_num):
+        input, targets = next(validation_iter)
+        logits = model(input)
+
+        logits_view = logits.view(batch_size * config["context_size"], config["vocabulary_size"])
+        targets_view = targets.view(batch_size * config["context_size"])
+        loss = F.cross_entropy(logits_view, targets_view)
+        total_loss += loss.item()
+
+    average_loss = total_loss / batches_num
+
+    return average_loss
+```
+
+Plotting Training and Validation Loss
+
+Finally, we update our code to draw a chart of training and validation losses. We append the training loss and training step to two arrays, using the item method to convert a tensor to a number for every training step. We do the same for the validation loss. The reason we need to store the step number with loss values is that we calculate training loss on every step and validation loss only every ten steps, and we need to preserve step numbers for Matplotlib to correctly plot these charts and align values accurately.
+
+
+
+```textmate
+    plot_output = widgets.Output()
+    display(plot_output)
+
+    def update_plot(train_losses, train_steps, validation_losses, validation_steps):
+        with plot_output:
+            clear_output(wait=True)
+            plt.figure(figsize=(7, 5))
+            plt.plot(train_steps, train_losses, label='Training Loss')
+            plt.plot(validation_steps, validation_losses, label='Validation Loss')
+            plt.title('Training and Validation Loss')
+            plt.xlabel('epoch')
+            plt.legend(loc='center left')
+            plt.grid(True)
+            plt.show()
+```        
+
+If we now run our model, and I'll rerun this notebook, as you can see, we've got our training and validation loss chart. If we wait for a few dozen iterations, we will see two lines on the chart, one for the training loss and another for the validation loss.
+
+#### Training and Validation Loss Calculation Step Summary
+
+1. Splitting the Dataset
+
+  To calculate validation loss, split the dataset into training and validation datasets.
+  Tokenize the input text and determine the number of tokens for training based on the desired ratio.
+  The rest of the tokens are used for validation.
+  Create datasets and data loaders for both training and validation data.
+
+2. Validation Loss Calculation Function
+
+  Switch the model to evaluation mode to deactivate Dropout layers.
+  Use an iterator to process batches from the validation dataset.
+  For each batch:
+    Extract inputs and targets.
+    Pass inputs through the model to obtain logits.
+    Reshape logits and targets to calculate loss using the cross-entropy function.
+    Aggregate the loss to compute the total validation loss.
+  Average the total loss by the number of processed batches to obtain the validation loss.
+
+3. Plotting Training and Validation Loss
+
+  Store training and validation losses along with the corresponding steps.
+  Use Matplotlib to plot the losses, ensuring step numbers align with loss values.
+
+Now let's take a look at how we can calculate validation loss for our model during training. To do this, we first need to split our dataset into training and validation datasets. We tokenize the input text just as we did before and then calculate how many tokens we want to use for training. Given this ratio, we take this number of tokens as training data and use the rest as validation data. Having training and validation data, we then create a validation dataset and a validation data loader.
+
+
+Next, we implement a function to calculate the validation loss. First, we switch our model from training mode into evaluation mode to run our model for inference, which, for example, deactivates the Dropout layers we've added to our model. Keep in mind that we switch our model back to training mode at the beginning of every training iteration.
+
+
+We then create an iterator from our validation dataset and run a loop for the specified number of batches. For every batch, we perform similar steps to those in training: we first get the inputs and targets, pass these inputs to the model to get logits, and then reshape logits and targets to calculate the validation loss using the cross-entropy function. After this, we add the loss to the total validation loss for every iteration. When the loop is finished, we compute the average loss by dividing the total loss by the number of batches we processed, and then we return the average loss.
+
+
+Finally, we update our code to draw a chart of training and validation losses. We append the training loss and training step to two arrays, using the item method to convert a tensor to a number for every training step. We do the same for the validation loss. The reason we need to store the step number with loss values is that we calculate training loss on every step and validation loss only every ten steps, and we need to preserve step numbers for Matplotlib to correctly plot these charts and align values accurately.
+
+
+If we now run our model, and I'll rerun this notebook, as you can see, we've got our training and validation loss chart. If we wait for a few dozen iterations, we will see two lines on the chart, one for the training loss and another for the validation loss.
