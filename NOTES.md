@@ -3059,3 +3059,55 @@ Specify the Task: Use the pipeline function, specifying the task as "image-class
 Pass an Image: Provide an image file or an image URL for classification.
 Interpret the Output: The output is a list with each element containing a label and an associated probability, indicating what the model thinks the image represents. For example, it might classify an image as likely being a cat.
 
+
+
+<br>
+
+![title](images/multinormal.png)
+
+<br>
+
+
+<br>
+
+![title](images/beam.png)
+
+<br>
+
+#### Text Generation Options
+
+<br>
+
+![title](images/temp.png)
+
+<br>
+
+
+To avoid some possible confusion, there are two types of parameters:
+
+model parameters, which are set during model training, and
+generation parameters, which can affect the result of text generation when we use a model after it is trained.
+Maximum Number of Tokens
+We have already seen one parameter, which is the maximum number of tokens the text generation process should return. In Hugging Face, this is called the max_length parameter. As you can imagine, the higher this parameter is, the longer the output the text generation process will produce. However, one gotcha is that it defines a maximum number of tokens, and text generation can return an output that is shorter than this value. During the text generation process, a model can emit a special "end of sequence" token that will stop the generation process even before it reaches the specified limit.
+
+Greedy Decoding
+One simple option for generating text is to select the token with the highest probability every time a new token is generated. This approach, called "greedy decoding," picks the word with the highest probability and adds it to the input, repeating the process. However, this can lead to boring and repetitive results.
+
+Multinomial Sampling
+To avoid repetitive results, we can introduce randomness by picking less probable tokens. This method, known as "multinomial sampling," uses the output of the softmax layer as a probability distribution to randomly select tokens. The higher the probability of a token, the more likely it will be selected. This approach provides a more varied and interesting output.
+
+Beam Search
+Beam search is an algorithm used to generate multiple sequences at the same time, evaluating them to find the best result. Instead of generating a single sequence, beam search keeps "n" best sequences at each step, generating new sequences from these and repeating the process. This method helps in finding more optimal sequences by considering multiple possible outputs simultaneously.
+
+Top-K Sampling
+The top_k parameter specifies the number of tokens with the highest probability to consider when selecting the next token. For example, setting top_k to 3 means selecting the next token from the top three most probable tokens. Higher top_k values can lead to more creative outputs but may also produce less coherent text.
+
+Top-P (Nucleus) Sampling
+The top_p parameter specifies the cumulative probability of the most probable tokens to consider when selecting the next token. This method ensures that only tokens that collectively meet a certain probability threshold are considered, allowing for dynamic adjustment of the number of tokens based on their probabilities.
+
+Temperature
+The temperature parameter adjusts the probability distribution returned by the softmax layer. Lowering the temperature increases the chances of selecting tokens with higher logits, making the output more deterministic. Increasing the temperature flattens the probability distribution, allowing for more diverse token selection.
+
+Using Parameters with Hugging Face
+In Hugging Face, these parameters can be set when using the generator function. For example, do_sample enables multinomial sampling, and num_beams specifies the number of sequences in beam search. Parameters like top_k, top_p, and temperature control the randomness and creativity of the generated output, allowing for fine-tuning the behavior of the language model according to specific requirements.
+
