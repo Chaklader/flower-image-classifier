@@ -2850,3 +2850,212 @@ Finally, we update our code to draw a chart of training and validation losses. W
 
 
 If we now run our model, and I'll rerun this notebook, as you can see, we've got our training and validation loss chart. If we wait for a few dozen iterations, we will see two lines on the chart, one for the training loss and another for the validation loss.
+
+
+# Using Pre-trained Transformers
+
+
+<br>
+
+![title](images/ranked.png)
+
+<br>
+
+
+Model Scaling and Capabilities
+One trend you can see is that the bigger the model is, the more capable it usually becomes, and there are already some models with one trillion parameters. However, scaling models is not the only thing needed to achieve capabilities like those of products such as ChatGPT. If we train a model that can simply predict the next word, it will only be able to generate text but won't be able to answer questions like ChatGPT. This limitation does not depend on the amount of training data used or the model size.
+
+Example of Model Limitations
+To give you an example, I've sent the following prompt to one of the older versions of GPT-3, which was trained to generate text instead of answering questions. As you can see, instead of answering the question, it started generating text related to the question. After being trained on a larger text corpus, it can only generate text that could surround a text that looks like the provided prompt. In contrast, if you send this question to ChatGPT, it would return an answer like 'Paris' and possibly provide some additional information.
+
+Training ChatGPT to Answer Questions
+So, how did OpenAI train a model that can answer questions? Let's take a high-level overview. They first trained a GPT model similar to what we've built but bigger and using much more data. Then, they used a dataset of questions and answers. With this dataset, they updated the weights of the trained GPT model to create a model that can answer questions. This new model, produced as a result of this process, was called GPT-3.5 and was used by the first version of ChatGPT. This process of taking a model trained for one task and modifying its weights to work for a different task is called fine-tuning, and it is used not just for LLMs but for other deep learning models as well.
+
+Fine-Tuning Process
+To fine-tune a model to perform question answering, OpenAI went through the following steps:
+
+They collected a dataset with different prompts and questions.
+They had humans answer these questions and organized the human-provided answers into a dataset.
+This dataset was then used to fine-tune the GPT-3 model to train it to answer questions.
+Further Refinement with Reward Models
+After this, they went through a different process. Using prompts, they sampled several outputs from the model to generate multiple answers for the same question. Then, people ranked these answers against each other. Using these ranking results, OpenAI created another dataset. This dataset of ranked answers was used to train another model called the reward model, which can calculate how good an answer to a prompt is. Finally, using the reward model, they fine-tuned the GPT-3 model to give answers that are more closely aligned with a reward policy.
+
+
+
+#### Decoder-only Architecture
+
+
+A decoder-only transformer is like a predictive text system that looks at what's already been written to figure out what should come next. Imagine writing a text message where your phone suggests the next word - it only uses what you've already typed to make its predictions. This is exactly how decoder-only transformers like GPT work - they only look at the previous context to generate the next piece of text.
+
+**Technical Details of Decoder-Only Architecture:**
+
+1. **Core Components**
+- Uses only the decoder part of the original transformer architecture
+- Employs causal (masked) self-attention to prevent looking ahead
+- Maintains autoregressive property (each token depends only on previous tokens)
+
+2. **Key Characteristics**
+- **Masked Attention**: Only attends to previous tokens
+- **Single Stack**: Unlike encoder-decoder models, uses a single transformer stack
+- **Unidirectional**: Information flows only from left to right
+- **Parameter Efficiency**: Fewer parameters than full encoder-decoder models
+
+3. **Popular Examples**
+- GPT (all versions)
+- BLOOM
+- LLaMA
+- Claude (base architecture)
+
+4. **Primary Applications**
+- Text generation
+- Language modeling
+- Completion tasks
+- Conversational AI
+
+5. **Advantages**
+- Simpler architecture
+- Efficient training
+- Good at generative tasks
+- Strong zero-shot capabilities
+
+6. **Limitations**
+- No bidirectional context
+- Less suited for tasks requiring full context (like translation)
+- May struggle with long-range dependencies
+
+The decoder-only architecture has become particularly popular for large language models due to its simplicity and effectiveness in generative tasks.
+
+
+<br>
+
+![title](images/encoder.png)
+
+<br>
+
+
+<br>
+
+![title](images/m1.png)
+
+<br>
+
+<br>
+
+![title](images/m2.png)
+
+<br>
+
+<br>
+
+![title](images/m3.png)
+
+<br>
+
+Origin of Transformers
+Transformers were initially introduced in a paper called "Attention Is All You Need." This paper described an architecture more complex than what we implemented. This architecture was created for a different purpose: instead of generating text, the authors focused on translating text from one language to another.
+
+Key Components of Transformer Architecture
+Decoder Component: The right part of the architecture, similar to our model, includes:
+Embedding layer
+Positional encoding
+Masked multi-head attention (using a triangular mask to modify attention scores)
+Feedforward layer with residual connections
+Nx Repeated Blocks: This block is repeated multiple times, similar to our model.
+Encoder Component: The left part, absent in our model, was used to encode information about an input text for translation. The encoder uses multi-head attention (without masking) and processes the entire input.
+Interaction Between Encoder and Decoder:
+The encoder processes the input text, and its final layer's output is passed to the decoder layers.
+The decoder generates the next token based on the encoded input and its partially generated output.
+Example: Translation from English to French
+Tokenization: The English text is tokenized and converted into token IDs.
+Encoding: Token IDs are passed to the encoder to build a representation of the phrase.
+Decoding:
+The process starts with a "start of the sequence" token sent to the decoder.
+The decoder reads its input and the encoder's output to produce the next token ID of the translated phrase.
+This process repeats, generating more tokens until an "end of sequence" token is produced.
+The final token IDs are converted into a human-readable sentence.
+Different Network Architectures Using Encoders and Decoders
+Decoder-only models:
+Only include the decoder part, without an encoder.
+Suitable for text generation tasks.
+Examples: GPT and LLaMA.
+Encoder-decoder models:
+Include both encoder and decoder blocks.
+Ideal for tasks like translating text into another language.
+Examples: BERT and T5.
+
+Encoder-only models:
+Lack a decoder, using only the encoder to process inputs.
+Useful for text classification tasks like sentiment analysis or spam detection.
+Example: BERT.
+
+
+#### Using Pre-Trained Transformer Models
+
+
+
+While it is important to understand how large language models work under the hood, it is unlikely you will need to create one from scratch for your applications. Training an LLM from scratch is challenging for several reasons:
+
+Data and Resources: Training these models requires huge amounts of training data and a lot of computational resources.
+Cost: These models are very expensive to train. For example, the cost of training the GPT-4 model was more than $100 million.
+Expertise: Developing new models requires a specialized skill set, especially if you aim to implement a state-of-the-art model.
+Hugging Face: A Resource for Pre-Trained Models
+Fortunately, instead of creating a model from scratch, we can use existing models created by companies and researchers from all around the world. To do this, we will use the Hugging Face library, which is one of the most popular NLP libraries for Python. At the moment of this recording, it has a whopping 27,000 stars on GitHub. It also has a huge community contributing to the project, developing new large language models, and improving its features.
+
+Hugging Face simplifies building applications using LLMs but is not limited to this. It also provides tools for developing new LLMs. Hugging Face is a collection of multiple components that work together. It provides an API that allows us to build applications using LLMs. We can access a large collection of pre-trained models that we can use in our applications. It also provides access to datasets for different purposes that we can use to train our models or improve existing models. Finally, it provides the Spaces project, which allows us to quickly create machine learning demos and applications.
+
+API and Capabilities
+Hugging Face provides a set of flexible and powerful APIs that we can use to build our AI applications. Using their API, we can do things like access existing models for a variety of tasks such as text generation, text summarization, and so on. We can train new models or fine-tune existing models from their library of models. Fine-tuning is a process that allows us to take an existing model and update its weights to make it better for a specific task for which the model wasn't originally trained. We can also process text for LLMs, for example, by tokenizing text using an existing tokenizer or creating our own tokenizer. Finally, we can deploy our LLMs.
+
+Beyond Text: Images and Audio
+Hugging Face is not limited to working with just text; it also includes APIs to work with images and audio.
+
+#### Comparing Hugging Face and OpenAI
+
+You might be wondering how Hugging Face is different from OpenAI. Both provide models and allow us to build applications using them, but they are very different companies. Hugging Face is an open-source product; we can run models from Hugging Face locally on our laptops or on servers that we control. Hugging Face models are also free to use. On the other hand, OpenAI, despite the name, provides closed-source models. They only allow us to access their models via their API, and these models run on servers that OpenAI operates. Additionally, we need to pay to access advanced OpenAI models.
+
+
+#### Hugging Face Library
+
+
+
+<br>
+
+![title](images/hugging.png)
+
+<br>
+
+When it comes to using Hugging Face models, we have two options:
+
+High-Level API: This is accessible using the pipeline function and is user-friendly.
+Low-Level API: This offers more flexibility and control over the model's usage.
+Since this is a beginner-friendly lesson, we will focus just on using the high-level API, but keep in mind that Hugging Face API has much more to offer.
+
+Text Generation with Hugging Face
+To use a large language model with Hugging Face:
+
+Import the Pipeline Function: Import the pipeline function from the Transformers package.
+Specify the Task: Call the pipeline function and provide the name of the task, such as "text-generation." This function returns another function that we can use to perform the selected task.
+Provide a Prompt: For text generation, specify a prompt that will be used to generate the text.
+To generate text using this prompt:
+
+Call the generator function returned by the pipeline call.
+Provide parameters such as the prompt, the maximum length of the output, and the number of sequences to generate.
+Hugging Face's Versatility
+Hugging Face supports a wide range of NLP-related tasks, including:
+
+Text Generation: As described above.
+Question Answering: Finding answers to questions based on a given context.
+Text Summarization: Summarizing large pieces of text.
+Translation: Translating text between different languages.
+Text Classification: Classifying text into categories.
+In addition to NLP tasks, Hugging Face also supports:
+
+Audio Tasks: Such as audio classification and text-to-speech conversion.
+Image and Video Tasks: Including image classification, video classification, and image segmentation.
+Example: Image Classification with Hugging Face
+Here's how to perform image classification using Hugging Face:
+
+Specify the Task: Use the pipeline function, specifying the task as "image-classification."
+Pass an Image: Provide an image file or an image URL for classification.
+Interpret the Output: The output is a list with each element containing a label and an associated probability, indicating what the model thinks the image represents. For example, it might classify an image as likely being a cat.
+
