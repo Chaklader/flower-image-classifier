@@ -164,6 +164,6 @@ The classifier correctly identified the flower as a Black-eyed Susan with the hi
 A bar chart visualizes the probabilities for each predicted class, clearly showing the Black-eyed Susan as the top prediction.
 
 
-
-
-
+Designing Machine Learning Systems: An Iterative Process for Production-Ready Applications - Chip Huyen
+CS 329S: Machine Learning Systems Design - Stanford University
+Introduction to Machine Learning Interviews - Chip Huyen
