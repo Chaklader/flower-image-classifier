@@ -929,13 +929,13 @@ MSE is particularly useful when larger errors are more problematic than smaller 
 emphasizes bigger differences.
 
 # Gradient Descent with Squared Errors
+# CHECK EQ
 
 We want to find the weights for our neural networks. Let's start by thinking about the goal. The network needs to make
 predictions as close as possible to the real values. To measure this, we use a metric of how wrong the predictions are,
 the error. A common metric is the sum of the squared errors (SSE):
 
 E = 1/2 ΣΣ[y_j^μ - ŷ_j^μ]²
-μ j
 
 where ŷ is the prediction and y is the true value, and you take the sum over all output units j and another sum over all
 data points μ. This might seem like a really complicated equation at first, but it's fairly simple once you understand
@@ -955,12 +955,10 @@ penalized more than smaller errors. Also, it makes the math nice, always a plus.
 Remember that the output of a neural network, the prediction, depends on the weights
 
 ŷ_j^μ = f(Σ w_ij x_i^μ)
-i
 
 and accordingly the error depends on the weights
 
 E = 1/2 ΣΣ[y_j^μ - f(Σ w_ij x_i^μ)]²
-μ j i
 
 We want the network's prediction error to be as small as possible and the weights are the knobs we can use to make that
 happen. Our goal is to find weights w_ij that minimize the squared error E. To do this with a neural network, typically
@@ -972,13 +970,11 @@ bottom. Since the fastest way down a mountain is in the steepest direction, the 
 that minimizes the error the most. We can find this direction by calculating the gradient of the squared error.
 
 Gradient is another term for rate of change or slope. If you need to brush up on this concept, check out Khan
-Academy's [great lectures] on the topic.
+Academy's on the topic.
 
 To calculate a rate of change, we turn to calculus, specifically derivatives. A derivative of a function f(x) gives you
 another function f'(x) that returns the slope of f(x) at point x. For example, consider f(x) = x². The derivative of x²
 is f'(x) = 2x. So, at x = 2, the slope is f'(2) = 4. Plotting this out, it looks like:
-
-[Note: The text contains a link that I cannot process, but I've included it in brackets to maintain the original format]
 
 The gradient is just a derivative generalized to functions with more than one variable. We can use calculus to find the
 gradient at any point in our error function, which depends on the input weights. You'll see how the gradient descent
@@ -992,7 +988,6 @@ At each step, you calculate the error and the gradient, then use those to determ
 Repeating this process will eventually find weights that are close to the minimum of the error function, the black dot
 in the middle.
 
-Caveats
 Since the weights will just go wherever the gradient takes them, they can end up where the error is low, but not the
 lowest. These spots are called local minima. If the weights are initialized with the wrong values, gradient descent
 could lead the weights into a local minimum, illustrated below.
@@ -1005,7 +1000,6 @@ The most essential component we need for this is some measure of how bad our pre
 the sum of the squared errors (SSE), which looks like this:
 
 E = 1/2 Σ(y^μ - ŷ^μ)²
-μ
 
 The SSE is a measure of our network's performance. If it's high, the network is making bad predictions. If it's low, the
 network is making good predictions. Minimizing the SSE is our goal in gradient descent:
@@ -1026,7 +1020,6 @@ data we use, our learning rates will typically be in the range of 0.01 to 0.001.
 to calculate the gradient and the result is the same as before, just averaged instead of summed.
 
 E = 1/2m Σ(y^μ - ŷ^μ)²
-μ
 
 Here's the general algorithm for updating the weights with gradient descent:
 

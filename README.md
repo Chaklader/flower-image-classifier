@@ -106,7 +106,7 @@ The model showed significant improvement from training to validation, with the v
 - Total training time: 44.26 seconds
 
 
-<img src="assets/train.png" alt="Training Output" width="2003"/>
+<img src="images/train.png" alt="Training Output" width="2000" height=auto/>
 <br>
 
 ### Testing
@@ -119,7 +119,9 @@ After training, the model was evaluated on a separate test set. Here are the tes
 ### Testing Time
 - Total testing time: 6.11 seconds
 
-<img src="assets/test.png" alt="Training Output" width="2003"/>
+<br>
+<img src="images/test.png" alt="Training Output" width="2000" height=auto/>
+<br>
 
 ### Observations
 <br>
@@ -136,9 +138,7 @@ The example is created to showcase how the process is running in the Jupyter not
 ### Flower Classification Results
 
 <br>
-
-![Black-eyed Susan flower](/assets/image_05878.jpg)
-
+<img src="images/image_05878.jpg" alt="Training Output" width="600" height=auto/>
 <br>
 
 This image shows the results of a deep learning classifier predicting the type of flower in the given image.
@@ -155,9 +155,7 @@ This image shows the results of a deep learning classifier predicting the type o
 | 5 | Californian Poppy | 8.16% |
 
 <br>
-
-<img src="assets/predict.png" alt="Training Output" width="2003"/>
-
+<img src="images/predict.png" alt="Training Output" width="1000" height=auto/>
 <br>
 
 
