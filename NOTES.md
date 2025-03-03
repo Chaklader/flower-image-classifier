@@ -1,3 +1,117 @@
+1. Neural Networks Fundamentals
+
+   - Basic Structure and Components
+   - Forward Propagation Process
+   - Activation Functions Overview
+   - Neural Network Architectures
+   - Input, Hidden, and Output Layers
+
+2. The Perceptron Algorithm
+
+   - Basic Formula and Components
+   - Update Rules for Classification
+   - Decision Boundaries and Linear Separability
+   - Step Function Implementation
+   - Limitations of Perceptrons
+
+3. Loss Functions and Error Calculation
+
+   - Log-Loss Error Function
+   - Cross-Entropy for Binary Classification
+   - Multi-Class Cross-Entropy
+   - Mean Squared Error (MSE)
+   - Maximum Likelihood Estimation
+
+4. Sigmoid Functions and Activation Functions
+
+   - Sigmoid Function Properties and Derivatives
+   - ReLU and its Variants
+   - Hyperbolic Tangent (tanh)
+   - Softmax for Multi-Class Problems
+   - Activation Function Selection Criteria
+
+5. Multi-Class Classification
+
+   - One-Hot Encoding Implementation
+   - Softmax Function Application
+   - Multi-Class Loss Functions
+   - Decision Boundaries in Higher Dimensions
+   - Performance Evaluation Metrics
+
+6. Logistic Regression
+
+   - Mathematical Formulation
+   - Probabilistic Interpretation
+   - Binary Classification Implementation
+   - Multi-Class Extension
+   - Gradient Calculation Process
+
+7. Gradient Descent and Backpropagation
+
+   - Gradient Descent Algorithm Steps
+   - Learning Rate Selection
+   - Backpropagation Mathematics
+   - Chain Rule Application
+   - Gradient Calculation Optimization
+
+8. Training and Optimizing Neural Networks
+
+   - Underfitting vs. Overfitting
+   - Regularization Techniques (L1 and L2)
+   - Early Stopping Implementation
+   - Dropout Regularization
+   - Batch vs. Stochastic Gradient Descent
+   - Momentum and Advanced Optimizers
+   - Random Restart Techniques
+
+9. Transfer Learning
+
+   - Transfer Learning Approaches
+   - Pre-trained Model Utilization
+   - Fine-tuning Strategies
+   - Domain Adaptation Techniques
+   - Case Studies for Different Data Scenarios
+
+10. Transformers and Attention Mechanisms
+
+    - Attention Mechanism Fundamentals
+    - Self-Attention Implementation
+    - Multi-Head Attention
+    - Scaled Dot-Product Attention
+    - Positional Encoding
+    - Transformer Block Architecture
+
+11. Tokenization and Embeddings in NLP
+
+    - Tokenization Methods
+    - Word Embeddings Techniques
+    - Contextual vs. Static Embeddings
+    - Embedding Vector Properties
+    - Subword Tokenization Approaches
+
+12. Building Transformer Models in PyTorch
+
+    - Model Components Implementation
+    - Attention Block Coding
+    - Feedforward Networks
+    - Layer Normalization
+    - Training and Evaluation Process
+
+13. Decoder-only Architecture
+
+    - GPT-style Models
+    - Causal Masking Implementation
+    - Autoregressive Property
+    - Generation Strategies
+    - Applications and Limitations
+
+14. Using Pre-trained Models with Hugging Face
+    - Pipeline API Usage
+    - Model Selection Guidelines
+    - Text Generation Parameters
+    - Fine-tuning Pre-trained Models
+    - Multi-modal Applications
+
 # Neural Networks
 
 # Perceptron Algorithm
@@ -27,18 +141,18 @@ For a point with coordinates (p, q) and label y:
 
 1. If correctly classified:
 
-    - No changes needed to weights or bias
+   - No changes needed to weights or bias
 
 2. If classified positive but actually negative:
 
-    - w₁ = w₁ - αp
-    - w₂ = w₂ - αq
-    - b = b - α
+   - w₁ = w₁ - αp
+   - w₂ = w₂ - αq
+   - b = b - α
 
 3. If classified negative but actually positive:
-    - w₁ = w₁ + αp
-    - w₂ = w₂ + αq
-    - b = b + α
+   - w₁ = w₁ + αp
+   - w₂ = w₂ + αq
+   - b = b + α
 
 Where α is the learning rate.
 
@@ -63,7 +177,7 @@ more points when you write a wrong answer confidently versus when you show some 
 
 ### Basic Formula
 
-Log Loss = -1/N ∑(y_i _ log(p_i) + (1-y_i) _ log(1-p_i))
+Log Loss = -1/N ∑(y*i * log(p*i) + (1-y_i) * log(1-p_i))
 
 Where:
 
@@ -262,14 +376,14 @@ Log Likelihood = Σ log(P(x|θ)) Where:
 
 1. Likelihood Function
 
-    - Measures probability of observed data
-    - Function of parameters, not data
-    - Usually maximized using calculus
+   - Measures probability of observed data
+   - Function of parameters, not data
+   - Usually maximized using calculus
 
 2. Log-Likelihood
-    - Converts products to sums
-    - Preserves same maximum
-    - Computationally more stable
+   - Converts products to sums
+   - Preserves same maximum
+   - Computationally more stable
 
 ### Common Applications
 
@@ -460,9 +574,9 @@ Where:
 
 1. Sigmoid Function
 
-    - Transforms linear input to [0,1] range
-    - Creates S-shaped curve
-    - Output interpreted as probability
+   - Transforms linear input to [0,1] range
+   - Creates S-shaped curve
+   - Output interpreted as probability
 
 2. Cost Function (Binary Cross-Entropy)
 
@@ -653,9 +767,9 @@ Here are our steps for logistic regression:
 
 2. For every point (x₁,...,x_n):
 
-    - For i = 1...n:
-        - Update w'\_i ← w_i - a(ŷ - y)x_i
-        - Update b' ← b - a(ŷ - y)
+   - For i = 1...n:
+     - Update w'\_i ← w_i - a(ŷ - y)x_i
+     - Update b' ← b - a(ŷ - y)
 
 3. Repeat until the error is small
 
@@ -669,9 +783,9 @@ Here are our steps for logistic regression:
 ### Update Process
 
 - For each data point:
-    - Calculate predicted value (ŷ)
-    - Compare with actual value (y)
-    - Adjust weights and bias accordingly
+  - Calculate predicted value (ŷ)
+  - Compare with actual value (y)
+  - Adjust weights and bias accordingly
 
 ### Convergence
 
@@ -697,14 +811,14 @@ With the perceptron algorithm we only change the weights on the misclassified po
 
 - We change w_i:
 
-    - To w_i + ax_i if positive
-    - To w_i - ax_i if negative
+  - To w_i + ax_i if positive
+  - To w_i - ax_i if negative
 
 - If correctly classified: y - ŷ = 0
 
 - If misclassified:
-    - y - ŷ = 1 if positive
-    - y - ŷ = -1 if negative
+  - y - ŷ = 1 if positive
+  - y - ŷ = -1 if negative
 
 # PERCEPTRON ALGORITHM:
 
@@ -816,14 +930,14 @@ make our backpropagation step much cleaner.
 
 1. Forward Pass:
 
-    - Input goes through network
-    - Calculate predicted output
-    - Measure error
+   - Input goes through network
+   - Calculate predicted output
+   - Measure error
 
 2. Backward Pass:
-    - Start from output error
-    - Calculate gradients layer by layer
-    - Propagate error backwards
+   - Start from output error
+   - Calculate gradients layer by layer
+   - Propagate error backwards
 
 ### Key Components
 
@@ -998,9 +1112,9 @@ Here's the general algorithm for updating the weights with gradient descent:
 
 - For each record in the training data:
 
-    - Make a forward pass through the network, calculating the output ŷ = f(Σ_i w_ix_i)
-    - Calculate the error term for the output unit, δ = (y - ŷ) \* f'(Σ_i w_ix_i)
-    - Update the weight step Δw_i = Δw_i + δx_i
+  - Make a forward pass through the network, calculating the output ŷ = f(Σ_i w_ix_i)
+  - Calculate the error term for the output unit, δ = (y - ŷ) \* f'(Σ_i w_ix_i)
+  - Update the weight step Δw_i = Δw_i + δx_i
 
 - Update the weights w_i = w_i + ηΔw_i/m where η is the learning rate and m is the number of records. Here we're
   averaging the weight steps to help reduce any large variations in the training data.
@@ -1276,18 +1390,18 @@ Mathematically, activation functions transform the output of each neuron:
 - Output range: (0,1)
 - Gradient: f'(x) = σ(x)(1 - σ(x))
 - Key issues:
-    - Saturating gradients: f'(x) → 0 as |x| → ∞
-    - Not zero-centered
-    - Computationally expensive
+  - Saturating gradients: f'(x) → 0 as |x| → ∞
+  - Not zero-centered
+  - Computationally expensive
 
 **ReLU**: f(x) = max(0,x)
 
 - Output range: [0,∞)
 - Gradient: f'(x) = {1 if x > 0, 0 otherwise}
 - Benefits:
-    - No saturation for positive values
-    - Sparse activation (~50%)
-    - Computationally efficient
+  - No saturation for positive values
+  - Sparse activation (~50%)
+  - Computationally efficient
 - Issue: "Dying ReLU" problem
 
 **Modern Variants**:
@@ -1308,17 +1422,17 @@ Mathematically, regularization modifies the loss function L(θ) by adding penalt
 
 - Gradient: ∂Ω/∂w = sign(w)
 - Properties:
-    - Creates sparse solutions (many w = 0)
-    - Effective feature selection
-    - Non-differentiable at w = 0
+  - Creates sparse solutions (many w = 0)
+  - Effective feature selection
+  - Non-differentiable at w = 0
 
 **L₂ Regularization**: L_reg(θ) = L(θ) + λ∑wᵢ²
 
 - Gradient: ∂Ω/∂w = 2w
 - Properties:
-    - Weight decay interpretation: w ← w(1 - 2λη) - η∂L/∂w
-    - Smoother solutions
-    - All weights shrink proportionally
+  - Weight decay interpretation: w ← w(1 - 2λη) - η∂L/∂w
+  - Smoother solutions
+  - All weights shrink proportionally
 
 **Combined Approaches**:
 
@@ -1354,27 +1468,27 @@ Mathematically, the challenge can be formalized as:
 **Local Minimum Problem**:
 
 - For weight vector w, a local minimum occurs when:
-    - ∇L(w) = 0 (gradient is zero)
-    - ∇²L(w) is positive definite (all eigenvalues > 0)
+  - ∇L(w) = 0 (gradient is zero)
+  - ∇²L(w) is positive definite (all eigenvalues > 0)
 - Not all local minima are created equal: L(w_local) > L(w_global)
 
 **Random Restart Techniques**:
 
 1. Basic Random Restart:
 
-    - Initialize: w_new = w_0 + ϵ, ϵ ~ N(0,σ²)
-    - Run multiple times with different seeds
-    - Keep best solution: w\* = argmin_w L(w)
+   - Initialize: w_new = w_0 + ϵ, ϵ ~ N(0,σ²)
+   - Run multiple times with different seeds
+   - Keep best solution: w\* = argmin_w L(w)
 
 2. Momentum-Based Escape:
 
-    - Update rule: v*t = μv*(t-1) - η∇L(w)
-    - Weight update: w*t = w*(t-1) + v_t
-    - μ: momentum coefficient
+   - Update rule: v*t = μv*(t-1) - η∇L(w)
+   - Weight update: w*t = w*(t-1) + v_t
+   - μ: momentum coefficient
 
 3. Learning Rate Scheduling:
-    - η_t = η_0 / √t
-    - Allows larger steps early, finer tuning later
+   - η_t = η_0 / √t
+   - Allows larger steps early, finer tuning later
 
 **Practical Considerations**:
 
@@ -1972,21 +2086,21 @@ updated as they process input sequences.
 
 1. Simple RNN (Vanilla)
 
-    - Basic recurrent structure
-    - Suffers from vanishing/exploding gradients
+   - Basic recurrent structure
+   - Suffers from vanishing/exploding gradients
 
 2. LSTM (Long Short-Term Memory)
 
-    - Gates: Input, Forget, Output
-    - Cell state for long-term memory
-    - Better gradient flow
-    - More stable training
+   - Gates: Input, Forget, Output
+   - Cell state for long-term memory
+   - Better gradient flow
+   - More stable training
 
 3. GRU (Gated Recurrent Unit)
-    - Simplified version of LSTM
-    - Reset and Update gates
-    - Fewer parameters than LSTM
-    - Often similar performance
+   - Simplified version of LSTM
+   - Reset and Update gates
+   - Fewer parameters than LSTM
+   - Often similar performance
 
 ## Common Applications
 
@@ -2066,20 +2180,20 @@ Transformers revolutionized deep learning by introducing self-attention mechanis
 
 1. BERT
 
-    - Bidirectional encoder
-    - Masked language modeling
-    - Next sentence prediction
+   - Bidirectional encoder
+   - Masked language modeling
+   - Next sentence prediction
 
 2. GPT
 
-    - Decoder-only architecture
-    - Autoregressive modeling
-    - Large-scale training
+   - Decoder-only architecture
+   - Autoregressive modeling
+   - Large-scale training
 
 3. T5
-    - Text-to-text framework
-    - Unified approach
-    - Transfer learning
+   - Text-to-text framework
+   - Unified approach
+   - Transfer learning
 
 ## Implementation Considerations
 
@@ -2211,14 +2325,14 @@ The Transformer begins by converting input text into meaningful numerical repres
 
 1. Initial Tokenization
 
-    - Raw text is converted to token IDs
-    - Each token gets a unique numerical identifier
-    - Example: [348, 1978, 634] as shown in the image
+   - Raw text is converted to token IDs
+   - Each token gets a unique numerical identifier
+   - Example: [348, 1978, 634] as shown in the image
 
 2. Word Embeddings Generation
-    - Token IDs are transformed into dense vector representations
-    - Creates rich semantic representations
-    - Example vectors: [-1.00, 0.58, 1.42, -0.24, ..., -0.43]
+   - Token IDs are transformed into dense vector representations
+   - Creates rich semantic representations
+   - Example vectors: [-1.00, 0.58, 1.42, -0.24, ..., -0.43]
 
 ## Positional Encoding
 
@@ -2324,18 +2438,18 @@ softmax = exp_z / sum(exp_z)
 
 1. Classification Tasks
 
-    - Output layer of neural networks
-    - Multi-class probability distribution
-    - Cross-entropy loss computation
+   - Output layer of neural networks
+   - Multi-class probability distribution
+   - Cross-entropy loss computation
 
 2. Attention Mechanisms
 
-    - Computing attention weights
-    - Normalizing similarity scores
+   - Computing attention weights
+   - Normalizing similarity scores
 
 3. Reinforcement Learning
-    - Policy networks
-    - Action probability distribution
+   - Policy networks
+   - Action probability distribution
 
 ## Implementation Considerations
 
@@ -2726,8 +2840,8 @@ language modeling, translation, and more.
 - **Purpose**: Converts input token IDs into embedding vectors.
 - **Implementation**: Using nn.Embedding, which maps each token ID to its corresponding embedding vector.
 - **Parameters**:
-    - Number of embedding vectors (vocabulary size).
-    - Dimensionality of the embedding vectors.
+  - Number of embedding vectors (vocabulary size).
+  - Dimensionality of the embedding vectors.
 
 ## Positional Encoding
 
@@ -2752,18 +2866,18 @@ language modeling, translation, and more.
 1. Data Loading
 
 - **Data Loader**: In each iteration, we use a data loader to load a batch of inputs and targets.
-    - **Inputs**: Tensor of token IDs representing the input text.
-    - **Targets**: Tensor of token IDs representing the expected output.
+  - **Inputs**: Tensor of token IDs representing the input text.
+  - **Targets**: Tensor of token IDs representing the expected output.
 
 2. Model Prediction
 
 - **Forward Pass**: The batch of inputs is passed through the model, which generates predictions.
-    - **Predictions**: The model outputs logits, which are raw prediction scores for each token in the vocabulary.
+  - **Predictions**: The model outputs logits, which are raw prediction scores for each token in the vocabulary.
 
 3. Loss Calculation
 
 - **Loss Function**: We calculate the loss by comparing the model's predictions with the actual targets.
-    - **Purpose**: The loss function quantifies how far the model's predictions are from the actual values.
+  - **Purpose**: The loss function quantifies how far the model's predictions are from the actual values.
 
 4. Backpropagation
 
@@ -2773,7 +2887,7 @@ language modeling, translation, and more.
 5. Parameter Update
 
 - **Optimizer**: Using the optimizer, we update the model's parameters to minimize the loss.
-    - **Iteration Completion**: This completes a single iteration of training.
+  - **Iteration Completion**: This completes a single iteration of training.
 
 6. Repeating the Process
 
@@ -2803,10 +2917,10 @@ tokenized_text = tokenizer.encode(text).to(device)
 ```
 
 - **Dataset and Data Loader**:
-    - **Dataset**: Created using the tokenized text.
-    - **Random Sampler**: Randomly selects training examples, specifying the number of examples based on training
-      iterations and batch size.
-    - **Data Loader**: Iterates over selected training examples using the specified batch size and random sampler.
+  - **Dataset**: Created using the tokenized text.
+  - **Random Sampler**: Randomly selects training examples, specifying the number of examples based on training
+    iterations and batch size.
+  - **Data Loader**: Iterates over selected training examples using the specified batch size and random sampler.
 
 ```python
 dataset = TokenIdsDataset(tokenized_text, block_size=64)
@@ -2829,8 +2943,8 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
 - **Training Mode**: The model is switched to training mode for each iteration.
 - **Forward Pass**: The input from each mini-batch is passed through the model, returning logits.
 - **Loss Calculation**:
-    - **Logits and Targets Reshaping**: Necessary to fit the shape expected by the cross-entropy function.
-    - **Cross-Entropy Loss**: Calculates the loss for the step, comparing model predictions to the actual targets.
+  - **Logits and Targets Reshaping**: Necessary to fit the shape expected by the cross-entropy function.
+  - **Cross-Entropy Loss**: Calculates the loss for the step, comparing model predictions to the actual targets.
 - **Backpropagation**: Compute gradients based on the loss.
 - **Parameter Update**: The optimizer updates model parameters.
 - **Gradient Reset**: Before the next step, gradients are reset to avoid accumulation.
