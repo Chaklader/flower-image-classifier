@@ -26,9 +26,11 @@ Where:
 For a point with coordinates (p, q) and label y:
 
 1. If correctly classified:
+
     - No changes needed to weights or bias
 
 2. If classified positive but actually negative:
+
     - w₁ = w₁ - αp
     - w₂ = w₂ - αq
     - b = b - α
@@ -61,7 +63,7 @@ more points when you write a wrong answer confidently versus when you show some 
 
 ### Basic Formula
 
-Log Loss = -1/N ∑(y_i * log(p_i) + (1-y_i) * log(1-p_i))
+Log Loss = -1/N ∑(y_i _ log(p_i) + (1-y_i) _ log(1-p_i))
 
 Where:
 
@@ -174,15 +176,15 @@ Where:
 
 Usually paired with cross-entropy loss:
 
-Loss = -Σ(y_i * log(p_i))
+Loss = -Σ(y_i \* log(p_i))
 
 Where:
 
 - y_i is true label (one-hot encoded)
 - p_i is predicted probability
 
-Softmax is essentially a "soft" version of the maximum function, giving proportional probabilities rather than
-a single winner.
+Softmax is essentially a "soft" version of the maximum function, giving proportional probabilities rather than a single
+winner.
 
 # One-Hot Encoding
 
@@ -196,17 +198,13 @@ That's one-hot encoding - converting categorical data into a format where each c
 
 For categories [A, B, C]:
 
-A → [1, 0, 0]
-B → [0, 1, 0]
-C → [0, 0, 1]
+A → [1, 0, 0] B → [0, 1, 0] C → [0, 0, 1]
 
 ### Example
 
 Original data: "Color" column with [Red, Blue, Green]
 
-Red → [1, 0, 0]
-Blue → [0, 1, 0]
-Green → [0, 0, 1]
+Red → [1, 0, 0] Blue → [0, 1, 0] Green → [0, 0, 1]
 
 ### Properties
 
@@ -238,8 +236,7 @@ Green → [0, 0, 1]
 - Memory intensive
 - Can be computationally expensive
 
-One-hot encoding is essential when working with algorithms that expect numerical input but your data is
-categorical.
+One-hot encoding is essential when working with algorithms that expect numerical input but your data is categorical.
 
 # Maximum Likelihood
 
@@ -255,8 +252,7 @@ want to maximize this probability.
 
 ### Basic Formula
 
-Log Likelihood = Σ log(P(x|θ))
-Where:
+Log Likelihood = Σ log(P(x|θ)) Where:
 
 - P(x|θ) is probability of data x given parameters θ
 - Σ sums over all observations
@@ -265,6 +261,7 @@ Where:
 ### Key Concepts
 
 1. Likelihood Function
+
     - Measures probability of observed data
     - Function of parameters, not data
     - Usually maximized using calculus
@@ -297,8 +294,8 @@ Where:
 - Provides consistent estimates
 - Works with many distributions
 
-Maximum likelihood gives us the parameters that make the observed data most probable, but doesn't guarantee
-they're the "true" parameters.
+Maximum likelihood gives us the parameters that make the observed data most probable, but doesn't guarantee they're the
+"true" parameters.
 
 # Cross-Entropy
 
@@ -339,7 +336,7 @@ but wrong, you get a bigger penalty than when you're unsure (51%) and wrong.
 
 ### Basic Formula
 
-H(y,ŷ) = -Σ y_i * log(ŷ_i)
+H(y,ŷ) = -Σ y_i \* log(ŷ_i)
 
 Where:
 
@@ -404,7 +401,7 @@ penalizing the model more heavily when it's confidently wrong about any of the c
 
 ### Basic Formula
 
-H(y,p) = -Σ Σ y_ij * log(p_ij)
+H(y,p) = -Σ Σ y_ij \* log(p_ij)
 
 Where:
 
@@ -450,8 +447,7 @@ regression, and predicts the probability of an outcome being in a particular cat
 
 ### Basic Formula
 
-P(y=1) = 1 / (1 + e^(-z))
-where z = wx + b
+P(y=1) = 1 / (1 + e^(-z)) where z = wx + b
 
 Where:
 
@@ -463,6 +459,7 @@ Where:
 ### Key Components
 
 1. Sigmoid Function
+
     - Transforms linear input to [0,1] range
     - Creates S-shaped curve
     - Output interpreted as probability
@@ -473,18 +470,15 @@ J(w,b) = -(1/m)Σ[y_i log(ŷ_i) + (1-y_i)log(1-ŷ_i)]
 
 ### Formula for the error function (for binary classification problems)
 
-Error function = -(1/m)Σ[(1 - y_i)(ln(1 - ŷ_i)) + y_i ln(ŷ_i)]
-From i=1 to m
+Error function = -(1/m)Σ[(1 - y_i)(ln(1 - ŷ_i)) + y_i ln(ŷ_i)] From i=1 to m
 
 And the total formula for the error is then:
 
-E(W,b) = -(1/m)Σ[(1 - y_i)(ln(1 - σ(Wx^(i) + b))) + y_i ln(σ(Wx^(i) + b))]
-From i=1 to m
+E(W,b) = -(1/m)Σ[(1 - y_i)(ln(1 - σ(Wx^(i) + b))) + y_i ln(σ(Wx^(i) + b))] From i=1 to m
 
 For multiclass problems, the error function is:
 
-Error function = -(1/m)Σ Σ y_ij ln(ŷ_ij)
-From i=1 to m, j=1 to n
+Error function = -(1/m)Σ Σ y_ij ln(ŷ_ij) From i=1 to m, j=1 to n
 
 Now that we know how to calculate the error, our goal will be to minimize it.
 
@@ -548,8 +542,7 @@ We calculate partial derivatives to find which direction leads downhill:
 
 We update parameters by moving in the opposite direction of the gradient:
 
-w'_i ← w_i + α(y - ŷ)x_i
-b' ← b + α(y - ŷ)
+w'\_i ← w_i + α(y - ŷ)x_i b' ← b + α(y - ŷ)
 
 Where:
 
@@ -577,10 +570,7 @@ the sigmoid function has a really nice derivative. Namely,
 
 The reason for this is the following, we can calculate it using the quotient formula:
 
-σ'(x) = ∂/∂x 1/(1+e^-x)
-= e^-x/(1+e^-x)²
-= 1/(1+e^-x) · e^-x/(1+e^-x)
-= σ(x)(1 - σ(x))
+σ'(x) = ∂/∂x 1/(1+e^-x) = e^-x/(1+e^-x)² = 1/(1+e^-x) · e^-x/(1+e^-x) = σ(x)(1 - σ(x))
 
 And now, let's recall that if we have m points labelled x^(1), x^(2),...,x^(m), the error formula is:
 
@@ -601,23 +591,17 @@ E = -y ln(ŷ) - (1 - y)ln(1 - ŷ)
 In order to calculate the derivative of this error with respect to the weights, we'll first calculate ∂/∂w_j ŷ. Recall
 that ŷ = σ(Wx + b), so:
 
-∂/∂w_j ŷ = ∂/∂w_j σ(Wx + b)
-= σ(Wx + b)(1 - σ(Wx + b)) · ∂/∂w_j(Wx + b)
-= ŷ(1 - ŷ) · ∂/∂w_j(Wx + b)
-= ŷ(1 - ŷ) · ∂/∂w_j(w₁x₁ + ... + w_jx_j + ... + w_nx_n + b)
-= ŷ(1 - ŷ) · x_j
+∂/∂w_j ŷ = ∂/∂w_j σ(Wx + b) = σ(Wx + b)(1 - σ(Wx + b)) · ∂/∂w_j(Wx + b) = ŷ(1 - ŷ) · ∂/∂w_j(Wx + b) = ŷ(1 - ŷ) ·
+∂/∂w_j(w₁x₁ + ... + w_jx_j + ... + w_nx_n + b) = ŷ(1 - ŷ) · x_j
 
 The last equality is because the only term in the sum which is not a constant with respect to w_j is precisely w_jx_j,
 which clearly has derivative x_j.
 
 Now, we can go ahead and calculate the derivative of the error E at a point x, with respect to the weight w_j.
 
-∂/∂w_j E = ∂/∂w_j[-y log(ŷ) - (1 - y)log(1 - ŷ)]
-= -y ∂/∂w_j log(ŷ) - (1 - y)∂/∂w_j log(1 - ŷ)
-= -y · 1/ŷ · ∂/∂w_j ŷ - (1 - y) · 1/(1-ŷ) · ∂/∂w_j(1 - ŷ)
-= -y · 1/ŷ · ŷ(1 - ŷ)x_j - (1 - y) · 1/(1-ŷ) · (-1)ŷ(1 - ŷ)x_j
-= -y(1 - ŷ) · x_j + (1 - y)ŷ · x_j
-= -(y - ŷ)x_j
+∂/∂w_j E = ∂/∂w_j[-y log(ŷ) - (1 - y)log(1 - ŷ)] = -y ∂/∂w_j log(ŷ) - (1 - y)∂/∂w_j log(1 - ŷ) = -y · 1/ŷ · ∂/∂w_j ŷ -
+(1 - y) · 1/(1-ŷ) · ∂/∂w_j(1 - ŷ) = -y · 1/ŷ · ŷ(1 - ŷ)x_j - (1 - y) · 1/(1-ŷ) · (-1)ŷ(1 - ŷ)x_j = -y(1 - ŷ) · x_j +
+(1 - y)ŷ · x_j = -(y - ŷ)x_j
 
 A similar calculation will show us that
 
@@ -641,11 +625,11 @@ bit.
 Therefore, since the gradient descent step simply consists in subtracting a multiple of the gradient of the error
 function at every point, then this updates the weights in the following way:
 
-w'_i ← w_i - α[-(y - ŷ)x_i],
+w'\_i ← w_i - α[-(y - ŷ)x_i],
 
 which is equivalent to
 
-w'_i ← w_i + α(y - ŷ)x_i.
+w'\_i ← w_i + α(y - ŷ)x_i.
 
 Similarly, it updates the bias in the following way:
 
@@ -668,8 +652,9 @@ Here are our steps for logistic regression:
 1. Start with random weights: w₁,...,w_n, b
 
 2. For every point (x₁,...,x_n):
+
     - For i = 1...n:
-        - Update w'_i ← w_i - a(ŷ - y)x_i
+        - Update w'\_i ← w_i - a(ŷ - y)x_i
         - Update b' ← b - a(ŷ - y)
 
 3. Repeat until the error is small
@@ -711,6 +696,7 @@ With gradient descent, we change the weights from w_i to w_i + a(y - ŷ)x_i.
 With the perceptron algorithm we only change the weights on the misclassified points. If a point x is misclassified:
 
 - We change w_i:
+
     - To w_i + ax_i if positive
     - To w_i - ax_i if negative
 
@@ -724,46 +710,35 @@ With the perceptron algorithm we only change the weights on the misclassified po
 
 If x is misclassified:
 
-Change w_i to {
-    w_i + α x_i if positive
-    w_i - α x_i if negative
-}
+Change w_i to { w_i + α x_i if positive w_i - α x_i if negative }
 
 If correctly classified: y-ŷ=0
 
-If misclassified: {
-    y-ŷ = 1 if positive
-    y-ŷ = -1 if negative
-}
+If misclassified: { y-ŷ = 1 if positive y-ŷ = -1 if negative }
 
 ### Neural Network Architecture
 
 We will combine two linear models to get our non-linear model. Essentially the steps to do this are:
 
-Calculate the probability for each model
-Apply weights to the probabilities
-Add the weighted probabilities
-Apply the sigmoid function to the result
+Calculate the probability for each model Apply weights to the probabilities Add the weighted probabilities Apply the
+sigmoid function to the result
 
-Multiple layers
-Now, not all neural networks look like the one above. They can be way more complicated! In particular, we can do the
-following things:
+Multiple layers Now, not all neural networks look like the one above. They can be way more complicated! In particular,
+we can do the following things:
 
-Add more nodes to the input, hidden, and output layers.
-Add more layers.
-We'll see the effects of these changes in the next video.
+Add more nodes to the input, hidden, and output layers. Add more layers. We'll see the effects of these changes in the
+next video.
 
 Neural networks have a certain special architecture with layers:
 
-The first layer is called the input layer, which contains the inputs.
-The next layer is called the hidden layer, which is the set of linear models created with the input layer.
-The final layer is called the output layer, which is where the linear models get combined to obtain a nonlinear model.
-Neural networks can have different architectures, with varying numbers of nodes and layers:
+The first layer is called the input layer, which contains the inputs. The next layer is called the hidden layer, which
+is the set of linear models created with the input layer. The final layer is called the output layer, which is where the
+linear models get combined to obtain a nonlinear model. Neural networks can have different architectures, with varying
+numbers of nodes and layers:
 
 Input nodes. In general, if we have n nodes in the input layer, then we are modeling data in n-dimensional space (e.g.,
-3 nodes in the input layer means we are modeling data in 3-dimensional space).
-Output nodes. If there are more nodes in the output layer, this simply means we have more outputs—for example, we may
-have a multiclass classification model.
+3 nodes in the input layer means we are modeling data in 3-dimensional space). Output nodes. If there are more nodes in
+the output layer, this simply means we have more outputs—for example, we may have a multiclass classification model.
 Layers. If there are more layers then we have a deep neural network. Our linear models combine to create nonlinear
 models, which then combine to create even more nonlinear models!
 
@@ -809,7 +784,6 @@ Where:
 - Sequential computation
 - No cycles or loops
 
-
 # Backpropagation
 
 Think of backpropagation like tracing back your steps after making a mistake to figure out exactly where things went
@@ -826,7 +800,6 @@ backpropagation. In a nutshell, backpropagation will consist of:
 5. Use this to update the weights, and get a better model.
 6. Continue this until we have a model that is good.
 
-
 Sounds more complicated than what it actually is. Let's take a look in the next few videos. The first video will show us
 a conceptual interpretation of what backpropagation is.
 
@@ -835,16 +808,14 @@ a conceptual interpretation of what backpropagation is.
 Recall that the sigmoid function has a beautiful derivative, which we can see in the following calculation. This will
 make our backpropagation step much cleaner.
 
-σ'(x) = ∂/∂x 1/(1+e^-x)
-= e^-x/(1+e^-x)²
-= 1/(1+e^-x) · e^-x/(1+e^-x)
-= σ(x)(1 - σ(x))
+σ'(x) = ∂/∂x 1/(1+e^-x) = e^-x/(1+e^-x)² = 1/(1+e^-x) · e^-x/(1+e^-x) = σ(x)(1 - σ(x))
 
 ## Technical Details
 
 ### Basic Process
 
 1. Forward Pass:
+
     - Input goes through network
     - Calculate predicted output
     - Measure error
@@ -861,8 +832,7 @@ Error gradient = Local gradient × Upstream gradient
 ### Chain Rule Application
 
 - Output layer: δ = (y - ŷ) × σ'(z)
-- Hidden layers: δ = (W^T δ_next) × σ'(z)
-  where:
+- Hidden layers: δ = (W^T δ_next) × σ'(z) where:
 - δ is error term
 - σ' is derivative of activation function
 - W^T is transposed weight matrix
@@ -880,8 +850,8 @@ Error gradient = Local gradient × Upstream gradient
 - Enables deep learning
 - Computationally efficient
 
-Backpropagation is what makes deep learning possible by efficiently computing how each weight contributes to
-the overall error.
+Backpropagation is what makes deep learning possible by efficiently computing how each weight contributes to the overall
+error.
 
 # Implementing Gradient Descent
 
@@ -925,10 +895,11 @@ Where:
 - Squared units make interpretation less intuitive
 - May not be ideal for classification tasks
 
-MSE is particularly useful when larger errors are more problematic than smaller ones, as the squaring effect
-emphasizes bigger differences.
+MSE is particularly useful when larger errors are more problematic than smaller ones, as the squaring effect emphasizes
+bigger differences.
 
 # Gradient Descent with Squared Errors
+
 # CHECK EQ
 
 We want to find the weights for our neural networks. Let's start by thinking about the goal. The network needs to make
@@ -969,8 +940,8 @@ weights in steps that reduce the error. Continuing the analogy, the error is our
 bottom. Since the fastest way down a mountain is in the steepest direction, the steps taken should be in the direction
 that minimizes the error the most. We can find this direction by calculating the gradient of the squared error.
 
-Gradient is another term for rate of change or slope. If you need to brush up on this concept, check out Khan
-Academy's on the topic.
+Gradient is another term for rate of change or slope. If you need to brush up on this concept, check out Khan Academy's
+on the topic.
 
 To calculate a rate of change, we turn to calculus, specifically derivatives. A derivative of a function f(x) gives you
 another function f'(x) that returns the slope of f(x) at point x. For example, consider f(x) = x². The derivative of x²
@@ -1026,8 +997,9 @@ Here's the general algorithm for updating the weights with gradient descent:
 - Set the weight step to zero: Δw_i = 0
 
 - For each record in the training data:
+
     - Make a forward pass through the network, calculating the output ŷ = f(Σ_i w_ix_i)
-    - Calculate the error term for the output unit, δ = (y - ŷ) * f'(Σ_i w_ix_i)
+    - Calculate the error term for the output unit, δ = (y - ŷ) \* f'(Σ_i w_ix_i)
     - Update the weight step Δw_i = Δw_i + δx_i
 
 - Update the weights w_i = w_i + ηΔw_i/m where η is the learning rate and m is the number of records. Here we're
@@ -1075,12 +1047,10 @@ of the inputs to that layer
 Here, you get the output error, δoutput, by propagating the errors backwards from higher layers. And the input values,
 Vᵢₙ are the inputs to the layer, the hidden layer activations to the output unit for example.
 
-<br>
-
-![title](images/backpropagation.png)
-
-<br>
-
+<div align="center">
+<img src="images/backpropagation.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 Let's walk through the steps of calculating the weight updates for a simple two layer network. Suppose there are two
 input values, one hidden unit, and one output unit, with sigmoid activations on the hidden and output units. The
@@ -1141,55 +1111,40 @@ and the error term for the hidden layer is
 For now we'll only consider a simple network with one hidden layer and one output unit. Here's the general algorithm for
 updating the weights with backpropagation:
 
-• Set the weight steps for each layer to zero
-• The input to hidden weights Δwᵢⱼ = 0
-• The hidden to output weights ΔWⱼ = 0
+• Set the weight steps for each layer to zero • The input to hidden weights Δwᵢⱼ = 0 • The hidden to output weights ΔWⱼ
+= 0
 
-• For each record in the training data:
-• Make a forward pass through the network, calculating the output ŷ
-• Calculate the error gradient in the output unit, δᵒ = (y - ŷ)f'(z) where z = ∑ⱼ Wⱼaⱼ, the input to the output unit.
-• Propagate the errors to the hidden layer δʰⱼ = δᵒWⱼf'(hⱼ)
-• Update the weight steps:
-• ΔWⱼ = ΔWⱼ + δᵒaⱼ
-• Δwᵢⱼ = Δwᵢⱼ + δʰⱼaᵢ
+• For each record in the training data: • Make a forward pass through the network, calculating the output ŷ • Calculate
+the error gradient in the output unit, δᵒ = (y - ŷ)f'(z) where z = ∑ⱼ Wⱼaⱼ, the input to the output unit. • Propagate
+the errors to the hidden layer δʰⱼ = δᵒWⱼf'(hⱼ) • Update the weight steps: • ΔWⱼ = ΔWⱼ + δᵒaⱼ • Δwᵢⱼ = Δwᵢⱼ + δʰⱼaᵢ
 
-• Update the weights, where η is the learning rate and m is the number of records:
-• Wⱼ = Wⱼ + ηΔWⱼ/m
-• wᵢⱼ = wᵢⱼ + ηΔwᵢⱼ/m
-• Repeat for e epochs.
+• Update the weights, where η is the learning rate and m is the number of records: • Wⱼ = Wⱼ + ηΔWⱼ/m • wᵢⱼ = wᵢⱼ +
+ηΔwᵢⱼ/m • Repeat for e epochs.
 
 # Training Neural Networks
 
 We've learned how to build a deep neural network and how to train it to fit our data. However, there are many things
 that can fail when training a neural network. For example:
 
-Our architecture can be poorly chosen
-Our data can be noisy
-Our model can take far too long to run
+Our architecture can be poorly chosen Our data can be noisy Our model can take far too long to run
 
 We need to learn ways to optimize the training of our models—and that's what we'll be getting into in this lesson! By
 the end of this lesson, you'll be able to:
 
 Separate data into testing and training sets in order to objectively test a model and ensure that it can generalize
-beyond the training data.
-Distinguish between underfitting and overfitting, and identify the underlying causes of each.
-Use early stopping to end the training process at a point that minimizes both testing error and training error.
-Apply regularization to reduce overfitting.
-Use dropout to randomly turn off portions of a network during training and ensure no single part of the network
-dominates the resulting model disproportionately.
-Use random restart to avoid getting stuck in local minima.
-Use the hyperbolic tangent function and ReLU to improve gradient descent.
-Distinguish between batch gradient descent vs stochastic gradient descent.
-Adjust the learning rate of the gradient descent algorithm in order to improve model optimization.
-Use momentum to avoid getting stuck in local minima.
+beyond the training data. Distinguish between underfitting and overfitting, and identify the underlying causes of each.
+Use early stopping to end the training process at a point that minimizes both testing error and training error. Apply
+regularization to reduce overfitting. Use dropout to randomly turn off portions of a network during training and ensure
+no single part of the network dominates the resulting model disproportionately. Use random restart to avoid getting
+stuck in local minima. Use the hyperbolic tangent function and ReLU to improve gradient descent. Distinguish between
+batch gradient descent vs stochastic gradient descent. Adjust the learning rate of the gradient descent algorithm in
+order to improve model optimization. Use momentum to avoid getting stuck in local minima.
 
 When comparing models to determine which is better, we need a way of objectively testing them. To accomplish this, we
 can divide our data into two parts:
 
-A training set that we use to train the models
-A testing set that we use only for testing the models
-While training, we only use the training data—we set the testing data aside and don't use it as input for our learning
-algorithm.
+A training set that we use to train the models A testing set that we use only for testing the models While training, we
+only use the training data—we set the testing data aside and don't use it as input for our learning algorithm.
 
 Then, once our models are trained, we reintroduce the testing set. A model that performs well on the training data may
 not perform well on the testing data. We'll see one reason for this, called overfitting, next.
@@ -1200,29 +1155,26 @@ data—but then perform very poorly on our testing data. Two common reasons for 
 ### Underfitting
 
 Underfitting means that our model is too simplistic. There is a poor fit between our model and the data because we have
-oversimplified the problem.
-Underfitting is sometimes referred to as error due to bias. Our training data may be biased and this bias may be
-incorporated into the model in a way that oversimplifies it.
-For example, suppose we train an image classifier to recognize dogs. And suppose that the only type of animal in the
-training set is a dog. Perhaps the model learns a biased and overly simple rule like, "if it has four legs it is a dog".
-When we then test our model on some data that has other animals, it may misclassify a cat as a dog—in other words, it
-will underfit the data because it has error due to bias.
+oversimplified the problem. Underfitting is sometimes referred to as error due to bias. Our training data may be biased
+and this bias may be incorporated into the model in a way that oversimplifies it. For example, suppose we train an image
+classifier to recognize dogs. And suppose that the only type of animal in the training set is a dog. Perhaps the model
+learns a biased and overly simple rule like, "if it has four legs it is a dog". When we then test our model on some data
+that has other animals, it may misclassify a cat as a dog—in other words, it will underfit the data because it has error
+due to bias.
 
 ### Overfitting
 
 Overfitting means that our model is too complicated. The fit between our model and the training data is too specific—the
-model will perform very well on the training data but will fail to generalize to new data.
-Overfitting is sometimes referred to as error due to variance. This means that there are random or irrelevant
-differences among the data points in our training data and we have fit the model so closely to these irrelevant
-differences that it performs poorly when we try to use it with our testing data.
-For example, suppose we want our image classifier to recognize dogs, but instead we train it to recognize "dogs that are
-yellow, orange, or grey." If our testing set includes a dog that is brown, for example, our model will put it in a
-separate class, which was not what we wanted. Our model is too specific—we have fit the data to some unimportant
-differences in the training data and now it will fail to generalize.
+model will perform very well on the training data but will fail to generalize to new data. Overfitting is sometimes
+referred to as error due to variance. This means that there are random or irrelevant differences among the data points
+in our training data and we have fit the model so closely to these irrelevant differences that it performs poorly when
+we try to use it with our testing data. For example, suppose we want our image classifier to recognize dogs, but instead
+we train it to recognize "dogs that are yellow, orange, or grey." If our testing set includes a dog that is brown, for
+example, our model will put it in a separate class, which was not what we wanted. Our model is too specific—we have fit
+the data to some unimportant differences in the training data and now it will fail to generalize.
 
-Applying This to Neural Networks
-Generally speaking, underfitting tends to happen with neural networks that have overly simple architecture, while
-overfitting tends to happen with models that are highly complex.
+Applying This to Neural Networks Generally speaking, underfitting tends to happen with neural networks that have overly
+simple architecture, while overfitting tends to happen with models that are highly complex.
 
 The bad news is, it's really hard to find the right architecture for a neural network. There is a tendency to create a
 network that either has overly simplistic architecture or overly complicated architecture. In general terms, the
@@ -1240,50 +1192,40 @@ error will go down—but at some point, the testing error will start to increase
 signal that we should stop training the network prior to that point. We can see this relationship in a model complexity
 graph like this one:
 
-<br>
-
-![text](images/model.png)
-
-<br>
-
-
+<div align="center">
+<img src="images/model.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 Have a look at the graph and make sure you can recognize the following:
 
 On the Y-axis, we have a measure of the error and on the X-axis we have a measure of the complexity of the model (in
-this case, it's the number of epochs).
-On the left we have high testing and training error, so we're underfitting.
-On the right, we have high testing error and low training error, so we're overfitting.
-Somewhere in the middle, we have our happy Goldilocks point (the point that is "just right").
-In summary, we do gradient descent until the testing error stops decreasing and starts to increase. At that moment, we
-stop. This algorithm is called early stopping and is widely used to train neural networks.
+this case, it's the number of epochs). On the left we have high testing and training error, so we're underfitting. On
+the right, we have high testing error and low training error, so we're overfitting. Somewhere in the middle, we have our
+happy Goldilocks point (the point that is "just right"). In summary, we do gradient descent until the testing error
+stops decreasing and starts to increase. At that moment, we stop. This algorithm is called early stopping and is widely
+used to train neural networks.
 
-Large Co-efficients -> Overfitting
-Small Co-efficients -> Underfitting
+Large Co-efficients -> Overfitting Small Co-efficients -> Underfitting
 
-
-
-<br>
-
-![text](images/regularization.png)
-
-<br>
+<div align="center">
+<img src="images/regularization.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 ### Considering the Activation Functions
 
 A key point here is to consider the activation functions of these two equations:
 
+<div align="center">
+<img src="images/activation_functions.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-<br>
-
-![text](images/activation_functions.png)
-
-<br>
-
-When we apply sigmoid to small values such as
-x1 + x2, we get the function on the left, which has a nice slope for gradient descent.
-When we multiply the linear function by 10 and take sigmoid of 10x1 + 10x2 , our predictions are much better since
-they're closer to zero and one. But the function becomes much steeper and it's much harder to do graident descent.
+When we apply sigmoid to small values such as x1 + x2, we get the function on the left, which has a nice slope for
+gradient descent. When we multiply the linear function by 10 and take sigmoid of 10x1 + 10x2 , our predictions are much
+better since they're closer to zero and one. But the function becomes much steeper and it's much harder to do graident
+descent.
 
 Conceptually, the model on the right is too certain and it gives little room for applying gradient descent. Also, the
 points that are classified incorrectly in the model on the right will generate large errors and it will be hard to tune
@@ -1310,19 +1252,16 @@ The other one is to add the sum of the squares of the weights times that same co
 
 In both cases, these terms are large if the weights are large.
 
-L1 vs L2 Regularization
-The first approach (using absolute values) is called L1 regularization, while the second (using squares) is called L2
-regularization. Here are some general guidelines for deciding between the two:
+L1 vs L2 Regularization The first approach (using absolute values) is called L1 regularization, while the second (using
+squares) is called L2 regularization. Here are some general guidelines for deciding between the two:
 
-L1 Regularization
-L1 tends to result in sparse vectors. That means small weights will tend to go to zero.
-If we want to reduce the number of weights and end up with a small set, we can use L1.
-L1 is also good for feature selection. Sometimes we have a problem with hundreds of features, and L1 regularization will
-help us select which ones are important, turning the rest into zeroes.
+L1 Regularization L1 tends to result in sparse vectors. That means small weights will tend to go to zero. If we want to
+reduce the number of weights and end up with a small set, we can use L1. L1 is also good for feature selection.
+Sometimes we have a problem with hundreds of features, and L1 regularization will help us select which ones are
+important, turning the rest into zeroes.
 
-L2 Regularization
-L2 tends not to favor sparse vectors since it tries to maintain all the weights homogeneously small. L2 gives better
-results for training models so it's the one we'll use the most.
+L2 Regularization L2 tends not to favor sparse vectors since it tries to maintain all the weights homogeneously small.
+L2 gives better results for training models so it's the one we'll use the most.
 
 # Activation Functions
 
@@ -1359,14 +1298,13 @@ Mathematically, activation functions transform the output of each neuron:
 
 # Regularization
 
-Think of regularization as putting a leash on your neural network - it prevents the model from becoming too complex
-and "memorizing" the training data. Just like how we want students to learn general concepts rather than memorize
-specific examples, regularization helps neural networks learn patterns that generalize well to new data.
+Think of regularization as putting a leash on your neural network - it prevents the model from becoming too complex and
+"memorizing" the training data. Just like how we want students to learn general concepts rather than memorize specific
+examples, regularization helps neural networks learn patterns that generalize well to new data.
 
 Mathematically, regularization modifies the loss function L(θ) by adding penalty terms:
 
-**L₁ Regularization**:
-L_reg(θ) = L(θ) + λ∑|wᵢ|
+**L₁ Regularization**: L_reg(θ) = L(θ) + λ∑|wᵢ|
 
 - Gradient: ∂Ω/∂w = sign(w)
 - Properties:
@@ -1374,8 +1312,7 @@ L_reg(θ) = L(θ) + λ∑|wᵢ|
     - Effective feature selection
     - Non-differentiable at w = 0
 
-**L₂ Regularization**:
-L_reg(θ) = L(θ) + λ∑wᵢ²
+**L₂ Regularization**: L_reg(θ) = L(θ) + λ∑wᵢ²
 
 - Gradient: ∂Ω/∂w = 2w
 - Properties:
@@ -1386,9 +1323,7 @@ L_reg(θ) = L(θ) + λ∑wᵢ²
 **Combined Approaches**:
 
 - Elastic Net: α∑|wᵢ| + (1-α)∑wᵢ²
-- Dropout: Randomly zero out units (p: keep probability)
-  Training: y = f(Wx) * mask/p
-  Inference: y = f(Wx)
+- Dropout: Randomly zero out units (p: keep probability) Training: y = f(Wx) \* mask/p Inference: y = f(Wx)
 - Early Stopping: Monitor validation error
 
 The strength parameter λ controls the trade-off between fitting the data and keeping weights small.
@@ -1402,12 +1337,11 @@ To solve this, we can use a method called dropout in which we turn part of the n
 network train:
 
 We go through the epochs and randomly turn off some of the nodes. This forces the other nodes to pick up the slack and
-take a larger part in the training.
-To drop nodes, we give the algorithm a parameter that indicates the probability that each node will get dropped during
-each epoch. For example, if we set this parameter to 0.2, this means that during each epoch, each node has a 20%
-probability of being turned off.
-Note that some nodes may get turned off more than others and some may never get turned off. This is OK since we're doing
-it over and over; on average, each node will get approximately the same treatment.
+take a larger part in the training. To drop nodes, we give the algorithm a parameter that indicates the probability that
+each node will get dropped during each epoch. For example, if we set this parameter to 0.2, this means that during each
+epoch, each node has a 20% probability of being turned off. Note that some nodes may get turned off more than others and
+some may never get turned off. This is OK since we're doing it over and over; on average, each node will get
+approximately the same treatment.
 
 # Local Minima and Random Restart
 
@@ -1422,19 +1356,20 @@ Mathematically, the challenge can be formalized as:
 - For weight vector w, a local minimum occurs when:
     - ∇L(w) = 0 (gradient is zero)
     - ∇²L(w) is positive definite (all eigenvalues > 0)
-- Not all local minima are created equal:
-  L(w_local) > L(w_global)
+- Not all local minima are created equal: L(w_local) > L(w_global)
 
 **Random Restart Techniques**:
 
 1. Basic Random Restart:
+
     - Initialize: w_new = w_0 + ϵ, ϵ ~ N(0,σ²)
     - Run multiple times with different seeds
-    - Keep best solution: w* = argmin_w L(w)
+    - Keep best solution: w\* = argmin_w L(w)
 
 2. Momentum-Based Escape:
-    - Update rule: v_t = μv_(t-1) - η∇L(w)
-    - Weight update: w_t = w_(t-1) + v_t
+
+    - Update rule: v*t = μv*(t-1) - η∇L(w)
+    - Weight update: w*t = w*(t-1) + v_t
     - μ: momentum coefficient
 
 3. Learning Rate Scheduling:
@@ -1472,12 +1407,9 @@ difference has a big impact on neural networks.
 
 Another very popular activation function is the Rectified Linear Unit (ReLU). The formula is:
 
-relu(x) = {x if x ≥ 0
-0 if x < 0
+relu(x) = {x if x ≥ 0 0 if x < 0
 
-In other words:
-• If the input is positive, return the same value.
-• If the input is negative, return zero.
+In other words: • If the input is positive, return the same value. • If the input is negative, return zero.
 
 This function is used a lot instead of the sigmoid and it can improve the training significantly without sacrificing
 much accuracy (since the derivative is one if the number is positive).
@@ -1487,14 +1419,11 @@ much accuracy (since the derivative is one if the number is positive).
 First, let's review our batch gradient descent algorithm:
 
 In order to decrease error, we take a bunch of steps following the negative of the gradient, which is the error
-function.
-Each step is called an epoch.
-In each epoch, we take our input (all of our data) and run it through the entire neural network.
-Then we find our predictions and calculate the error (how far the predictions are from the actual labels).
-Finally, we back-propagate this error in order to update the weights in the neural network. This will give us a better
-boundary for predicting our data.
-If we have a large number of data points then this process will involve huge matrix computations, which would use a lot
-of memory.
+function. Each step is called an epoch. In each epoch, we take our input (all of our data) and run it through the entire
+neural network. Then we find our predictions and calculate the error (how far the predictions are from the actual
+labels). Finally, we back-propagate this error in order to update the weights in the neural network. This will give us a
+better boundary for predicting our data. If we have a large number of data points then this process will involve huge
+matrix computations, which would use a lot of memory.
 
 ### Stochastic Gradient Descent
 
@@ -1506,14 +1435,11 @@ network, calculating the gradient of the error function based on these points an
 
 We still want to use all our data, so what we do is the following:
 
-Split the data into several batches.
-Take the points in the first batch and run them through the neural network.
-Calculate the error and its gradient.
-Back-propagate to update the weights (which will define a better boundary region).
-Repeat the above steps for the rest of the batches.
-Notice that with this approach we take multiple steps, whereas with batch gradient descent we take only one step with
-all the data. Each step may be less accurate, but, in practice, it's much better to take a bunch of slightly inaccurate
-steps than to take only one good one.
+Split the data into several batches. Take the points in the first batch and run them through the neural network.
+Calculate the error and its gradient. Back-propagate to update the weights (which will define a better boundary region).
+Repeat the above steps for the rest of the batches. Notice that with this approach we take multiple steps, whereas with
+batch gradient descent we take only one step with all the data. Each step may be less accurate, but, in practice, it's
+much better to take a bunch of slightly inaccurate steps than to take only one good one.
 
 #### Learning Rate Decay
 
@@ -1521,14 +1447,13 @@ Here are some key ideas to keep in mind when choosing a learning rate:
 
 If the learning rate is large:
 
-This means the algorithm is taking large steps, which can make it faster.
-However, the large steps may cause it to miss (overshoot) the minimum.
-If the learning learning rate is small:
+This means the algorithm is taking large steps, which can make it faster. However, the large steps may cause it to miss
+(overshoot) the minimum. If the learning learning rate is small:
 
-This means the algorithm is taking small steps, which can make it slower.
-However, it will make steady progress and have a better chance of arriving at the local minimum.
-If your model is not working, a good general rule of thumb is to try decreasing the learning rate. The best learning
-rates are those that decrease as the algorithm is getting closer to a solution.
+This means the algorithm is taking small steps, which can make it slower. However, it will make steady progress and have
+a better chance of arriving at the local minimum. If your model is not working, a good general rule of thumb is to try
+decreasing the learning rate. The best learning rates are those that decrease as the algorithm is getting closer to a
+solution.
 
 ### Momentum
 
@@ -1558,15 +1483,13 @@ know how to:
   dominates the resulting model disproportionately.
 - Use random restart to avoid getting stuck in local minima.
 - Use the hyperbolic tangent function and ReLU to improve gradient descent.
-- Distinguish between batch gradient descent vs stochastic gradient descent.
-  Adjust the learning rate of the gradient descent algorithm in order to improve model optimization.
-  Use momentum to avoid getting stuck in local minima.
+- Distinguish between batch gradient descent vs stochastic gradient descent. Adjust the learning rate of the gradient
+  descent algorithm in order to improve model optimization. Use momentum to avoid getting stuck in local minima.
 
 ### Transfer Learning
 
-The Four Main Cases When Using Transfer Learning
-Transfer learning involves taking a pre-trained neural network and adapting the neural network to a new, different data
-set.
+The Four Main Cases When Using Transfer Learning Transfer learning involves taking a pre-trained neural network and
+adapting the neural network to a new, different data set.
 
 Depending on both:
 
@@ -1580,11 +1503,10 @@ the approach for using transfer learning will be different. There are four main 
 3. new data set is large, new data is similar to original training data
 4. new data set is large, new data is different from original training data
 
-<br>
-
-![title](images/1.png)
-
-<br>
+<div align="center">
+<img src="images/1.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 A large data set might have one million images. A small data could have two-thousand images. The dividing line between a
 large data set and small data set is somewhat subjective. Overfitting is a concern when using transfer learning with a
@@ -1602,13 +1524,10 @@ To explain how each situation works, we will start with a generic pre-trained co
 how to adjust the network for each case. Our example network contains three convolutional layers and three fully
 connected layers:
 
-
-<br>
-
-![title](images/2.png)
-
-<br>
-
+<div align="center">
+<img src="images/2.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 Here is an generalized overview of what the convolutional neural network does:
 
@@ -1620,11 +1539,10 @@ Each transfer learning case will use the pre-trained convolutional neural networ
 
 #### Case 1: Small Data Set, Similar Data
 
-<br>
-
-![title](images/3.png)
-
-<br>
+<div align="center">
+<img src="images/3.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 If the new data set is small and similar to the original training data:
 
@@ -1642,19 +1560,17 @@ kept.
 
 Here's how to visualize this approach:
 
-<br>
-
-![title](images/4.png)
-
-<br>
+<div align="center">
+<img src="images/4.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 #### Case 2: Small Data Set, Different Data
 
-<br>
-
-![title](images/5.png)
-
-<br>
+<div align="center">
+<img src="images/5.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 If the new data set is small and different from the original training data:
 
@@ -1672,20 +1588,17 @@ will only use the layers containing lower level features.
 
 Here is how to visualize this approach:
 
-<br>
-
-![title](images/6.png)
-
-<br>
+<div align="center">
+<img src="images/6.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 #### Case 3: Large Data Set, Similar Data
 
-<br>
-
-![title](images/7.png)
-
-<br>
-
+<div align="center">
+<img src="images/7.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 If the new data set is large and similar to the original training data:
 
@@ -1702,20 +1615,17 @@ well.
 
 Here is how to visualize this approach:
 
-
-<br>
-
-![title](images/8.png)
-
-<br>
+<div align="center">
+<img src="images/8.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 #### Case 4: Large Data Set, Different Data
 
-<br>
-
-![title](images/9.png)
-
-<br>
+<div align="center">
+<img src="images/9.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 If the new data set is large and different from the original training data:
 
@@ -1731,12 +1641,10 @@ initialize the convolutional neural network weights and train the network from s
 
 Here is how to visualize this approach:
 
-
-<br>
-
-![title](images/10.png)
-
-<br>
+<div align="center">
+<img src="images/10.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 # Programming Transformer Neural Networks in PyTorch
 
@@ -1750,8 +1658,8 @@ tokenization method.
 
 ### Word Tokenization
 
-Word tokenization splits text into individual words. For example:
-"The cat sat on the mat" → ["The", "cat", "sat", "on", "the", "mat"]
+Word tokenization splits text into individual words. For example: "The cat sat on the mat" → ["The", "cat", "sat", "on",
+"the", "mat"]
 
 This method faces challenges with:
 
@@ -1830,9 +1738,8 @@ and choosing the appropriate method for your specific use case is essential for 
 
 #### The Bag of Words Model
 
-How It Works
-The Bag of Words model uses a binary vector as an input.
-Each value in the vector is either one or zero, created from input token IDs.
+How It Works The Bag of Words model uses a binary vector as an input. Each value in the vector is either one or zero,
+created from input token IDs.
 
 #### Steps Involved
 
@@ -1848,30 +1755,22 @@ Each value in the vector is either one or zero, created from input token IDs.
 - For each token ID, if the ID value is, for example, 345, set one in the corresponding position in the vector.
 - Repeat this process for all other input IDs.
 - The input vector will have as many elements as there are unique words in the vocabulary. For instance, if the
-  vocabulary has 65,000 words, the input vector will have 65,000 elements.
-  Model Training and Application
+  vocabulary has 65,000 words, the input vector will have 65,000 elements. Model Training and Application
 
-With this binary vector, we can pass the input to a neural network or other machine learning models.
-Training a model with these input vectors allows it to perform tasks like classifying text (e.g., determining if
-messages are spam or non-spam).
-Limitations of the Bag of Words Model
-Ignores Word Order: The model does not consider the sequence in which words appear, which is crucial for understanding
-the context.
-Ignores Grammatical Structure: It overlooks punctuation and sentence structure, missing out on important linguistic
-nuances.
-Limited Semantic Meaning: The model's token representation only indicates the presence of words, lacking deeper semantic
-insights.
-Handling Unseen Words: The model struggles with words not seen during training, as they are not represented in the
-vocabulary.
-Moving Beyond Simple Models
-While the Bag of Words model can be effective for some simple tasks, it often falls short for more complex applications.
-To address these limitations, we will explore two key improvements:
+With this binary vector, we can pass the input to a neural network or other machine learning models. Training a model
+with these input vectors allows it to perform tasks like classifying text (e.g., determining if messages are spam or
+non-spam). Limitations of the Bag of Words Model Ignores Word Order: The model does not consider the sequence in which
+words appear, which is crucial for understanding the context. Ignores Grammatical Structure: It overlooks punctuation
+and sentence structure, missing out on important linguistic nuances. Limited Semantic Meaning: The model's token
+representation only indicates the presence of words, lacking deeper semantic insights. Handling Unseen Words: The model
+struggles with words not seen during training, as they are not represented in the vocabulary. Moving Beyond Simple
+Models While the Bag of Words model can be effective for some simple tasks, it often falls short for more complex
+applications. To address these limitations, we will explore two key improvements:
 
-Better Word Representation: Methods that provide more nuanced and semantically rich representations of words.
-Advanced Neural Network Architectures: More sophisticated models designed for NLP tasks, capable of capturing complex
-patterns and relationships in text.
-These advancements will help us build more robust and effective machine learning models for processing and understanding
-natural language.
+Better Word Representation: Methods that provide more nuanced and semantically rich representations of words. Advanced
+Neural Network Architectures: More sophisticated models designed for NLP tasks, capable of capturing complex patterns
+and relationships in text. These advancements will help us build more robust and effective machine learning models for
+processing and understanding natural language.
 
 # Understanding Embedding Vectors in Machine Learning
 
@@ -2005,85 +1904,53 @@ applications.
 What Are Embedding Vectors?
 
 Definition: Each word is represented as a smaller multi-dimensional vector, where each value represents certain
-characteristics of the word relevant to the model.
-Training: The size of the vectors is decided before training, and the model learns these vectors during the training
-process.
-Properties of Embedding Vectors
+characteristics of the word relevant to the model. Training: The size of the vectors is decided before training, and the
+model learns these vectors during the training process. Properties of Embedding Vectors
 
 Interpretability: The specific values in embedding vectors are not directly interpretable, but they have meaningful
-properties.
-Dimensionality: Embedding vectors usually have hundreds or thousands of dimensions, making them challenging to
-visualize.
-Similarity in Embeddings
+properties. Dimensionality: Embedding vectors usually have hundreds or thousands of dimensions, making them challenging
+to visualize. Similarity in Embeddings
 
-Semantic Similarity: Words with similar meanings are represented by similar vectors.
-For example, "laptop" and "computer" will have similar vector values and will be close to each other in the embedding
-space, while "orange" and "banana" will be close in their respective cluster.
-Computing Similarity: Dot Product
+Semantic Similarity: Words with similar meanings are represented by similar vectors. For example, "laptop" and
+"computer" will have similar vector values and will be close to each other in the embedding space, while "orange" and
+"banana" will be close in their respective cluster. Computing Similarity: Dot Product
 
-Dot Product Operation:
-Given two vectors, the dot product is calculated by multiplying corresponding values and summing the results.
-The result indicates the similarity:
+Dot Product Operation: Given two vectors, the dot product is calculated by multiplying corresponding values and summing
+the results. The result indicates the similarity:
 
-Positive Result: Indicates similarity between words.
-Zero Result: Indicates unrelated words.
-Negative Result: Indicates opposite meanings.
-Example Calculations
-Semantic Relationships: Embedding vectors can reveal relationships:
-Gender Analogy: The difference between "woman" and "man" vectors, when added to "king," approximates the "queen" vector.
+Positive Result: Indicates similarity between words. Zero Result: Indicates unrelated words. Negative Result: Indicates
+opposite meanings. Example Calculations Semantic Relationships: Embedding vectors can reveal relationships: Gender
+Analogy: The difference between "woman" and "man" vectors, when added to "king," approximates the "queen" vector.
 Geographical Analogy: The difference between "Rome" and "Paris" vectors is similar to the difference between "France"
-and "Italy."
-Methods for Obtaining Word Embeddings
-Pre-trained Embedding Models:
-These are independent models trained specifically to compute word embeddings and can be used in various applications.
-Transformers and Embeddings:
-During the training of a Transformer model, word embeddings are learned as part of the process, eliminating the need for
-separate embedding libraries.
-Using Embedding Vectors in Models
-Application:
-Tokenize an input sentence and convert each token into an embedding vector.
-These vectors can then be flattened and passed into a neural network.
-Sequential Data Processing:
-Instead of using a feedforward neural network, architectures designed for sequential data, like text, are often more
-suitable.
+and "Italy." Methods for Obtaining Word Embeddings Pre-trained Embedding Models: These are independent models trained
+specifically to compute word embeddings and can be used in various applications. Transformers and Embeddings: During the
+training of a Transformer model, word embeddings are learned as part of the process, eliminating the need for separate
+embedding libraries. Using Embedding Vectors in Models Application: Tokenize an input sentence and convert each token
+into an embedding vector. These vectors can then be flattened and passed into a neural network. Sequential Data
+Processing: Instead of using a feedforward neural network, architectures designed for sequential data, like text, are
+often more suitable.
 
-How RNNs Work
-Sequential Data Processing
-Token-by-Token Processing: In RNNs, data is processed one token at a time. The first input token is passed through the
-network, and its output, along with the hidden state, is used as input for the next token.
-Hidden State: The hidden layer's output, called the hidden state, retains information about previous tokens, allowing
-the network to use this context when processing subsequent tokens.
-Initial State: An initial empty state is passed when processing the first token to start the sequence.
-Applications of RNNs
-RNNs are well-suited for tasks involving sequential data, such as:
+How RNNs Work Sequential Data Processing Token-by-Token Processing: In RNNs, data is processed one token at a time. The
+first input token is passed through the network, and its output, along with the hidden state, is used as input for the
+next token. Hidden State: The hidden layer's output, called the hidden state, retains information about previous tokens,
+allowing the network to use this context when processing subsequent tokens. Initial State: An initial empty state is
+passed when processing the first token to start the sequence. Applications of RNNs RNNs are well-suited for tasks
+involving sequential data, such as:
 
-Text Processing: Handling sequences in natural language processing.
-Audio Processing: Analyzing sequences in audio data.
-Time Series Analysis: Interpreting data points collected or recorded at time intervals.
-RNN Architectures
-Standard RNN
+Text Processing: Handling sequences in natural language processing. Audio Processing: Analyzing sequences in audio data.
+Time Series Analysis: Interpreting data points collected or recorded at time intervals. RNN Architectures Standard RNN
 One-to-One: Typically used for classification tasks, where only the final output is used to classify an input sequence,
-such as determining if a text is spam or not.
-Variations of RNNs
-One-to-Many RNN:
-Description: Takes an initial input and generates multiple output tokens.
-Use Cases: Tag generation, music generation.
-Many-to-Many RNN:
-Description: Processes an input sequence and generates an output sequence token by token.
-Use Cases: Language translation, sequence-to-sequence tasks.
-Challenges with RNNs
-Difficulty Accessing Previous States: RNNs struggle to retain information from tokens seen long ago due to the nature of
-the hidden state update process.
-Diminishing Gradient Problem: In deep networks, gradients can become very small, slowing down training and making it
-difficult to capture dependencies over long sequences.
-Solutions and Improvements
-LSTM (Long Short-Term Memory):
-Designed to better retain information over longer sequences by using gates to control the flow of information.
-GRU (Gated Recurrent Unit):
-Simplifies the LSTM model while still addressing some of its key challenges.
-The Next Evolution: Transformers
-The next major advancement in NLP came with the Transformer architecture, which uses the attention mechanism to handle
-the challenges RNNs face, especially with long-range dependencies and gradient issues.
+such as determining if a text is spam or not. Variations of RNNs One-to-Many RNN: Description: Takes an initial input
+and generates multiple output tokens. Use Cases: Tag generation, music generation. Many-to-Many RNN: Description:
+Processes an input sequence and generates an output sequence token by token. Use Cases: Language translation,
+sequence-to-sequence tasks. Challenges with RNNs Difficulty Accessing Previous States: RNNs struggle to retain
+information from tokens seen long ago due to the nature of the hidden state update process. Diminishing Gradient
+Problem: In deep networks, gradients can become very small, slowing down training and making it difficult to capture
+dependencies over long sequences. Solutions and Improvements LSTM (Long Short-Term Memory): Designed to better retain
+information over longer sequences by using gates to control the flow of information. GRU (Gated Recurrent Unit):
+Simplifies the LSTM model while still addressing some of its key challenges. The Next Evolution: Transformers The next
+major advancement in NLP came with the Transformer architecture, which uses the attention mechanism to handle the
+challenges RNNs face, especially with long-range dependencies and gradient issues.
 
 By understanding RNNs and their variations, we gain insight into why newer architectures like Transformers have been so
 revolutionary in the field of NLP. In the following sections, we will explore these advanced architectures and their
@@ -2104,10 +1971,12 @@ updated as they process input sequences.
 ## Types of RNNs
 
 1. Simple RNN (Vanilla)
+
     - Basic recurrent structure
     - Suffers from vanishing/exploding gradients
 
 2. LSTM (Long Short-Term Memory)
+
     - Gates: Input, Forget, Output
     - Cell state for long-term memory
     - Better gradient flow
@@ -2139,12 +2008,10 @@ updated as they process input sequences.
 
 Transformers revolutionized deep learning by introducing self-attention mechanisms and parallel processing capabilities.
 
-
-<br>
-
-![title](images/transformer.png)
-
-<br>
+<div align="center">
+<img src="images/transformer.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 ## Core Components
 
@@ -2198,11 +2065,13 @@ Transformers revolutionized deep learning by introducing self-attention mechanis
 ## Architecture Variants
 
 1. BERT
+
     - Bidirectional encoder
     - Masked language modeling
     - Next sentence prediction
 
 2. GPT
+
     - Decoder-only architecture
     - Autoregressive modeling
     - Large-scale training
@@ -2243,42 +2112,29 @@ The choice between them depends on:
 - Latency requirements
 - Model interpretability needs
 
-Overview of Transformer Model Functionality
-Tokenization and Embeddings:
-The input prompt is split into tokens, each converted into a token ID and then into an embedding vector.
-The same token ID consistently produces the same embedding vector.
-Attention Mechanism:
-Embedding vectors are refined in the attention block.
-Example: The word "date" in different sentences can have different meanings. The attention mechanism updates the
-embedding vector based on the context provided by other words in the input.
-The process of interaction between embedding vectors is called attention, which uses attention scores to show the
-relationships between input tokens.
-Transformer Block:
-Comprises an attention block followed by a feedforward network.
-Multiple Transformer blocks (layers) are chained together, with the output from one layer becoming the input for the
-next.
-Output and Softmax:
-The final layer provides a probability distribution for the next token to generate, using the softmax function.
-Benefits of Transformers
-Parallel Processing: Transformers can process the entire input prompt simultaneously, unlike RNNs.
-Efficiency with Long Texts: Better handling of longer texts.
-Ease of Training: More straightforward training compared to RNN models.
-Performance: Superior performance on real-world tasks.
-Concept of Context Window
-Context Window: The maximum number of tokens a model can handle at once, including both the input prompt and the output
-generated so far.
-Variability: The size of the context window varies by model:
-Smaller models may handle around 2,000 tokens.
-Larger models, like recent Gemini models, can handle over 1.5 million tokens.
-Tokenization: A single word may be split into multiple tokens. For example, in GPT models, it typically takes four
-tokens to represent three words.
+Overview of Transformer Model Functionality Tokenization and Embeddings: The input prompt is split into tokens, each
+converted into a token ID and then into an embedding vector. The same token ID consistently produces the same embedding
+vector. Attention Mechanism: Embedding vectors are refined in the attention block. Example: The word "date" in different
+sentences can have different meanings. The attention mechanism updates the embedding vector based on the context
+provided by other words in the input. The process of interaction between embedding vectors is called attention, which
+uses attention scores to show the relationships between input tokens. Transformer Block: Comprises an attention block
+followed by a feedforward network. Multiple Transformer blocks (layers) are chained together, with the output from one
+layer becoming the input for the next. Output and Softmax: The final layer provides a probability distribution for the
+next token to generate, using the softmax function. Benefits of Transformers Parallel Processing: Transformers can
+process the entire input prompt simultaneously, unlike RNNs. Efficiency with Long Texts: Better handling of longer
+texts. Ease of Training: More straightforward training compared to RNN models. Performance: Superior performance on
+real-world tasks. Concept of Context Window Context Window: The maximum number of tokens a model can handle at once,
+including both the input prompt and the output generated so far. Variability: The size of the context window varies by
+model: Smaller models may handle around 2,000 tokens. Larger models, like recent Gemini models, can handle over 1.5
+million tokens. Tokenization: A single word may be split into multiple tokens. For example, in GPT models, it typically
+takes four tokens to represent three words.
 
 # Building the Transformer Neural Network | PyTorch
 
 #### Model Architecture
 
-- Similarity to GPT Models: Our model will have a similar architecture to the GPT models created by OpenAI.
-  Differences from GPT Models:
+- Similarity to GPT Models: Our model will have a similar architecture to the GPT models created by OpenAI. Differences
+  from GPT Models:
 - Model Size: Our model will be much smaller, with significantly fewer parameters, making it more accessible and less
   resource-intensive to train.
 - Tokenizer Type: We will use a character-level tokenizer instead of a subword tokenizer to simplify our implementation.
@@ -2293,24 +2149,16 @@ tokens to represent three words.
 
 #### Key Steps in Data Preparation
 
-1. Implementing a Tokenizer
-   Purpose: A tokenizer converts text into token IDs, which are numerical representations of the text.
-   We'll implement a tokenizer in PyTorch
-2. Preparing the Training Dataset
-   Goal:
-   The model's goal is to predict the next token given part of an input dataset.
-   Example:
-   Given the phrase: "The core innovation of Transformers is the attention."
-   Input: "The" → Model predicts: "core"
-   Input: "The core" → Model predicts: "innovation"
-   Continue until the last input: "The core innovation of Transformers is the" → Model predicts: "attention"
-   Dataset Representation:
-   Inputs and targets are part of the same phrase but are shifted by one position.
-   While the model sees token IDs during training, for clarity, we'll often refer to these as words.
-   Training Process
-   Training Batches: During each training iteration, we don't just use a single example. Instead, we use multiple random
-   training examples to create a training batch.
-   Efficiency: Using batches helps better utilize GPU resources, speeding up the training process.
+1. Implementing a Tokenizer Purpose: A tokenizer converts text into token IDs, which are numerical representations of
+   the text. We'll implement a tokenizer in PyTorch
+2. Preparing the Training Dataset Goal: The model's goal is to predict the next token given part of an input dataset.
+   Example: Given the phrase: "The core innovation of Transformers is the attention." Input: "The" → Model predicts:
+   "core" Input: "The core" → Model predicts: "innovation" Continue until the last input: "The core innovation of
+   Transformers is the" → Model predicts: "attention" Dataset Representation: Inputs and targets are part of the same
+   phrase but are shifted by one position. While the model sees token IDs during training, for clarity, we'll often
+   refer to these as words. Training Process Training Batches: During each training iteration, we don't just use a
+   single example. Instead, we use multiple random training examples to create a training batch. Efficiency: Using
+   batches helps better utilize GPU resources, speeding up the training process.
 
 #### Using DataLoader for Mini-Batches
 
@@ -2318,56 +2166,39 @@ In training a model, we typically don't use a single sample per training iterati
 gradient descent) doesn't efficiently utilize resources and leads to fluctuating training losses. Using the whole
 dataset (batch gradient descent) is impractical due to high computational costs and memory requirements.
 
-Mini-Batches
-Instead, models are often trained using mini-batches, where each training iteration uses a small subset of samples. This
-approach, known as mini-batch gradient descent, balances efficiency and stability in training.
+Mini-Batches Instead, models are often trained using mini-batches, where each training iteration uses a small subset of
+samples. This approach, known as mini-batch gradient descent, balances efficiency and stability in training.
 
-
-<br>
-
-![title](images/training.png)
-
-<br>
+<div align="center">
+<img src="images/training.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 ### Embeddings and Positional Layers in a Transformer-Based Language Model
 
 #### Building the Transformer Model
 
-<br>
+<div align="center">
+<img src="images/training_model.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-![title](images/training_model.png)
-
-<br>
-
-
-Step 1: Processing Input
-Tokenization: The input text is tokenized, converting each word into a token ID.
-Word Embeddings: Each token ID is then converted into a corresponding word embedding. After this step, we have a matrix
-of embedding vectors, each representing a token in the input.
-Key Points About Word Embeddings
-Dependence on Token IDs: The word embeddings are solely dependent on the token IDs; the same token ID always produces
-the same word embedding vector.
-Training: These embeddings are not pre-defined but are learned during the training of our model.
-Creating Embeddings
-Vocabulary Size: Set to 10,000 (arbitrary choice).
-Embedding Vector Size: Set to 75.
-nn.Embedding: A PyTorch class used to create embeddings. It requires the vocabulary size and embedding vector size as
-inputs.
-Usage
-Token IDs: We obtain token IDs using a tokenizer, but for now, we use arbitrary IDs for illustration.
-Embedding Layer: Pass these token IDs to the nn.Embedding instance, which returns a tensor with vectors of size 75 (the
-embedding size).
-Adding Positional Encoding
-Before feeding the embedding vectors into the model, we add positional encoding:
+Step 1: Processing Input Tokenization: The input text is tokenized, converting each word into a token ID. Word
+Embeddings: Each token ID is then converted into a corresponding word embedding. After this step, we have a matrix of
+embedding vectors, each representing a token in the input. Key Points About Word Embeddings Dependence on Token IDs: The
+word embeddings are solely dependent on the token IDs; the same token ID always produces the same word embedding vector.
+Training: These embeddings are not pre-defined but are learned during the training of our model. Creating Embeddings
+Vocabulary Size: Set to 10,000 (arbitrary choice). Embedding Vector Size: Set to 75. nn.Embedding: A PyTorch class used
+to create embeddings. It requires the vocabulary size and embedding vector size as inputs. Usage Token IDs: We obtain
+token IDs using a tokenizer, but for now, we use arbitrary IDs for illustration. Embedding Layer: Pass these token IDs
+to the nn.Embedding instance, which returns a tensor with vectors of size 75 (the embedding size). Adding Positional
+Encoding Before feeding the embedding vectors into the model, we add positional encoding:
 
 Purpose: Injects positional information into the word embeddings, helping the model understand the relative order of
-input tokens.
-Positional Encoding Matrix: A fixed matrix added to the word embeddings. This matrix does not depend on the input and
-provides consistent positional information.
-Positional Encoding in Models
-Training: In some models, including ours, the values in the positional encoding matrix are learned along with other
-model parameters.
-Fixed Formula: In other large language models (LLMs), positional encodings are defined using a fixed formula and remain
+input tokens. Positional Encoding Matrix: A fixed matrix added to the word embeddings. This matrix does not depend on
+the input and provides consistent positional information. Positional Encoding in Models Training: In some models,
+including ours, the values in the positional encoding matrix are learned along with other model parameters. Fixed
+Formula: In other large language models (LLMs), positional encodings are defined using a fixed formula and remain
 unchanged during training.
 
 # Building a Transformer Model
@@ -2379,6 +2210,7 @@ unchanged during training.
 The Transformer begins by converting input text into meaningful numerical representations through two key steps:
 
 1. Initial Tokenization
+
     - Raw text is converted to token IDs
     - Each token gets a unique numerical identifier
     - Example: [348, 1978, 634] as shown in the image
@@ -2428,11 +2260,10 @@ meaning and position.
 
 # Understanding the Softmax Function
 
-<br>
-
-![title](images/softmax.png)
-
-<br>
+<div align="center">
+<img src="images/softmax.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 ## Definition and Purpose
 
@@ -2492,11 +2323,13 @@ softmax = exp_z / sum(exp_z)
 ## Applications
 
 1. Classification Tasks
+
     - Output layer of neural networks
     - Multi-class probability distribution
     - Cross-entropy loss computation
 
 2. Attention Mechanisms
+
     - Computing attention weights
     - Normalizing similarity scores
 
@@ -2548,83 +2381,53 @@ context-aware representations for each position in the sequence.
 
 #### Calculating Attention
 
-Overview of the Attention Block
-Attention Block Function: Computes attention scores and updates embedding values using these scores.
-Components: The attention block involves several steps, including calculating query, key, and value matrices and
-updating embedding vectors.
-Step-by-Step Implementation
-Query Matrix (Q)
-Calculation: Multiply the matrix of embedding vectors by another matrix ( W_Q ) to produce the query matrix (Q).
-Notation: Represented as Q for simplicity, often visualized as an array of vectors.
-Key Matrix (K)
-Calculation: Similar to Q, the key matrix (K) is obtained by multiplying the embedding vectors by matrix ( W_K ).
-Concept: Queries can be seen as questions about other words, while keys provide answers.
-Computing Attention Scores
-Similarity Check: Calculate the dot product between vectors in the Q and K matrices to determine the similarity.
-Matrix Multiplication: Multiply the Q matrix by the transposed K matrix to get the attention scores.
-Normalization with Softmax
-Purpose: Ensures all values are between 0 and 1 and sum to one.
-Application: Apply the softmax function to each column of the resulting matrix.
-Diagram of Operations
-Steps Recap:
-Derive Q and K matrices from the input embeddings.
-Compute attention scores via matrix multiplication and softmax.
-Use these scores to update embedding vectors.
-Value Matrix (V)
-Derivation: Similar to Q and K, the value matrix (V) is derived using another matrix ( W_V ).
-Updating Embeddings: Multiply each vector in V by the corresponding attention scores to produce updated embeddings.
-Final Diagram of the Attention Block
-Complete Process:
-Compute Q, K, and V matrices.
-Compute attention scores from Q and K.
-Update embeddings using attention scores and V.
-Multi-Head Attention
-Purpose: Multiple attention heads allow the model to learn different relationships between words in a sentence.
-Process: Each head performs similar calculations with different parameters, and the results are concatenated to form new
-embedding vectors.
-Formula for Attention
-From "Attention Is All You Need" Paper:
-Components: Uses Q, K, and V matrices.
-Adjustment: Includes a division by the square root of the dimension of the K matrix vector to prevent large attention
-scores.
-Final Steps: Apply softmax and multiply by V to compute the final output.
-Understanding the attention mechanism is key to grasping how Transformer models process and generate text, enabling them
-to focus on relevant parts of the input sequence when making predictions.
+Overview of the Attention Block Attention Block Function: Computes attention scores and updates embedding values using
+these scores. Components: The attention block involves several steps, including calculating query, key, and value
+matrices and updating embedding vectors. Step-by-Step Implementation Query Matrix (Q) Calculation: Multiply the matrix
+of embedding vectors by another matrix ( W_Q ) to produce the query matrix (Q). Notation: Represented as Q for
+simplicity, often visualized as an array of vectors. Key Matrix (K) Calculation: Similar to Q, the key matrix (K) is
+obtained by multiplying the embedding vectors by matrix ( W_K ). Concept: Queries can be seen as questions about other
+words, while keys provide answers. Computing Attention Scores Similarity Check: Calculate the dot product between
+vectors in the Q and K matrices to determine the similarity. Matrix Multiplication: Multiply the Q matrix by the
+transposed K matrix to get the attention scores. Normalization with Softmax Purpose: Ensures all values are between 0
+and 1 and sum to one. Application: Apply the softmax function to each column of the resulting matrix. Diagram of
+Operations Steps Recap: Derive Q and K matrices from the input embeddings. Compute attention scores via matrix
+multiplication and softmax. Use these scores to update embedding vectors. Value Matrix (V) Derivation: Similar to Q and
+K, the value matrix (V) is derived using another matrix ( W_V ). Updating Embeddings: Multiply each vector in V by the
+corresponding attention scores to produce updated embeddings. Final Diagram of the Attention Block Complete Process:
+Compute Q, K, and V matrices. Compute attention scores from Q and K. Update embeddings using attention scores and V.
+Multi-Head Attention Purpose: Multiple attention heads allow the model to learn different relationships between words in
+a sentence. Process: Each head performs similar calculations with different parameters, and the results are concatenated
+to form new embedding vectors. Formula for Attention From "Attention Is All You Need" Paper: Components: Uses Q, K, and
+V matrices. Adjustment: Includes a division by the square root of the dimension of the K matrix vector to prevent large
+attention scores. Final Steps: Apply softmax and multiply by V to compute the final output. Understanding the attention
+mechanism is key to grasping how Transformer models process and generate text, enabling them to focus on relevant parts
+of the input sequence when making predictions.
 
+<div align="center">
+<img src="images/queries.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-<br>
+<div align="center">
+<img src="images/queries_2.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-![title](images/queries.png)
+<div align="center">
+<img src="images/queries_3.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-<br>
+<div align="center">
+<img src="images/queries_4.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-
-<br>
-
-![title](images/queries_2.png)
-
-<br>
-
-
-<br>
-
-![title](images/queries_3.png)
-
-<br>
-
-
-<br>
-
-![title](images/queries_4.png)
-
-<br>
-
-
-<br>
-
-![title](images/queries_5.png)
-
-<br>
+<div align="center">
+<img src="images/queries_5.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 # Attention Mechanism in Transformers
 
@@ -2742,30 +2545,25 @@ distance in the sequence, making it a cornerstone of modern transformer architec
 
 #### Masking
 
-Preventing Cheating in Transformer Training with Masked Multi-Head Attention
-When training Transformer models, we convert parts of the training dataset into multiple training examples.
+Preventing Cheating in Transformer Training with Masked Multi-Head Attention When training Transformer models, we
+convert parts of the training dataset into multiple training examples.
 
 However, a problem arises because the model can "cheat" by looking ahead at the entire input when predicting the next
 word.
 
-<br>
+<div align="center">
+<img src="images/mask.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-![title](images/mask.png)
-
-<br>
-
-
-<br>
-
-![title](images/mask_1.png)
-
-<br>
-
+<div align="center">
+<img src="images/mask_1.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 To prevent this, we need to modify the attention scores to ensure the model cannot access future tokens.
 
-Solution: Masked Multi-Head Attention
-To stop the model from "cheating," we implement a masking strategy:
+Solution: Masked Multi-Head Attention To stop the model from "cheating," we implement a masking strategy:
 
 1. Attention Matrix Adjustment:
 
@@ -2788,23 +2586,16 @@ predictions, thus maintaining the integrity of the training process.
 
 ### Dropout Layer
 
-What is a Dropout Layer?
-Function in Neural Networks: In a feedforward neural network, each output from a previous layer is connected to all
-neurons in the next layer.
-Purpose of Dropout: The Dropout layer introduces randomness by setting a certain percentage of the inputs to zero during
-training. This percentage is usually specified as a hyperparameter.
-How Dropout Works
-Random Selection: On each training iteration, different inputs are randomly selected and set to zero. This list of "
-disabled" inputs changes with each iteration.
-Generalization: By doing this, the model does not become overly reliant on specific features, which helps it generalize
-better to new, unseen data. This process reduces the risk of overfitting.
-Training vs. Inference
-During Training: The Dropout layer is active, randomly disabling inputs to help generalization.
-During Inference: When the model is used for generating text or making predictions, the Dropout layer is disabled,
-ensuring that all features are fully utilized.
-Implementation in PyTorch
-Pre-built in PyTorch: We do not need to implement the Dropout layer ourselves, as PyTorch provides a built-in
-implementation through the Dropout class.
+What is a Dropout Layer? Function in Neural Networks: In a feedforward neural network, each output from a previous layer
+is connected to all neurons in the next layer. Purpose of Dropout: The Dropout layer introduces randomness by setting a
+certain percentage of the inputs to zero during training. This percentage is usually specified as a hyperparameter. How
+Dropout Works Random Selection: On each training iteration, different inputs are randomly selected and set to zero. This
+list of " disabled" inputs changes with each iteration. Generalization: By doing this, the model does not become overly
+reliant on specific features, which helps it generalize better to new, unseen data. This process reduces the risk of
+overfitting. Training vs. Inference During Training: The Dropout layer is active, randomly disabling inputs to help
+generalization. During Inference: When the model is used for generating text or making predictions, the Dropout layer is
+disabled, ensuring that all features are fully utilized. Implementation in PyTorch Pre-built in PyTorch: We do not need
+to implement the Dropout layer ourselves, as PyTorch provides a built-in implementation through the Dropout class.
 
 The Dropout technique is a crucial component in training robust neural networks, especially when dealing with complex
 data and models. It ensures that the model does not overfit and can generalize well across different datasets.
@@ -2816,28 +2607,23 @@ data and models. It ensures that the model does not overfit and can generalize w
 Before we start, we need to define a configuration for our model, containing hyperparameters that define its structure.
 This configuration is stored in a dictionary with the following parameters:
 
-Vocabulary Size: The number of unique token IDs supported by the tokenizer.
-Context Size: The maximum number of tokens the model can see at once.
-Embedding Dimension: The size of the embedding vectors.
-Number of Heads: The number of attention heads, each processing input independently.
-Number of Layers: The number of Transformer blocks in the model.
-Dropout Rate: The proportion of outputs set to zero in Dropout layers.
-Use Bias: A boolean indicating whether the linear transformations should include bias terms.
+Vocabulary Size: The number of unique token IDs supported by the tokenizer. Context Size: The maximum number of tokens
+the model can see at once. Embedding Dimension: The size of the embedding vectors. Number of Heads: The number of
+attention heads, each processing input independently. Number of Layers: The number of Transformer blocks in the model.
+Dropout Rate: The proportion of outputs set to zero in Dropout layers. Use Bias: A boolean indicating whether the linear
+transformations should include bias terms.
 
 #### Implementing the Transformers Block
 
-<br>
+<div align="center">
+<img src="images/transformer_block.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-![title](images/transformer_block.png)
-
-<br>
-
-
-<br>
-
-![title](images/layer_normalization.png)
-
-<br>
+<div align="center">
+<img src="images/layer_normalization.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 Overview of a Transformer Block
 
@@ -2856,42 +2642,30 @@ Feedforward Layer
 - Activation Function: The GELU activation function is applied to introduce nonlinearity.
 - Size Reduction: The output vector is then reduced to the original embedding size.
 
-GELU Activation Function
-Comparison: GELU is similar to the ReLU activation function but has a smoother shape, which helps in achieving better
-training results.
-Additional Components
+GELU Activation Function Comparison: GELU is similar to the ReLU activation function but has a smoother shape, which
+helps in achieving better training results. Additional Components
 
 #### Residual Connections
 
-Purpose: Helps with the vanishing gradient problem in deep networks.
-Implementation: The input to a block is added to the block's output before passing it forward, improving training
-efficiency.
+Purpose: Helps with the vanishing gradient problem in deep networks. Implementation: The input to a block is added to
+the block's output before passing it forward, improving training efficiency.
 
 #### Layer Normalization and Dropout
 
 Layer Normalization: Scales the output so that the mean becomes zero and variance becomes one, leading to faster
-training.
-Dropout Layer: Helps prevent overfitting by setting a portion of the output to zero during training.
-Summary
-Components of a Transformer Block:
-Multi-Head Attention
-Feedforward Network
-Layer Normalization
-Dropout
-Residual Connections
-These elements work together to process and refine the input data, making Transformer models highly effective for
-various NLP tasks.
+training. Dropout Layer: Helps prevent overfitting by setting a portion of the output to zero during training. Summary
+Components of a Transformer Block: Multi-Head Attention Feedforward Network Layer Normalization Dropout Residual
+Connections These elements work together to process and refine the input data, making Transformer models highly
+effective for various NLP tasks.
 
-Feedforward Block Implementation
-To define a feedforward block, we create a new class inheriting from nn.Module.
+Feedforward Block Implementation To define a feedforward block, we create a new class inheriting from nn.Module.
 
-Key Components
-Linear Layers: The first linear layer projects the input dimension to four times its size, followed by a GELU activation
-function and another linear layer that reduces the dimension back to the original size.
-Dropout Layer: Added to prevent overfitting.
+Key Components Linear Layers: The first linear layer projects the input dimension to four times its size, followed by a
+GELU activation function and another linear layer that reduces the dimension back to the original size. Dropout Layer:
+Added to prevent overfitting.
 
-Transformer Block Implementation
-With both the multi-head attention and feedforward blocks ready, we can now implement the Transformer block.
+Transformer Block Implementation With both the multi-head attention and feedforward blocks ready, we can now implement
+the Transformer block.
 
 Transformer Block Components
 
@@ -2909,23 +2683,19 @@ We'll walk through all the components of the model before implementing it in PyT
 
 1. Tokenization and Embedding:
 
-Input Splitting: The input is split into tokens, such as words, subwords, or characters.
-Token ID Conversion: These tokens are converted into token IDs.
-Embedding Vectors: Token IDs are converted into embedding vectors.
-Positional Encoding: Positional encoding values are added to the embedding vectors, resulting in input vectors for the
-model.
+Input Splitting: The input is split into tokens, such as words, subwords, or characters. Token ID Conversion: These
+tokens are converted into token IDs. Embedding Vectors: Token IDs are converted into embedding vectors. Positional
+Encoding: Positional encoding values are added to the embedding vectors, resulting in input vectors for the model.
 
 2. Layer Processing:
 
-Layer Passing: The input vectors are passed through the layers of the model sequentially.
-Shape Consistency: The output from each layer has the same shape as the input, but the values of embedding vectors
-evolve with each layer.
-Batch Processing: During training, a batch of inputs is processed together to optimize resource usage.
+Layer Passing: The input vectors are passed through the layers of the model sequentially. Shape Consistency: The output
+from each layer has the same shape as the input, but the values of embedding vectors evolve with each layer. Batch
+Processing: During training, a batch of inputs is processed together to optimize resource usage.
 
 3. Prediction and Output:
 
-Final Layer Output: After the final layer, the output consists of a series of embedding vectors.
-Token Prediction:
+Final Layer Output: After the final layer, the output consists of a series of embedding vectors. Token Prediction:
 
     - Linear Layer: Converts each embedding vector into a new vector with prediction scores for each token in the vocabulary. A score, such as 0.39, indicates the model's confidence in generating a token with a specific ID.
     - Softmax Conversion: Converts the prediction scores into probabilities using the softmax function. This results in a probability distribution for each token, where the sum of probabilities for each position equals one.
@@ -2934,25 +2704,20 @@ By following this structure, we ensure that the Transformer model processes and 
 the power of multi-head attention and feedforward networks. This design allows the model to handle complex tasks like
 language modeling, translation, and more.
 
-<br>
+<div align="center">
+<img src="images/a.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-![title](images/a.png)
+<div align="center">
+<img src="images/b.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-<br>
-
-
-<br>
-
-![title](images/b.png)
-
-<br>
-
-
-<br>
-
-![title](images/c.png)
-
-<br>
+<div align="center">
+<img src="images/c.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 # Building Blocks of the Model
 
@@ -3092,15 +2857,12 @@ train it, the better it becomes at generating coherent and stylistically accurat
 These are the steps for calculating the validation loss:
 
 Split the Dataset: Separate the data into training and validation datasets to evaluate the model's performance during
-training.
-Create a Validation Dataset and DataLoader: Prepare the data for evaluation.
-Calculate Validation Loss: Implement the logic to compute the validation loss, which provides insight into how well the
-model performs on the validation dataset.
-Update the Training Loop: Integrate validation loss calculation into the training loop and visualize training and
-validation loss over time.
-The starter code provided includes the essential components of a PyTorch model, including data tokenization, model
-definition, and a basic training loop. Your task is to complete the implementation, focusing on the validation aspect of
-the model's training process.
+training. Create a Validation Dataset and DataLoader: Prepare the data for evaluation. Calculate Validation Loss:
+Implement the logic to compute the validation loss, which provides insight into how well the model performs on the
+validation dataset. Update the Training Loop: Integrate validation loss calculation into the training loop and visualize
+training and validation loss over time. The starter code provided includes the essential components of a PyTorch model,
+including data tokenization, model definition, and a basic training loop. Your task is to complete the implementation,
+focusing on the validation aspect of the model's training process.
 
 ### Splitting the Dataset
 
@@ -3117,10 +2879,10 @@ validation dataset and a validation data loader.
     validation_dataset = TokenIdsDataset(validation_data, config["context_size"])
 ```
 
-Validation Loss Calculation
-Next, we implement a function to calculate the validation loss. First, we switch our model from training mode into
-evaluation mode to run our model for inference, which, for example, deactivates the Dropout layers we've added to our
-model. Keep in mind that we switch our model back to training mode at the beginning of every training iteration.
+Validation Loss Calculation Next, we implement a function to calculate the validation loss. First, we switch our model
+from training mode into evaluation mode to run our model for inference, which, for example, deactivates the Dropout
+layers we've added to our model. Keep in mind that we switch our model back to training mode at the beginning of every
+training iteration.
 
 ```textmate
     @torch.no_grad()
@@ -3176,7 +2938,7 @@ plot these charts and align values accurately.
             plt.legend(loc='center left')
             plt.grid(True)
             plt.show()
-```        
+```
 
 If we now run our model, and I'll rerun this notebook, as you can see, we've got our training and validation loss chart.
 If we wait for a few dozen iterations, we will see two lines on the chart, one for the training loss and another for the
@@ -3186,26 +2948,21 @@ validation loss.
 
 1. Splitting the Dataset
 
-To calculate validation loss, split the dataset into training and validation datasets.
-Tokenize the input text and determine the number of tokens for training based on the desired ratio.
-The rest of the tokens are used for validation.
+To calculate validation loss, split the dataset into training and validation datasets. Tokenize the input text and
+determine the number of tokens for training based on the desired ratio. The rest of the tokens are used for validation.
 Create datasets and data loaders for both training and validation data.
 
 2. Validation Loss Calculation Function
 
-Switch the model to evaluation mode to deactivate Dropout layers.
-Use an iterator to process batches from the validation dataset.
-For each batch:
-Extract inputs and targets.
-Pass inputs through the model to obtain logits.
-Reshape logits and targets to calculate loss using the cross-entropy function.
-Aggregate the loss to compute the total validation loss.
+Switch the model to evaluation mode to deactivate Dropout layers. Use an iterator to process batches from the validation
+dataset. For each batch: Extract inputs and targets. Pass inputs through the model to obtain logits. Reshape logits and
+targets to calculate loss using the cross-entropy function. Aggregate the loss to compute the total validation loss.
 Average the total loss by the number of processed batches to obtain the validation loss.
 
 3. Plotting Training and Validation Loss
 
-Store training and validation losses along with the corresponding steps.
-Use Matplotlib to plot the losses, ensuring step numbers align with loss values.
+Store training and validation losses along with the corresponding steps. Use Matplotlib to plot the losses, ensuring
+step numbers align with loss values.
 
 Now let's take a look at how we can calculate validation loss for our model during training. To do this, we first need
 to split our dataset into training and validation datasets. We tokenize the input text just as we did before and then
@@ -3236,47 +2993,40 @@ validation loss.
 
 # Using Pre-trained Transformers
 
-<br>
+<div align="center">
+<img src="images/ranked.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-![title](images/ranked.png)
+Model Scaling and Capabilities One trend you can see is that the bigger the model is, the more capable it usually
+becomes, and there are already some models with one trillion parameters. However, scaling models is not the only thing
+needed to achieve capabilities like those of products such as ChatGPT. If we train a model that can simply predict the
+next word, it will only be able to generate text but won't be able to answer questions like ChatGPT. This limitation
+does not depend on the amount of training data used or the model size.
 
-<br>
+Example of Model Limitations To give you an example, I've sent the following prompt to one of the older versions of
+GPT-3, which was trained to generate text instead of answering questions. As you can see, instead of answering the
+question, it started generating text related to the question. After being trained on a larger text corpus, it can only
+generate text that could surround a text that looks like the provided prompt. In contrast, if you send this question to
+ChatGPT, it would return an answer like 'Paris' and possibly provide some additional information.
 
+Training ChatGPT to Answer Questions So, how did OpenAI train a model that can answer questions? Let's take a high-level
+overview. They first trained a GPT model similar to what we've built but bigger and using much more data. Then, they
+used a dataset of questions and answers. With this dataset, they updated the weights of the trained GPT model to create
+a model that can answer questions. This new model, produced as a result of this process, was called GPT-3.5 and was used
+by the first version of ChatGPT. This process of taking a model trained for one task and modifying its weights to work
+for a different task is called fine-tuning, and it is used not just for LLMs but for other deep learning models as well.
 
-Model Scaling and Capabilities
-One trend you can see is that the bigger the model is, the more capable it usually becomes, and there are already some
-models with one trillion parameters. However, scaling models is not the only thing needed to achieve capabilities like
-those of products such as ChatGPT. If we train a model that can simply predict the next word, it will only be able to
-generate text but won't be able to answer questions like ChatGPT. This limitation does not depend on the amount of
-training data used or the model size.
+Fine-Tuning Process To fine-tune a model to perform question answering, OpenAI went through the following steps:
 
-Example of Model Limitations
-To give you an example, I've sent the following prompt to one of the older versions of GPT-3, which was trained to
-generate text instead of answering questions. As you can see, instead of answering the question, it started generating
-text related to the question. After being trained on a larger text corpus, it can only generate text that could surround
-a text that looks like the provided prompt. In contrast, if you send this question to ChatGPT, it would return an answer
-like 'Paris' and possibly provide some additional information.
-
-Training ChatGPT to Answer Questions
-So, how did OpenAI train a model that can answer questions? Let's take a high-level overview. They first trained a GPT
-model similar to what we've built but bigger and using much more data. Then, they used a dataset of questions and
-answers. With this dataset, they updated the weights of the trained GPT model to create a model that can answer
-questions. This new model, produced as a result of this process, was called GPT-3.5 and was used by the first version of
-ChatGPT. This process of taking a model trained for one task and modifying its weights to work for a different task is
-called fine-tuning, and it is used not just for LLMs but for other deep learning models as well.
-
-Fine-Tuning Process
-To fine-tune a model to perform question answering, OpenAI went through the following steps:
-
-They collected a dataset with different prompts and questions.
-They had humans answer these questions and organized the human-provided answers into a dataset.
-This dataset was then used to fine-tune the GPT-3 model to train it to answer questions.
-Further Refinement with Reward Models
-After this, they went through a different process. Using prompts, they sampled several outputs from the model to
-generate multiple answers for the same question. Then, people ranked these answers against each other. Using these
-ranking results, OpenAI created another dataset. This dataset of ranked answers was used to train another model called
-the reward model, which can calculate how good an answer to a prompt is. Finally, using the reward model, they
-fine-tuned the GPT-3 model to give answers that are more closely aligned with a reward policy.
+They collected a dataset with different prompts and questions. They had humans answer these questions and organized the
+human-provided answers into a dataset. This dataset was then used to fine-tune the GPT-3 model to train it to answer
+questions. Further Refinement with Reward Models After this, they went through a different process. Using prompts, they
+sampled several outputs from the model to generate multiple answers for the same question. Then, people ranked these
+answers against each other. Using these ranking results, OpenAI created another dataset. This dataset of ranked answers
+was used to train another model called the reward model, which can calculate how good an answer to a prompt is. Finally,
+using the reward model, they fine-tuned the GPT-3 model to give answers that are more closely aligned with a reward
+policy.
 
 #### Decoder-only Architecture
 
@@ -3330,71 +3080,48 @@ the previous context to generate the next piece of text.
 The decoder-only architecture has become particularly popular for large language models due to its simplicity and
 effectiveness in generative tasks.
 
+<div align="center">
+<img src="images/encoder.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-<br>
+<div align="center">
+<img src="images/m1.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-![title](images/encoder.png)
+<div align="center">
+<img src="images/m2.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-<br>
+<div align="center">
+<img src="images/m3.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
+Origin of Transformers Transformers were initially introduced in a paper called "Attention Is All You Need." This paper
+described an architecture more complex than what we implemented. This architecture was created for a different purpose:
+instead of generating text, the authors focused on translating text from one language to another.
 
-<br>
+Key Components of Transformer Architecture Decoder Component: The right part of the architecture, similar to our model,
+includes: Embedding layer Positional encoding Masked multi-head attention (using a triangular mask to modify attention
+scores) Feedforward layer with residual connections Nx Repeated Blocks: This block is repeated multiple times, similar
+to our model. Encoder Component: The left part, absent in our model, was used to encode information about an input text
+for translation. The encoder uses multi-head attention (without masking) and processes the entire input. Interaction
+Between Encoder and Decoder: The encoder processes the input text, and its final layer's output is passed to the decoder
+layers. The decoder generates the next token based on the encoded input and its partially generated output. Example:
+Translation from English to French Tokenization: The English text is tokenized and converted into token IDs. Encoding:
+Token IDs are passed to the encoder to build a representation of the phrase. Decoding: The process starts with a "start
+of the sequence" token sent to the decoder. The decoder reads its input and the encoder's output to produce the next
+token ID of the translated phrase. This process repeats, generating more tokens until an "end of sequence" token is
+produced. The final token IDs are converted into a human-readable sentence. Different Network Architectures Using
+Encoders and Decoders Decoder-only models: Only include the decoder part, without an encoder. Suitable for text
+generation tasks. Examples: GPT and LLaMA. Encoder-decoder models: Include both encoder and decoder blocks. Ideal for
+tasks like translating text into another language. Examples: BERT and T5.
 
-![title](images/m1.png)
-
-<br>
-
-<br>
-
-![title](images/m2.png)
-
-<br>
-
-<br>
-
-![title](images/m3.png)
-
-<br>
-
-Origin of Transformers
-Transformers were initially introduced in a paper called "Attention Is All You Need." This paper described an
-architecture more complex than what we implemented. This architecture was created for a different purpose: instead of
-generating text, the authors focused on translating text from one language to another.
-
-Key Components of Transformer Architecture
-Decoder Component: The right part of the architecture, similar to our model, includes:
-Embedding layer
-Positional encoding
-Masked multi-head attention (using a triangular mask to modify attention scores)
-Feedforward layer with residual connections
-Nx Repeated Blocks: This block is repeated multiple times, similar to our model.
-Encoder Component: The left part, absent in our model, was used to encode information about an input text for
-translation. The encoder uses multi-head attention (without masking) and processes the entire input.
-Interaction Between Encoder and Decoder:
-The encoder processes the input text, and its final layer's output is passed to the decoder layers.
-The decoder generates the next token based on the encoded input and its partially generated output.
-Example: Translation from English to French
-Tokenization: The English text is tokenized and converted into token IDs.
-Encoding: Token IDs are passed to the encoder to build a representation of the phrase.
-Decoding:
-The process starts with a "start of the sequence" token sent to the decoder.
-The decoder reads its input and the encoder's output to produce the next token ID of the translated phrase.
-This process repeats, generating more tokens until an "end of sequence" token is produced.
-The final token IDs are converted into a human-readable sentence.
-Different Network Architectures Using Encoders and Decoders
-Decoder-only models:
-Only include the decoder part, without an encoder.
-Suitable for text generation tasks.
-Examples: GPT and LLaMA.
-Encoder-decoder models:
-Include both encoder and decoder blocks.
-Ideal for tasks like translating text into another language.
-Examples: BERT and T5.
-
-Encoder-only models:
-Lack a decoder, using only the encoder to process inputs.
-Useful for text classification tasks like sentiment analysis or spam detection.
-Example: BERT.
+Encoder-only models: Lack a decoder, using only the encoder to process inputs. Useful for text classification tasks like
+sentiment analysis or spam detection. Example: BERT.
 
 #### Using Pre-Trained Transformer Models
 
@@ -3403,14 +3130,12 @@ create one from scratch for your applications. Training an LLM from scratch is c
 
 Data and Resources: Training these models requires huge amounts of training data and a lot of computational resources.
 Cost: These models are very expensive to train. For example, the cost of training the GPT-4 model was more than $100
-million.
-Expertise: Developing new models requires a specialized skill set, especially if you aim to implement a state-of-the-art
-model.
-Hugging Face: A Resource for Pre-Trained Models
-Fortunately, instead of creating a model from scratch, we can use existing models created by companies and researchers
-from all around the world. To do this, we will use the Hugging Face library, which is one of the most popular NLP
-libraries for Python. At the moment of this recording, it has a whopping 27,000 stars on GitHub. It also has a huge
-community contributing to the project, developing new large language models, and improving its features.
+million. Expertise: Developing new models requires a specialized skill set, especially if you aim to implement a
+state-of-the-art model. Hugging Face: A Resource for Pre-Trained Models Fortunately, instead of creating a model from
+scratch, we can use existing models created by companies and researchers from all around the world. To do this, we will
+use the Hugging Face library, which is one of the most popular NLP libraries for Python. At the moment of this
+recording, it has a whopping 27,000 stars on GitHub. It also has a huge community contributing to the project,
+developing new large language models, and improving its features.
 
 Hugging Face simplifies building applications using LLMs but is not limited to this. It also provides tools for
 developing new LLMs. Hugging Face is a collection of multiple components that work together. It provides an API that
@@ -3419,16 +3144,15 @@ our applications. It also provides access to datasets for different purposes tha
 improve existing models. Finally, it provides the Spaces project, which allows us to quickly create machine learning
 demos and applications.
 
-API and Capabilities
-Hugging Face provides a set of flexible and powerful APIs that we can use to build our AI applications. Using their API,
-we can do things like access existing models for a variety of tasks such as text generation, text summarization, and so
-on. We can train new models or fine-tune existing models from their library of models. Fine-tuning is a process that
-allows us to take an existing model and update its weights to make it better for a specific task for which the model
-wasn't originally trained. We can also process text for LLMs, for example, by tokenizing text using an existing
-tokenizer or creating our own tokenizer. Finally, we can deploy our LLMs.
+API and Capabilities Hugging Face provides a set of flexible and powerful APIs that we can use to build our AI
+applications. Using their API, we can do things like access existing models for a variety of tasks such as text
+generation, text summarization, and so on. We can train new models or fine-tune existing models from their library of
+models. Fine-tuning is a process that allows us to take an existing model and update its weights to make it better for a
+specific task for which the model wasn't originally trained. We can also process text for LLMs, for example, by
+tokenizing text using an existing tokenizer or creating our own tokenizer. Finally, we can deploy our LLMs.
 
-Beyond Text: Images and Audio
-Hugging Face is not limited to working with just text; it also includes APIs to work with images and audio.
+Beyond Text: Images and Audio Hugging Face is not limited to working with just text; it also includes APIs to work with
+images and audio.
 
 #### Comparing Hugging Face and OpenAI
 
@@ -3441,120 +3165,96 @@ models.
 
 #### Hugging Face Library
 
-<br>
-
-![title](images/hugging.png)
-
-<br>
+<div align="center">
+<img src="images/hugging.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 When it comes to using Hugging Face models, we have two options:
 
-High-Level API: This is accessible using the pipeline function and is user-friendly.
-Low-Level API: This offers more flexibility and control over the model's usage.
-Since this is a beginner-friendly lesson, we will focus just on using the high-level API, but keep in mind that Hugging
-Face API has much more to offer.
+High-Level API: This is accessible using the pipeline function and is user-friendly. Low-Level API: This offers more
+flexibility and control over the model's usage. Since this is a beginner-friendly lesson, we will focus just on using
+the high-level API, but keep in mind that Hugging Face API has much more to offer.
 
-Text Generation with Hugging Face
-To use a large language model with Hugging Face:
+Text Generation with Hugging Face To use a large language model with Hugging Face:
 
-Import the Pipeline Function: Import the pipeline function from the Transformers package.
-Specify the Task: Call the pipeline function and provide the name of the task, such as "text-generation." This function
-returns another function that we can use to perform the selected task.
-Provide a Prompt: For text generation, specify a prompt that will be used to generate the text.
-To generate text using this prompt:
+Import the Pipeline Function: Import the pipeline function from the Transformers package. Specify the Task: Call the
+pipeline function and provide the name of the task, such as "text-generation." This function returns another function
+that we can use to perform the selected task. Provide a Prompt: For text generation, specify a prompt that will be used
+to generate the text. To generate text using this prompt:
 
-Call the generator function returned by the pipeline call.
-Provide parameters such as the prompt, the maximum length of the output, and the number of sequences to generate.
-Hugging Face's Versatility
-Hugging Face supports a wide range of NLP-related tasks, including:
+Call the generator function returned by the pipeline call. Provide parameters such as the prompt, the maximum length of
+the output, and the number of sequences to generate. Hugging Face's Versatility Hugging Face supports a wide range of
+NLP-related tasks, including:
 
-Text Generation: As described above.
-Question Answering: Finding answers to questions based on a given context.
-Text Summarization: Summarizing large pieces of text.
-Translation: Translating text between different languages.
-Text Classification: Classifying text into categories.
-In addition to NLP tasks, Hugging Face also supports:
+Text Generation: As described above. Question Answering: Finding answers to questions based on a given context. Text
+Summarization: Summarizing large pieces of text. Translation: Translating text between different languages. Text
+Classification: Classifying text into categories. In addition to NLP tasks, Hugging Face also supports:
 
-Audio Tasks: Such as audio classification and text-to-speech conversion.
-Image and Video Tasks: Including image classification, video classification, and image segmentation.
-Example: Image Classification with Hugging Face
-Here's how to perform image classification using Hugging Face:
+Audio Tasks: Such as audio classification and text-to-speech conversion. Image and Video Tasks: Including image
+classification, video classification, and image segmentation. Example: Image Classification with Hugging Face Here's how
+to perform image classification using Hugging Face:
 
-Specify the Task: Use the pipeline function, specifying the task as "image-classification."
-Pass an Image: Provide an image file or an image URL for classification.
-Interpret the Output: The output is a list with each element containing a label and an associated probability,
-indicating what the model thinks the image represents. For example, it might classify an image as likely being a cat.
+Specify the Task: Use the pipeline function, specifying the task as "image-classification." Pass an Image: Provide an
+image file or an image URL for classification. Interpret the Output: The output is a list with each element containing a
+label and an associated probability, indicating what the model thinks the image represents. For example, it might
+classify an image as likely being a cat.
 
+<div align="center">
+<img src="images/multinormal.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
-
-<br>
-
-![title](images/multinormal.png)
-
-<br>
-
-
-<br>
-
-![title](images/beam.png)
-
-<br>
+<div align="center">
+<img src="images/beam.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 #### Text Generation Options
 
-<br>
-
-![title](images/temp.png)
-
-<br>
-
+<div align="center">
+<img src="images/temp.png" width="600" height="auto">
+<p style="color: #555;">Figure: Different activation functions</p>
+</div>
 
 To avoid some possible confusion, there are two types of parameters:
 
-model parameters, which are set during model training, and
-generation parameters, which can affect the result of text generation when we use a model after it is trained.
-Maximum Number of Tokens
-We have already seen one parameter, which is the maximum number of tokens the text generation process should return. In
-Hugging Face, this is called the max_length parameter. As you can imagine, the higher this parameter is, the longer the
-output the text generation process will produce. However, one gotcha is that it defines a maximum number of tokens, and
-text generation can return an output that is shorter than this value. During the text generation process, a model can
-emit a special "end of sequence" token that will stop the generation process even before it reaches the specified limit.
+model parameters, which are set during model training, and generation parameters, which can affect the result of text
+generation when we use a model after it is trained. Maximum Number of Tokens We have already seen one parameter, which
+is the maximum number of tokens the text generation process should return. In Hugging Face, this is called the
+max_length parameter. As you can imagine, the higher this parameter is, the longer the output the text generation
+process will produce. However, one gotcha is that it defines a maximum number of tokens, and text generation can return
+an output that is shorter than this value. During the text generation process, a model can emit a special "end of
+sequence" token that will stop the generation process even before it reaches the specified limit.
 
-Greedy Decoding
-One simple option for generating text is to select the token with the highest probability every time a new token is
-generated. This approach, called "greedy decoding," picks the word with the highest probability and adds it to the
-input, repeating the process. However, this can lead to boring and repetitive results.
+Greedy Decoding One simple option for generating text is to select the token with the highest probability every time a
+new token is generated. This approach, called "greedy decoding," picks the word with the highest probability and adds it
+to the input, repeating the process. However, this can lead to boring and repetitive results.
 
-Multinomial Sampling
-To avoid repetitive results, we can introduce randomness by picking less probable tokens. This method, known as "
-multinomial sampling," uses the output of the softmax layer as a probability distribution to randomly select tokens. The
-higher the probability of a token, the more likely it will be selected. This approach provides a more varied and
-interesting output.
+Multinomial Sampling To avoid repetitive results, we can introduce randomness by picking less probable tokens. This
+method, known as " multinomial sampling," uses the output of the softmax layer as a probability distribution to randomly
+select tokens. The higher the probability of a token, the more likely it will be selected. This approach provides a more
+varied and interesting output.
 
-Beam Search
-Beam search is an algorithm used to generate multiple sequences at the same time, evaluating them to find the best
-result. Instead of generating a single sequence, beam search keeps "n" best sequences at each step, generating new
-sequences from these and repeating the process. This method helps in finding more optimal sequences by considering
+Beam Search Beam search is an algorithm used to generate multiple sequences at the same time, evaluating them to find
+the best result. Instead of generating a single sequence, beam search keeps "n" best sequences at each step, generating
+new sequences from these and repeating the process. This method helps in finding more optimal sequences by considering
 multiple possible outputs simultaneously.
 
-Top-K Sampling
-The top_k parameter specifies the number of tokens with the highest probability to consider when selecting the next
-token. For example, setting top_k to 3 means selecting the next token from the top three most probable tokens. Higher
-top_k values can lead to more creative outputs but may also produce less coherent text.
+Top-K Sampling The top_k parameter specifies the number of tokens with the highest probability to consider when
+selecting the next token. For example, setting top_k to 3 means selecting the next token from the top three most
+probable tokens. Higher top_k values can lead to more creative outputs but may also produce less coherent text.
 
-Top-P (Nucleus) Sampling
-The top_p parameter specifies the cumulative probability of the most probable tokens to consider when selecting the next
-token. This method ensures that only tokens that collectively meet a certain probability threshold are considered,
-allowing for dynamic adjustment of the number of tokens based on their probabilities.
+Top-P (Nucleus) Sampling The top_p parameter specifies the cumulative probability of the most probable tokens to
+consider when selecting the next token. This method ensures that only tokens that collectively meet a certain
+probability threshold are considered, allowing for dynamic adjustment of the number of tokens based on their
+probabilities.
 
-Temperature
-The temperature parameter adjusts the probability distribution returned by the softmax layer. Lowering the temperature
-increases the chances of selecting tokens with higher logits, making the output more deterministic. Increasing the
-temperature flattens the probability distribution, allowing for more diverse token selection.
+Temperature The temperature parameter adjusts the probability distribution returned by the softmax layer. Lowering the
+temperature increases the chances of selecting tokens with higher logits, making the output more deterministic.
+Increasing the temperature flattens the probability distribution, allowing for more diverse token selection.
 
-Using Parameters with Hugging Face
-In Hugging Face, these parameters can be set when using the generator function. For example, do_sample enables
-multinomial sampling, and num_beams specifies the number of sequences in beam search. Parameters like top_k, top_p, and
-temperature control the randomness and creativity of the generated output, allowing for fine-tuning the behavior of the
-language model according to specific requirements.
-
+Using Parameters with Hugging Face In Hugging Face, these parameters can be set when using the generator function. For
+example, do_sample enables multinomial sampling, and num_beams specifies the number of sequences in beam search.
+Parameters like top_k, top_p, and temperature control the randomness and creativity of the generated output, allowing
+for fine-tuning the behavior of the language model according to specific requirements.
