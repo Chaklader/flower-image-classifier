@@ -2396,27 +2396,27 @@ of the input sequence when making predictions.
 
 <div align="center">
 <img src="images/queries.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Query, Key, and Value Matrices in Attention Mechanism</p>
 </div>
 
 <div align="center">
 <img src="images/queries_2.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Query, Key, and Value Matrices in Attention Mechanism</p>
 </div>
 
 <div align="center">
 <img src="images/queries_3.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Query, Key, and Value Matrices in Attention Mechanism</p>
 </div>
 
 <div align="center">
 <img src="images/queries_4.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Query, Key, and Value Matrices in Attention Mechanism</p>
 </div>
 
 <div align="center">
 <img src="images/queries_5.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Query, Key, and Value Matrices in Attention Mechanism</p>
 </div>
 
 # Attention Mechanism in Transformers
@@ -2543,12 +2543,12 @@ word.
 
 <div align="center">
 <img src="images/mask.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Masked Multi-Head Attention</p>
 </div>
 
 <div align="center">
 <img src="images/mask_1.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Masked Multi-Head Attention</p>
 </div>
 
 To prevent this, we need to modify the attention scores to ensure the model cannot access future tokens.
@@ -2607,12 +2607,12 @@ transformations should include bias terms.
 
 <div align="center">
 <img src="images/transformer_block.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Transformer Block</p>
 </div>
 
 <div align="center">
 <img src="images/layer_normalization.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Layer Normalization</p>
 </div>
 
 Overview of a Transformer Block
@@ -2696,17 +2696,17 @@ language modeling, translation, and more.
 
 <div align="center">
 <img src="images/a.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Query, Key, and Value Matrices in Attention Mechanism</p>
 </div>
 
 <div align="center">
 <img src="images/b.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Masked Multi-Head Attention</p>
 </div>
 
 <div align="center">
 <img src="images/c.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Feedforward Block</p>
 </div>
 
 # Building Blocks of the Model
@@ -2985,7 +2985,7 @@ validation loss.
 
 <div align="center">
 <img src="images/ranked.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Using Pre-trained Transformers</p>
 </div>
 
 Model Scaling and Capabilities One trend you can see is that the bigger the model is, the more capable it usually
@@ -3072,22 +3072,22 @@ effectiveness in generative tasks.
 
 <div align="center">
 <img src="images/encoder.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Encoder-only Architecture</p>
 </div>
 
 <div align="center">
 <img src="images/m1.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Activation Functions Comparison</p>
 </div>
 
 <div align="center">
 <img src="images/m2.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Comparison of Activation Functions</p>
 </div>
 
 <div align="center">
 <img src="images/m3.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Comparison of Activation Functions</p>
 </div>
 
 Origin of Transformers Transformers were initially introduced in a paper called "Attention Is All You Need." This paper
@@ -3157,7 +3157,7 @@ models.
 
 <div align="center">
 <img src="images/hugging.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Hugging Face Library</p>
 </div>
 
 When it comes to using Hugging Face models, we have two options:
@@ -3192,19 +3192,19 @@ classify an image as likely being a cat.
 
 <div align="center">
 <img src="images/multinormal.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Multinomial Distribution</p>
 </div>
 
 <div align="center">
 <img src="images/beam.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Beam Search</p>
 </div>
 
 #### Text Generation Options
 
 <div align="center">
 <img src="images/temp.png" width="600" height="auto">
-<p style="color: #555;">Figure: Different activation functions</p>
+<p style="color: #555;">Figure: Temperature Parameter</p>
 </div>
 
 To avoid some possible confusion, there are two types of parameters:
