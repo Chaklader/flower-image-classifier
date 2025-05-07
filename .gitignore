@@ -8,6 +8,8 @@ __pycache__/
 flowers/
 chksav/
 
+lectures/neural_networks_with_pyTorch/deep-learning-with-pytorch/Cat_Dog_data
+
 # Distribution / packaging
 .Python
 env/
