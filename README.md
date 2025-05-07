@@ -106,7 +106,7 @@ The model showed significant improvement from training to validation, with the v
 - Total training time: 44.26 seconds
 
 
-<img src="images/train.png" alt="Training Output" width="2000" height=auto/>
+<img src="images/AI_Programming_with_Python_ND_P2_L_24.png" alt="Training Output" width="2000" height=auto/>
 <br>
 
 ### Testing
@@ -120,7 +120,7 @@ After training, the model was evaluated on a separate test set. Here are the tes
 - Total testing time: 6.11 seconds
 
 <br>
-<img src="images/test.png" alt="Training Output" width="2000" height=auto/>
+<img src="images/AI_Programming_with_Python_ND_P2_L_25.png" alt="Training Output" width="2000" height=auto/>
 <br>
 
 ### Observations
@@ -132,13 +132,13 @@ After training, the model was evaluated on a separate test set. Here are the tes
 
 
 For a more robust evaluation, we need to train the model for more epochs and monitoring the learning curves to find the optimal number of epochs.
-The example is created to showcase how the process is running in the Jupyter notebook. 
+The example is created to showcase how the process is running in the Jupyter notebook.
 
 
 ### Flower Classification Results
 
 <br>
-<img src="images/image_05878.jpg" alt="Training Output" width="600" height=auto/>
+<img src="images/AI_Programming_with_Python_ND_P2_L_26.jpg" alt="Training Output" width="600" height=auto/>
 <br>
 
 This image shows the results of a deep learning classifier predicting the type of flower in the given image.
@@ -155,7 +155,7 @@ This image shows the results of a deep learning classifier predicting the type o
 | 5 | Californian Poppy | 8.16% |
 
 <br>
-<img src="images/predict.png" alt="Training Output" width="1000" height=auto/>
+<img src="images/AI_Programming_with_Python_ND_P2_L_27.png" alt="Training Output" width="1000" height=auto/>
 <br>
 
 
