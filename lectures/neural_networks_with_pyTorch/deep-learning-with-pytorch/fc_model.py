@@ -38,8 +38,10 @@ class Network(nn.Module):
 
 
 def validation(model, testloader, criterion):
+    ''' Validate the model on the test dataset and print out the test accuracy and loss. '''
     accuracy = 0
     test_loss = 0
+
     for images, labels in testloader:
 
         images = images.resize_(images.size()[0], 784)
@@ -59,9 +61,11 @@ def validation(model, testloader, criterion):
 
 
 def train(model, trainloader, testloader, criterion, optimizer, epochs=5, print_every=40):
-    
+    ''' Train the model on the training dataset and validate on the test dataset. '''
+
     steps = 0
     running_loss = 0
+
     for e in range(epochs):
         # Model in training mode, dropout is on
         model.train()
@@ -91,7 +95,7 @@ def train(model, trainloader, testloader, criterion, optimizer, epochs=5, print_
                 print("Epoch: {}/{}.. ".format(e+1, epochs),
                       "Training Loss: {:.3f}.. ".format(running_loss/print_every),
                       "Test Loss: {:.3f}.. ".format(test_loss/len(testloader)),
-                      "Test Accuracy: {:.3f}".format(accuracy/len(testloader)))
+                      "Test Accuracy: {:.1f}%".format(100 * accuracy/len(testloader)))
                 
                 running_loss = 0
                 
