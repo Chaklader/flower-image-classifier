@@ -10,6 +10,10 @@ chksav/
 
 lectures/neural_networks_with_pyTorch/deep-learning-with-pytorch/Cat_Dog_data
 
+*.pyc
+
+.ipynb_checkpoints/
+
 # Distribution / packaging
 .Python
 env/
